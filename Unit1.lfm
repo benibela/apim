@@ -1,0 +1,1229 @@
+object mainForm: TmainForm
+  Left = 269
+  Height = 734
+  Width = 609
+  HorzScrollBar.Page = 608
+  VertScrollBar.Page = 733
+  BorderIcons = [biSystemMenu, biHelp]
+  Caption = 'APIV 3.0.0'
+  ClientHeight = 734
+  ClientWidth = 609
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Icon.Data = {
+    36040000424D3604000000000000360000002800000010000000100000000100
+    2000000000000004000064000000640000000000000000000000000000000000
+    000000000000000000000000000000000000000000FF000000FF000000FF0000
+    00FF000000FF000000FF000000FF000000FF000000FF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    00000000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF8080
+    80FF808080FFFFFFFFFF808080FFFF0000FFFFFFFFFF000000FF000000000000
+    00000000FFFF000000000000000000000000000000FFFFFFFFFF808080FF8080
+    80FF808080FFFFFFFFFFFF0000FFFF0000FFFF0000FF000000FF000000000000
+    00000000FFFF000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFF0000FFFFFFFFFFFF0000FFFFFFFFFFFF0000FF0000FFFF0000
+    00FF0000FFFF000000FF0000FFFF000000FF800000FFC0C0C0FF800000FFC0C0
+    C0FF800000FFC0C0C0FF800000FFFF0000FFC0C0C0FF800000FF000000000000
+    FFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFF800000FF800000FFC0C0C0FF8000
+    00FF800000FFC0C0C0FFC0C0C0FFFF0000FFC0C0C0FF800000FF000000000000
+    00FF0000FFFFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000FF0000000000000000FF0000FF0000000000000000000000000000
+    00FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFC0C0C0FFFFFF
+    FFFF000000FF0000000000000000FF0000FF0000000000000000000000000000
+    00FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFF0000FFFF0000FFFF0000FFFF00
+    00FFFF0000FFFF0000FFFF0000FFFF0000FF0000000000000000000000000000
+    00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000FF0000000000000000000000000000000000000000000000008000
+    00FF800000FF800000FF800000FF800000FF800000FF800000FF800000FF8000
+    00FF800000FF0000000000000000000000000000000000000000000000008000
+    00FF800000FF800000FF800000FF800000FF800000FF800000FF800000FF8000
+    00FF800000FF0000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000
+  }
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnKeyUp = windowConstOpenEvent
+  OnMouseUp = FormMouseUp
+  ShowHint = True
+  LCLVersion = '0.9.25'
+  Visible = True
+  object Label7: TLabel
+    Left = 24
+    Height = 14
+    Top = 16
+    Width = 58
+    Caption = 'Lokaliesiert:'
+    ParentColor = False
+  end
+  object Panel1: TPanel
+    Height = 734
+    Width = 609
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 734
+    ClientWidth = 609
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Height = 734
+      Width = 609
+      ActivePage = TabSheet1
+      Align = alClient
+      TabIndex = 0
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'Fenster'
+        ClientHeight = 708
+        ClientWidth = 601
+        object Splitter2: TSplitter
+          Cursor = crVSplit
+          Height = 3
+          Top = 181
+          Width = 601
+          Align = alTop
+          Beveled = True
+          ResizeAnchor = akTop
+        end
+        object windowPropertySheet: TScrollBox
+          Height = 524
+          Top = 184
+          Width = 601
+          HorzScrollBar.Page = 580
+          VertScrollBar.Page = 519
+          VertScrollBar.Range = 1000
+          VertScrollBar.Visible = True
+          Align = alClient
+          TabOrder = 0
+          object Label8: TLabel
+            Left = 11
+            Height = 14
+            Top = 61
+            Width = 25
+            Caption = 'Titel:'
+            ParentColor = False
+          end
+          object Label9: TLabel
+            Left = 306
+            Height = 14
+            Top = 15
+            Width = 53
+            Caption = 'ThreadID: '
+            ParentColor = False
+          end
+          object Label12: TLabel
+            Left = 362
+            Height = 14
+            Hint = 'Zeigt die ThreadID des gewählten Fensters an'
+            Top = 15
+            Width = 7
+            Caption = '0'
+            Font.Color = clNavy
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            ParentColor = False
+          end
+          object Label13: TLabel
+            Left = 226
+            Height = 14
+            Top = 15
+            Width = 56
+            Caption = 'ProcessID: '
+            ParentColor = False
+          end
+          object Label14: TLabel
+            Cursor = crHandPoint
+            Left = 290
+            Height = 14
+            Hint = 'Zeigt die ProcessID des gewählten Fensters an'
+            Top = 15
+            Width = 7
+            Caption = '0'
+            Font.Color = clNavy
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            ParentColor = False
+          end
+          object labclassname: TLabel
+            Left = 11
+            Height = 14
+            Hint = 'Zeigt den Classnamen des aktuellen Fensters an'
+            Top = 92
+            Width = 35
+            Caption = 'Klasse:'
+            ParentColor = False
+          end
+          object Label15: TLabel
+            Left = 12
+            Height = 14
+            Top = 38
+            Width = 57
+            Caption = 'Parentwnd:'
+            ParentColor = False
+          end
+          object Label23: TLabel
+            Left = 11
+            Height = 14
+            Top = 15
+            Width = 91
+            Caption = 'Gewähltes Handle:'
+            ParentColor = False
+          end
+          object Label2: TLabel
+            Left = 11
+            Height = 14
+            Top = 145
+            Width = 36
+            Caption = 'Status:'
+            ParentColor = False
+          end
+          object Label24: TLabel
+            Left = 10
+            Height = 14
+            Top = 173
+            Width = 42
+            Caption = 'Position:'
+            ParentColor = False
+          end
+          object colorKeyShape: TShape
+            Left = 346
+            Height = 22
+            Top = 408
+            Width = 65
+            OnMouseUp = colorKeyShapeMouseUp
+          end
+          object Label25: TLabel
+            Left = 11
+            Height = 14
+            Top = 324
+            Width = 76
+            Caption = 'Win-Properties:'
+            ParentColor = False
+          end
+          object Label22: TLabel
+            Left = 106
+            Height = 14
+            Top = 443
+            Width = 23
+            Caption = 'Typ:'
+            ParentColor = False
+          end
+          object labwparam: TLabel
+            Left = 58
+            Height = 14
+            Top = 489
+            Width = 45
+            Caption = 'WParam:'
+            ParentColor = False
+          end
+          object lablparam: TLabel
+            Left = 59
+            Height = 14
+            Top = 511
+            Width = 40
+            Caption = 'LParam:'
+            ParentColor = False
+          end
+          object Label33: TLabel
+            Left = 11
+            Height = 14
+            Top = 207
+            Width = 49
+            Caption = 'Userdata:'
+            ParentColor = False
+          end
+          object Label34: TLabel
+            Left = 10
+            Height = 14
+            Top = 234
+            Width = 57
+            Caption = 'WNDPROC:'
+            ParentColor = False
+          end
+          object alphatrans_cb: TCheckBox
+            Tag = 1
+            Left = 11
+            Height = 19
+            Top = 411
+            Width = 86
+            Caption = 'Transparent:'
+            OnChange = windowPropertyChanged1
+            TabOrder = 12
+          end
+          object enabledCb: TCheckBox
+            Tag = 1
+            Left = 82
+            Height = 19
+            Hint = 'Zeigt an und stell ein, ob das gewählte Fenster enable ist'
+            Top = 118
+            Width = 64
+            Caption = 'enabled'
+            OnChange = windowPropertyChanged1
+            TabOrder = 0
+          end
+          object visibleCb: TCheckBox
+            Tag = 1
+            Left = 11
+            Height = 19
+            Hint = 'Zeigt an und stell ein, ob das gewählte Fenster sichtbar ist'
+            Top = 119
+            Width = 55
+            Caption = 'visible'
+            OnChange = windowPropertyChanged1
+            TabOrder = 1
+          end
+          object unicodeCb: TCheckBox
+            Tag = 1
+            Left = 162
+            Height = 19
+            Hint = 'Zeigt an , ob das gewählte Fenster ein unicode Fenster ist'
+            Top = 118
+            Width = 64
+            Caption = 'unicode'
+            Enabled = False
+            OnChange = windowPropertyChanged1
+            TabOrder = 2
+          end
+          object showStateCmb: TComboBox
+            Tag = 1
+            Left = 104
+            Height = 21
+            Hint = 'Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll.'
+            Top = 140
+            Width = 145
+            AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+            ItemHeight = 13
+            Items.Strings = (
+              'normal'
+              'minimiert'
+              'maximiert'
+            )
+            OnChange = windowPropertyChanged1
+            Style = csDropDownList
+            TabOrder = 3
+          end
+          object messageSend_btn: TButton
+            Left = 10
+            Height = 25
+            Hint = 'Schick dem gewählten Fenster eine Nachricht'
+            Top = 455
+            Width = 90
+            Caption = 'Nachricht senden:'
+            OnClick = messageSend_btnClick
+            TabOrder = 4
+          end
+          object windowtextEdt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 21
+            Hint = 'Zeigt und ändern den Text des Fensters.'
+            Top = 61
+            Width = 455
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 5
+          end
+          object Button5: TButton
+            Left = 282
+            Height = 25
+            Top = 140
+            Width = 75
+            Caption = 'windowstyles'
+            TabOrder = 6
+          end
+          object handleEdt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 23
+            Top = 9
+            Width = 117
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 7
+          end
+          object classNameEdt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 23
+            Top = 86
+            Width = 455
+            Color = clBtnFace
+            OnKeyUp = updatePropertyKeyUp
+            ReadOnly = True
+            TabOrder = 8
+          end
+          object stayOnTopCb: TCheckBox
+            Tag = 1
+            Left = 234
+            Height = 19
+            Top = 118
+            Width = 127
+            Caption = 'immer im Vordergrund'
+            OnChange = windowPropertyChanged1
+            TabOrder = 9
+          end
+          object posSizeEdt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 21
+            Hint = 'Zeigt die Position des Fensters an'
+            Top = 170
+            Width = 145
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 10
+            Text = '(0,0)-(0,0)'
+          end
+          object parentWndCmb: TComboBox
+            Tag = 1
+            Left = 104
+            Height = 21
+            Top = 34
+            Width = 455
+            AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+            Font.Color = clNavy
+            Font.Style = [fsUnderline]
+            ItemHeight = 13
+            OnDblClick = parentWndCmbDblClick
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 11
+          end
+          object alphatrans_sp: TSpinEdit
+            Tag = -1
+            Left = 104
+            Height = 22
+            Top = 408
+            Width = 145
+            MaxValue = 255
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 13
+            Value = 128
+          end
+          object colorkey_cb: TCheckBox
+            Left = 258
+            Height = 19
+            Top = 411
+            Width = 71
+            Caption = 'ColorKey:'
+            OnChange = windowPropertyChanged1
+            TabOrder = 14
+          end
+          object windowPropertyList: TListView
+            Tag = 1
+            Left = 106
+            Height = 75
+            Top = 324
+            Width = 454
+            Columns = <            
+              item
+                Caption = 'Name'
+                Width = 150
+              end            
+              item
+                Caption = 'Value'
+                Width = 100
+              end>
+            PopupMenu = windowPropertyListPopup
+            TabOrder = 15
+            ViewStyle = vsReport
+            OnChange = windowPropertyListChange
+            OnDeletion = windowPropertyListDeletion
+          end
+          object messagemes_cb: TComboBox
+            Left = 106
+            Height = 21
+            Top = 459
+            Width = 192
+            AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+            ItemHeight = 13
+            OnKeyUp = messagemes_cbKeyUp
+            TabOrder = 16
+          end
+          object messagewparam_edt: TEdit
+            Left = 105
+            Height = 21
+            Top = 487
+            Width = 454
+            OnKeyUp = messagemes_cbKeyUp
+            TabOrder = 17
+          end
+          object messagelparam_edt: TEdit
+            Left = 104
+            Height = 21
+            Top = 511
+            Width = 454
+            OnKeyUp = messagemes_cbKeyUp
+            TabOrder = 18
+          end
+          object userdata_edt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 23
+            Top = 200
+            Width = 145
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 19
+          end
+          object wndproc_edt: TEdit
+            Tag = 1
+            Left = 104
+            Height = 23
+            Top = 232
+            Width = 145
+            Color = clBtnFace
+            OnKeyUp = updatePropertyKeyUp
+            ReadOnly = True
+            TabOrder = 20
+          end
+        end
+        object PageControl2: TPageControl
+          Height = 181
+          Width = 601
+          ActivePage = TabSheet6
+          Align = alTop
+          TabIndex = 0
+          TabOrder = 2
+          object TabSheet6: TTabSheet
+            Caption = 'Suchwerkzeug'
+            ClientHeight = 155
+            ClientWidth = 593
+            object Label26: TLabel
+              Left = 10
+              Height = 14
+              Top = 36
+              Width = 75
+              Caption = '"Maus"-Handle:'
+              ParentColor = False
+            end
+            object Label1: TLabel
+              Left = 10
+              Height = 14
+              Top = 60
+              Width = 25
+              Caption = 'Titel:'
+              ParentColor = False
+            end
+            object Label27: TLabel
+              Left = 10
+              Height = 14
+              Top = 88
+              Width = 35
+              Caption = 'Klasse:'
+              ParentColor = False
+            end
+            object Label28: TLabel
+              Left = 11
+              Height = 14
+              Top = 118
+              Width = 53
+              Caption = 'Programm:'
+              ParentColor = False
+            end
+            object mouseToolImage: TImage
+              Left = 160
+              Height = 20
+              Top = 3
+              Width = 20
+              AutoSize = True
+              OnMouseDown = mouseToolImageMouseDown
+              OnMouseUp = mouseToolImageMouseUp
+              Picture.Data = {
+                07544269746D6170E6040000424DBE0400000000000036000000280000001400
+                0000140000000100180000000000B0040000C30E0000C30E0000000000000000
+                0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFF
+                FFFFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                6E6E6EFFFFFFFFFFFFFFFFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFF
+                FF6E6E6EFFFFFFFFFFFFFFFFFF6E6E6EFFFFFFFFFFFFFFFFFF6E6E6EFFFFFFFF
+                FFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6EFFFFFF
+                FFFFFF6E6E6EFFFFFFFFFFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E33FF6833FF6833FF6833FF686E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6EFFFFFF6E6E6E6E6E6EFFFFFF6E6E6EFFFFFF
+                FFFFFF6E6E6E33FF6833FF6833FF6833FF686E6E6EFFFFFFFFFFFF6E6E6EFFFF
+                FF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF6E6E6E6E6E6E
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFF
+                FF6E6E6E6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6EFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFF6E6E6EFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6EFFFFFFFFFFFF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FF6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFF
+                FFFFFFFFFF6E6E6EFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFF6E6E6EFFFFFFFFFF
+                FF6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6EFF
+                FFFFFFFFFFFFFFFFFFFFFF6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFF
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E
+                6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              }
+              Transparent = False
+            end
+            object mouseHandleEdt: TEdit
+              Left = 96
+              Height = 23
+              Top = 28
+              Width = 248
+              Color = clBtnFace
+              ReadOnly = True
+              TabOrder = 0
+            end
+            object mouseWindowTextEdt: TEdit
+              Left = 96
+              Height = 23
+              Top = 56
+              Width = 248
+              Color = clBtnFace
+              ReadOnly = True
+              TabOrder = 1
+            end
+            object mouseWindowClassEdt: TEdit
+              Left = 96
+              Height = 23
+              Top = 84
+              Width = 248
+              Color = clBtnFace
+              ReadOnly = True
+              TabOrder = 2
+            end
+            object mouseWindowProgramEdt: TEdit
+              Left = 96
+              Height = 23
+              Top = 116
+              Width = 248
+              Color = clBtnFace
+              ReadOnly = True
+              TabOrder = 3
+            end
+            object mouseRefreshAllLive: TCheckBox
+              Left = 8
+              Height = 19
+              Top = 4
+              Width = 129
+              Caption = 'Alles live aktualisieren'
+              TabOrder = 4
+            end
+            object miniScreen: TPanel
+              Left = 356
+              Height = 138
+              Top = 10
+              Width = 202
+              ClientHeight = 138
+              ClientWidth = 202
+              TabOrder = 7
+              UseDockManager = False
+              object PaintBox1: TPaintBox
+                Left = 1
+                Height = 136
+                Hint = 'Zeigt einen kleinen Bildschirm an, in dem man Fenster auswählen kann'
+                Top = 1
+                Width = 200
+                Align = alClient
+                OnClick = PaintBox1Click
+                OnMouseDown = PaintBox1MouseDown
+                OnMouseMove = PaintBox1MouseMove
+                OnPaint = PaintBox1Paint
+              end
+            end
+            object rechtsunten: TPanel
+              Cursor = crSizeNWSE
+              Left = 554
+              Height = 7
+              Top = 143
+              Width = 7
+              BevelOuter = bvNone
+              Caption = 'linksoben'
+              Color = clBlack
+              ParentColor = False
+              TabOrder = 6
+            end
+            object linksoben: TPanel
+              Cursor = crSizeNWSE
+              Left = 354
+              Height = 7
+              Top = 8
+              Width = 7
+              BevelOuter = bvNone
+              Caption = 'linksoben'
+              Color = clBlack
+              ParentColor = False
+              TabOrder = 5
+            end
+          end
+          object TabSheet7: TTabSheet
+            Caption = 'Fensterliste'
+            ClientHeight = 155
+            ClientWidth = 592
+            OnShow = TabSheet7Show
+            object windowList: TListView
+              Height = 131
+              Top = 24
+              Width = 592
+              Align = alClient
+              Columns = <              
+                item
+                  Caption = 'Handle'
+                  Width = 100
+                end              
+                item
+                  Caption = 'Titel'
+                  Width = 140
+                end              
+                item
+                  Caption = 'Klasse'
+                  Width = 100
+                end              
+                item
+                  Caption = 'Status (visible, enabled)'
+                  Width = 100
+                end              
+                item
+                  Caption = 'Größe'
+                  Width = 130
+                end              
+                item
+                  Caption = 'Programm'
+                  Width = 150
+                end>
+              ReadOnly = True
+              RowSelect = True
+              SortType = stText
+              TabOrder = 0
+              ViewStyle = vsReport
+              OnDblClick = windowListDblClick
+              OnKeyUp = windowListKeyUp
+              OnSelectItem = windowListSelectItem
+            end
+            object Panel2: TPanel
+              Height = 24
+              Width = 592
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 24
+              ClientWidth = 592
+              TabOrder = 1
+              object Label30: TLabel
+                Left = 8
+                Height = 14
+                Top = 5
+                Width = 33
+                Caption = 'Filter:'
+                Font.Style = [fsBold]
+                ParentColor = False
+              end
+              object Label31: TLabel
+                Left = 44
+                Height = 14
+                Top = 5
+                Width = 37
+                Caption = 'Parent:'
+                ParentColor = False
+              end
+              object Label32: TLabel
+                Left = 304
+                Height = 14
+                Top = 4
+                Width = 53
+                Caption = 'Programm:'
+                ParentColor = False
+              end
+              object windowListFilterParent_edt: TEdit
+                Left = 88
+                Height = 23
+                Top = 1
+                Width = 80
+                OnChange = windowListFilterParent_edtChange
+                OnKeyUp = windowListFilterProgram_edtKeyUp
+                TabOrder = 0
+                Text = '0'
+              end
+              object windowListFilterProgram_edt: TEdit
+                Left = 360
+                Height = 23
+                Top = 1
+                Width = 88
+                OnKeyUp = windowListFilterProgram_edtKeyUp
+                TabOrder = 1
+              end
+              object windowsListfilterDirectChilds: TCheckBox
+                Left = 192
+                Height = 19
+                Top = 1
+                Width = 109
+                Caption = 'nur direkte Kinder'
+                Checked = True
+                Enabled = False
+                OnChange = windowsListfilterDirectChildsChange
+                State = cbChecked
+                TabOrder = 2
+              end
+              object windowListFilterParentUp: TButton
+                Left = 171
+                Height = 19
+                Top = 2
+                Width = 16
+                Caption = '5'
+                Font.Name = 'Webdings'
+                OnClick = windowListFilterParentUpClick
+                TabOrder = 3
+              end
+            end
+          end
+        end
+      end
+      object TabSheet3: TTabSheet
+        Caption = 'Prozesse'
+        ClientHeight = 611
+        ClientWidth = 600
+        ImageIndex = 2
+        OnShow = TabSheet3Show
+        object Panel5: TPanel
+          Height = 96
+          Top = 515
+          Width = 600
+          Align = alBottom
+          BevelOuter = bvNone
+          ClientHeight = 96
+          ClientWidth = 600
+          TabOrder = 0
+          object Label10: TLabel
+            Left = 8
+            Height = 14
+            Top = 40
+            Width = 43
+            Caption = 'Priorität:'
+            ParentColor = False
+          end
+          object Label11: TLabel
+            Left = 8
+            Height = 14
+            Top = 8
+            Width = 53
+            Caption = 'ProcessID:'
+            ParentColor = False
+          end
+          object displayProcesses: TButton
+            Left = 191
+            Height = 22
+            Hint = 'Sucht alle Prozesse'
+            Top = 5
+            Width = 97
+            Caption = 'Prozesse suchen'
+            OnClick = displayProcessesClick
+            TabOrder = 0
+          end
+          object Button26: TButton
+            Left = 168
+            Height = 25
+            Hint = 'Beendet den gewählten Prozess'
+            Top = 55
+            Width = 89
+            Caption = 'Prozess beenden'
+            OnClick = Button26Click
+            TabOrder = 1
+          end
+          object ComboBox2: TComboBox
+            Left = 8
+            Height = 21
+            Hint = 'Setzt die Priorität des gewählten Prozesses'
+            Top = 56
+            Width = 145
+            AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+            ItemHeight = 13
+            Items.Strings = (
+              'niedrig'
+              'unter normal'
+              'normal'
+              'über normal'
+              'hoch'
+              'real zeit'
+            )
+            Style = csDropDownList
+            TabOrder = 2
+          end
+          object processidedit: TEdit
+            Left = 64
+            Height = 21
+            Hint = 'ProcessID des gewählten Prozesses'
+            Top = 5
+            Width = 121
+            TabOrder = 3
+          end
+        end
+        object ListView1: TListView
+          Height = 515
+          Hint = 'Zeigt die Prozesse an'
+          Width = 600
+          Align = alClient
+          Columns = <          
+            item
+              Caption = 'ProcessID'
+              Width = 150
+            end          
+            item
+              Caption = 'Name'
+              Width = 150
+            end          
+            item
+              Caption = 'ganzer Name'
+              Visible = False
+              Width = 200
+            end          
+            item
+              Caption = 'Priority'
+              Width = 143
+            end          
+            item
+              Caption = 'Threads'
+              Width = 70
+            end>
+          ReadOnly = True
+          RowSelect = True
+          TabOrder = 1
+          ViewStyle = vsReport
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'System'
+        ClientHeight = 584
+        ClientWidth = 661
+        ImageIndex = 2
+        object PaintBox2: TPaintBox
+          Left = 5
+          Height = 145
+          Hint = 'Zeigt das Betriebsystem, die Version jenes, den Benutzter, die Organisation, die Windowsseriennummer, die Kodenummer, die Arbeitsgruppe und den Computernamen an. Die Daten lassen sich auch ändern.'
+          Top = 128
+          Width = 84
+        end
+        object Label3: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Zeigt den Windowspfad an'
+          Top = 8
+          Width = 120
+          Caption = 'Windows installiert nach:'
+          ParentColor = False
+        end
+        object Label5: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Zeigt den Pfad für temporäre Dateien an'
+          Top = 24
+          Width = 53
+          Caption = 'Temppfad:'
+          ParentColor = False
+        end
+        object Label4: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Ziegt das Systemverzeichnis an'
+          Top = 40
+          Width = 22
+          Caption = 'Syst'
+          ParentColor = False
+        end
+        object Label6: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Zeigt die Taktfrequenz des Computers in Mhz an. Es kann Abweichungen von tatsächlichen Wert zwischen 0 bis 10 Mhz geben'
+          Top = 64
+          Width = 52
+          Caption = 'Prozessor:'
+          ParentColor = False
+        end
+        object Bevel1: TBevel
+          Left = -4
+          Height = 5
+          Top = 124
+          Width = 668
+          Anchors = [akTop, akLeft, akRight]
+          Shape = bsTopLine
+          Style = bsRaised
+        end
+        object Label16: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Zeigt den gesamten RAM an'
+          Top = 88
+          Width = 38
+          Caption = 'Label16'
+          ParentColor = False
+        end
+        object Label17: TLabel
+          Left = 8
+          Height = 14
+          Hint = 'Zeigt den noch freien RAM an'
+          Top = 104
+          Width = 38
+          Caption = 'Label16'
+          ParentColor = False
+        end
+        object Label18: TLabel
+          Left = 240
+          Height = 14
+          Hint = 'Zeigt den Namen des BIOS an.'
+          Top = 72
+          Width = 38
+          Caption = 'Label18'
+          ParentColor = False
+        end
+        object Label19: TLabel
+          Left = 240
+          Height = 14
+          Hint = 'Zeigt das im BIOS gespeicherte Datum an'
+          Top = 88
+          Width = 38
+          Caption = 'Label18'
+          ParentColor = False
+        end
+        object Label20: TLabel
+          Left = 240
+          Height = 14
+          Hint = 'Zeigt die Seriennummer des BIOS an.'
+          Top = 104
+          Width = 38
+          Caption = 'Label18'
+          ParentColor = False
+        end
+        object Button19: TButton
+          Left = 104
+          Height = 25
+          Hint = 'ändert die Systeminformationen'
+          Top = 272
+          Width = 75
+          Caption = 'ändern'
+          OnClick = Button19Click
+          TabOrder = 0
+        end
+      end
+      object TabSheet4: TTabSheet
+        Caption = 'Passwörter'
+        ClientHeight = 557
+        ClientWidth = 670
+        ImageIndex = 3
+        object password: TLabel
+          Left = 27
+          Height = 13
+          Top = 208
+          Width = 549
+          AutoSize = False
+          ParentColor = False
+        end
+        object ListBox1: TListBox
+          Height = 557
+          Hint = 'Zeigt gespeicherte Passwörter an.'
+          Width = 670
+          Align = alClient
+          ItemHeight = 13
+          TabOrder = 0
+        end
+      end
+      object TabSheet5: TTabSheet
+        Caption = 'Optionen'
+        ClientHeight = 584
+        ClientWidth = 597
+        ImageIndex = 4
+        object Label21: TLabel
+          Left = 336
+          Height = 14
+          Top = 64
+          Width = 14
+          Caption = 'ms'
+          ParentColor = False
+        end
+        object Label29: TLabel
+          Left = 88
+          Height = 14
+          Top = 130
+          Width = 102
+          Caption = 'Windowskonstanten:'
+          ParentColor = False
+        end
+        object CheckBox3: TCheckBox
+          Left = 88
+          Height = 19
+          Hint = 'Zeigt an, ob die Prozess und Fensterauchungen periodisch aktualisiert werden sollen'
+          Top = 64
+          Width = 119
+          Caption = 'Aktualliesieren:  alle'
+          OnClick = CheckBox3Click
+          TabOrder = 0
+        end
+        object Edit14: TEdit
+          Left = 208
+          Height = 21
+          Hint = 'Zeigt an wie oft die periodische Wiederholung der Prozess und Fenstersuche erfolgen soll'
+          Top = 61
+          Width = 121
+          TabOrder = 1
+          Text = '3000'
+        end
+        object checkhex: TCheckBox
+          Left = 88
+          Height = 19
+          Hint = 'Stellt ein, ob die Zahlen hexadezimal oder dezimal angezeigt werden sollen. Bei Hexadezimalen Zahlen müssen auch die meisten Eingaben hexadezimal erfolgen.'
+          Top = 96
+          Width = 168
+          Caption = 'Zahlen hexadezimal darstellen'
+          TabOrder = 2
+        end
+        object optwinconst_Edt: TEdit
+          Left = 208
+          Height = 23
+          Top = 126
+          Width = 144
+          TabOrder = 3
+          Text = 'winconst\'
+        end
+      end
+    end
+  end
+  object findTimer: TTimer
+    Interval = 250
+    OnTimer = findTimerTimer
+    left = 208
+    top = 56
+  end
+  object ImageList1: TImageList
+    Height = 20
+    Width = 20
+    left = 408
+    top = 336
+    Bitmap = {
+      4C6902000000140000001400000000000000000000FF00000000000000FF0000
+      000000000000000000FF000000FF00000000000000FF000000FF000000FF0000
+      00FF00000000000000FF00000000000000FF000000FF000000FF000000FF0000
+      00FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF0000
+      00FF000000FF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF00000000000000FF6B6B6BFF000000FF000000000000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF6B6B6BFF6B6B6BFF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF00000000000000FF00000000000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF00000000000000FF000000FF000000FF6B6B6B006B6B
+      6BFF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000FF0000
+      00FF000000FF6B6B6B006B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000FF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF6B6B
+      6BFF000000FF000000FF6B6B6BFF31FF6BFF31FF6BFF31FF6BFF31FF6BFF6B6B
+      6BFF00000000000000FF6B6B6BFF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF31FF
+      6BFF31FF6BFF31FF6BFF31FF6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF6B6B6BFF000000FF000000FF6B6B
+      6BFF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF000000FF000000FF6B6B6BFF000000FF000000FF6B6B6BFF000000FF0000
+      00FF000000FF6B6B6BFF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF000000FF000000FF0000
+      00FF6B6B6BFF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF00000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF00000000000000FF000000000000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF0000
+      00FF000000FF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF00000000000000FF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF000000FF000000FF00000000000000FF000000FF000000FF000000FF0000
+      00FF6B6B6BFF6B6B6BFF000000FF000000FF000000FF00000000000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      00FF000000FF000000FF000000FF000000FF6B6B6B006B6B6B00000000000000
+      00FF000000FF00000000000000FF00000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000000000
+      00FF000000FF6B6B6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000FF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF6B6B
+      6BFF000000FF000000FF6B6B6BFF3131FFFF3131FFFF3131FFFF3131FFFF6B6B
+      6BFF000000FF000000FF6B6B6BFF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF3131
+      FFFF3131FFFF3131FFFF3131FFFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF6B6B6BFF000000FF000000FF6B6B
+      6BFF000000FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B
+      6BFF000000FF000000FF6B6B6BFF000000FF000000FF6B6B6BFF000000FF0000
+      00FF000000FF6B6B6BFF000000FF000000FF000000FF6B6B6BFF000000FF0000
+      00FF6B6B6BFF6B6B6BFF000000FF000000FF6B6B6BFF000000FF000000FF0000
+      00FF6B6B6BFF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B
+      6BFF6B6B6BFF000000FF000000FF000000FF6B6B6BFF6B6B6BFF000000FF0000
+      00FF000000FF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF6B6B6BFF6B6B6BFF6B6B
+      6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF6B6B6BFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF
+    }
+  end
+  object ColorDialog1: TColorDialog
+    left = 400
+    top = 609
+  end
+  object windowPropertyListPopup: TPopupMenu
+    left = 360
+    top = 558
+    object windowAddProperty: TMenuItem
+      Caption = 'Hinzufügen'
+      OnClick = windowAddPropertyClick
+    end
+    object windowPropChange: TMenuItem
+      Caption = 'Ändern'
+      OnClick = windowAddPropertyClick
+    end
+    object windowPropRemoveItem: TMenuItem
+      Caption = 'Löschen'
+      OnClick = windowPropRemoveItemClick
+    end
+  end
+end
