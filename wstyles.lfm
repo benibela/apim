@@ -1,0 +1,285 @@
+object windowstyleform: Twindowstyleform
+  Left = 192
+  Height = 579
+  Top = 107
+  Width = 740
+  HorzScrollBar.Page = 739
+  VertScrollBar.Page = 578
+  BorderStyle = bsSizeToolWin
+  Caption = 'Styles:'
+  ClientHeight = 579
+  ClientWidth = 740
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnShow = FormShow
+  ShowHint = True
+  LCLVersion = '0.9.25'
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Height = 5
+    Top = 239
+    Width = 740
+    Align = alTop
+    Beveled = True
+    ResizeAnchor = akTop
+  end
+  object Splitter2: TSplitter
+    Cursor = crVSplit
+    Height = 4
+    Top = 395
+    Width = 740
+    Align = alBottom
+    Beveled = True
+    ResizeAnchor = akBottom
+  end
+  object Panel2: TPanel
+    Height = 147
+    Top = 399
+    Width = 740
+    Align = alBottom
+    ClientHeight = 147
+    ClientWidth = 740
+    TabOrder = 0
+    object classstyles: TCheckListBox
+      Left = 1
+      Height = 126
+      Hint = 'Zeigt die Classstyles an. Aktive Classstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
+      Top = 20
+      Width = 738
+      Align = alClient
+      Color = clBlack
+      Font.Color = clLime
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Items.Strings = (
+        'Keine Window aktiv'
+      )
+      ItemHeight = 13
+      OnClickCheck = classstylesClickCheck
+      OnDrawItem = windowstylesDrawItem
+      Style = lbOwnerDrawFixed
+      TabOrder = 0
+      Data = {
+        0100000000
+      }
+    end
+    object labelcs: TPanel
+      Left = 1
+      Height = 19
+      Top = 1
+      Width = 738
+      Align = alTop
+      BevelOuter = bvNone
+      Caption = 'Window Class styles:'
+      Color = clBlack
+      Font.Color = clLime
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      TabOrder = 1
+    end
+  end
+  object Panel3: TPanel
+    Height = 33
+    Top = 546
+    Width = 740
+    Align = alBottom
+    Caption = 'Panel3'
+    ClientHeight = 33
+    ClientWidth = 740
+    TabOrder = 1
+    object Button1: TButton
+      Left = 312
+      Height = 25
+      Top = 4
+      Width = 132
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'OK'
+      OnClick = Button1Click
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 8
+      Height = 25
+      Top = 4
+      Width = 75
+      Caption = 'refresh'
+      OnClick = FormShow
+      TabOrder = 1
+    end
+    object CheckBox1: TCheckBox
+      Left = 96
+      Height = 19
+      Top = 8
+      Width = 102
+      Caption = 'Hook benutzten'
+      TabOrder = 2
+    end
+  end
+  object Panel5: TPanel
+    Height = 151
+    Top = 244
+    Width = 740
+    Align = alClient
+    BevelOuter = bvNone
+    Caption = 'Panel5'
+    ClientHeight = 151
+    ClientWidth = 740
+    TabOrder = 2
+    object windowexstyles: TCheckListBox
+      Height = 132
+      Hint = 'Zeigt die Windowexstyles an. Aktive Windowexstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
+      Top = 19
+      Width = 740
+      Align = alClient
+      Color = clBlack
+      Font.Color = clLime
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Items.Strings = (
+        'Keine Window aktiv'
+      )
+      ItemHeight = 13
+      OnClickCheck = windowexstylesClickCheck
+      OnDrawItem = windowstylesDrawItem
+      Style = lbOwnerDrawFixed
+      TabOrder = 0
+      Data = {
+        0100000000
+      }
+    end
+    object labelwsex: TPanel
+      Height = 19
+      Width = 740
+      Align = alTop
+      BevelOuter = bvNone
+      Caption = 'Extended Window styles:'
+      Color = clBlack
+      Font.Color = clLime
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      TabOrder = 1
+    end
+  end
+  object Panel4: TPanel
+    Height = 239
+    Width = 740
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Panel4'
+    ClientHeight = 239
+    ClientWidth = 740
+    TabOrder = 3
+    object Splitter3: TSplitter
+      Cursor = crVSplit
+      Height = 3
+      Top = 122
+      Width = 740
+      Align = alBottom
+      Beveled = True
+      ResizeAnchor = akBottom
+    end
+    object Panel1: TPanel
+      Height = 122
+      Width = 740
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'Panel1'
+      ClientHeight = 122
+      ClientWidth = 740
+      TabOrder = 0
+      object windowstyles: TCheckListBox
+        Height = 103
+        Hint = 'Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
+        Top = 19
+        Width = 740
+        Align = alClient
+        Color = clBlack
+        Font.Color = clLime
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Items.Strings = (
+          'Keine Window aktiv'
+        )
+        ItemHeight = 13
+        OnClickCheck = windowstylesClickCheck
+        OnDrawItem = windowstylesDrawItem
+        Style = lbOwnerDrawFixed
+        TabOrder = 0
+        Data = {
+          0100000000
+        }
+      end
+      object labelws: TPanel
+        Height = 19
+        Width = 740
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'Window styles:'
+        Color = clBlack
+        Font.Color = clLime
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentColor = False
+        TabOrder = 1
+      end
+    end
+    object extraclass: TPanel
+      Height = 114
+      Top = 125
+      Width = 740
+      Align = alBottom
+      Caption = 'extraclass'
+      ClientHeight = 114
+      ClientWidth = 740
+      TabOrder = 1
+      object extrawindowstyle: TCheckListBox
+        Left = 1
+        Height = 93
+        Hint = 'Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
+        Top = 20
+        Width = 738
+        Align = alClient
+        Color = clBlack
+        Font.Color = clLime
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Items.Strings = (
+          'Keine Window aktiv'
+        )
+        ItemHeight = 13
+        OnClickCheck = windowstylesClickCheck
+        OnDrawItem = windowstylesDrawItem
+        Style = lbOwnerDrawFixed
+        TabOrder = 0
+        Data = {
+          0100000000
+        }
+      end
+      object labeles: TPanel
+        Left = 1
+        Height = 19
+        Top = 1
+        Width = 738
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'Window styles:'
+        Color = clBlack
+        Font.Color = clLime
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentColor = False
+        TabOrder = 1
+      end
+    end
+  end
+end

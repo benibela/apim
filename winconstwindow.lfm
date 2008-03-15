@@ -1,0 +1,35 @@
+object windowConstForm: TwindowConstForm
+  Left = 301
+  Height = 170
+  Top = 178
+  Width = 426
+  HorzScrollBar.Page = 425
+  VertScrollBar.Page = 169
+  BorderIcons = []
+  BorderStyle = bsNone
+  Caption = 'windowConstForm'
+  ClientHeight = 170
+  ClientWidth = 426
+  FormStyle = fsStayOnTop
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  LCLVersion = '0.9.25'
+  object ListBox1: TListBox
+    Height = 147
+    Top = 23
+    Width = 426
+    Align = alClient
+    TabOrder = 1
+    TabStop = False
+  end
+  object Edit1: TEdit
+    Height = 23
+    Width = 426
+    Align = alTop
+    OnChange = Edit1Change
+    OnKeyDown = Edit1KeyDown
+    OnKeyUp = Edit1KeyUp
+    TabOrder = 0
+  end
+end
