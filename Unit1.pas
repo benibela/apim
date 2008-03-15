@@ -5,7 +5,7 @@ interface
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,proc9,commontypes,
-  ImgList,windowfuncs,temp,passwort, Spin,sysutils,richedit, Menus,FileUtil;
+  ImgList,windowfuncs,passwort, Spin,sysutils,richedit, Menus,FileUtil;
 
 type
 
@@ -226,7 +226,7 @@ var
 implementation
 {$R cursor.res}
 
-uses Unit2, wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow;
+uses wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow;
 
 type TMemoryBlock = array of byte;
      TMemoryBlocks = array of TMemoryBlock;
@@ -1599,7 +1599,7 @@ end else if messagemes_cb.text='SBM_SETRANGE' then begin
 end ;
 end;
 
-function InstallHookSendMessage(Hwnd: Cardinal;mes:cardinal;wp:WPARAM; lp:LPARAM): Boolean; stdcall; external 'hook.dll';
+//function InstallHookSendMessage(Hwnd: Cardinal;mes:cardinal;wp:WPARAM; lp:LPARAM): Boolean; stdcall; external 'hook.dll';
 procedure TmainForm.Button8Click(Sender: TObject);
 var han:THandle;
     wp:WPARAM;

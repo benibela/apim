@@ -268,7 +268,7 @@ implementation
 uses applicationConfig;
 
 
-function InstallHookNewStyle(Hwnd: Cardinal;_style:cardinal;exstyle:boolean): Boolean; stdcall;external 'hook.dll';
+//function InstallHookNewStyle(Hwnd: Cardinal;_style:cardinal;exstyle:boolean): Boolean; stdcall;external 'hook.dll';
 
 procedure Twindowstyleform.FormShow(Sender: TObject);
 var styles,i:longint;
@@ -756,7 +756,7 @@ begin
     end;
   end;
   if (CheckBox1.Checked)  then  begin
-    InstallHookNewStyle(han,style,false);
+    //InstallHookNewStyle(han,style,false);
   end else begin
     SetWindowLong(han,GWL_STYLE,style);
   end;
@@ -807,7 +807,7 @@ begin
     end;
   end;
   if (CheckBox1.Checked)  then  begin
-    InstallHookNewStyle(han,style,true);
+    //InstallHookNewStyle(han,style,true);
   end else begin
     SetWindowLong(han,GWL_EXSTYLE,style);
   end;

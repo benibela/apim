@@ -7,7 +7,7 @@ uses
   wstyles in 'wstyles.pas' {windowstyleform},
   help in 'help.pas' {helpform},
   windowfuncs in 'windowfuncs.pas',
-  temp in 'temp.pas' {BenMessages},
+ // temp in 'temp.pas' {BenMessages},
   passwort in 'passwort.pas', applicationConfig, winconstwindow;
   
 begin
