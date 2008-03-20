@@ -4,8 +4,9 @@ interface
 {$mode delphi}{$h+}
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,proc9,commontypes,
-  ImgList,windowfuncs,passwort, Spin,sysutils,richedit, Menus,FileUtil;
+  StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,commontypes,
+  ImgList,windowfuncs,passwort, Spin,sysutils,richedit, Menus,FileUtil,
+  CheckLst;
 
 type
 
@@ -13,10 +14,16 @@ type
 
   TmainForm = class(TForm)
     alphatrans_cb: TCheckBox;
+    hideAPIVwhenSearching: TCheckBox;
+    Label35: TLabel;
+    windowStyles_lb: TLabel;
+    windowExStyles_lb: TLabel;
+    windowStyles: TCheckListBox;
     windowListFilterParentUp: TButton;
     windowsListfilterDirectChilds: TCheckBox;
     colorkey_cb: TCheckBox;
     userdata_edt: TEdit;
+    windowExStyles: TCheckListBox;
     wndproc_edt: TEdit;
     Label33: TLabel;
     Label34: TLabel;
@@ -133,6 +140,7 @@ type
     procedure windowListFilterParentUpClick(Sender: TObject);
     procedure windowListFilterParent_edtChange(Sender: TObject);
     procedure windowPropChangeClick(Sender: TObject);
+    procedure windowPropertySheetClick(Sender: TObject);
     procedure windowsListfilterDirectChildsChange(Sender: TObject);
     procedure colorKeyShapeMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -188,6 +196,9 @@ type
       Change: TItemChange);
     procedure windowPropertyListDeletion(Sender: TObject; Item: TListItem);
     procedure windowPropRemoveItemClick(Sender: TObject);
+    procedure windowStylesClickCheck(Sender: TObject);
+    procedure windowStylesItemClick(Sender: TObject; Index: integer);
+    procedure windowtextEdtChange(Sender: TObject);
   private
     { Private-Deklarationen}
     procedure LoadWNetEnumCachedPasswords;
@@ -224,9 +235,10 @@ var
    WNetEnumCachedPasswords:TWNetEnumCachedPasswords=nil;
 
 implementation
+uses TLHelp32,proc9, wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow,windowcontrolfuncs;
 {$R cursor.res}
 
-uses wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow;
+
 
 type TMemoryBlock = array of byte;
      TMemoryBlocks = array of TMemoryBlock;
@@ -430,8 +442,12 @@ begin
 end;
 
 function WindowPropertyEnumProc(wnd:HWND;  name:LPTSTR;  hData:HANDLE;  listView: TListView):boolean;stdcall;
+var nameStr: array[0..255] of char;
 begin
   with listView.Items.add do begin
+    if dword(name) and $FFFF0000 =0 then
+      if GlobalGetAtomName(Atom(name),@nameStr[0],255) <> 0 then
+        name:=@nameStr[0];
     caption:=string(name);
     subitems.add(Cardinal2Str(hdata));
     subitems.add(caption); //need old name when renaming
@@ -507,6 +523,10 @@ begin
 
   end else if prop=userdata_edt then userdata_edt.Text:=Cardinal2Str(GetWindowLong(currentWindow,GWL_USERDATA))
   else if prop=wndproc_edt then wndproc_edt.Text:=Cardinal2Str(GetWindowLong(currentWindow,GWL_WNDPROC))
+  else if prop=windowStyles then windowStylesToCheckListBox(currentWindow,windowStyles,windowStyles_lb)
+  else if prop=windowExStyles then windowExStylesToCheckListBox(currentWindow,windowExStyles,windowExStyles_lb)
+
+  ;
 
   finally
     displayCalls-=1;
@@ -561,16 +581,17 @@ begin
     SetWindowPos(currentWindow,0,rec.Left,rec.top,rec.Right-Rec.Left,rec.Bottom-Rec.Top,SWP_NOACTIVATE or SWP_NOZORDER)
   end else if (prop=alphatrans_sp) or (prop=alphatrans_cb) or
               (prop=colorkey_cb) or (prop=colorKeyShape) then begin
-    flags:=GetWindowLong(currentWindow,GWL_EXSTYLE);
+{    flags:=GetWindowLong(currentWindow,GWL_EXSTYLE);
     if colorkey_cb.checked or alphatrans_cb.checked then begin
       if flags and WS_EX_LAYERED <> WS_EX_LAYERED then
-        SetWindowLong(currentWindow,GWL_EXSTYLE,flags or WS_EX_LAYERED);
+        SetWindowLong(currentWindow,GWL_EXSTYLE,flags or WS_EX_LAYERED);  }
       flags:=0;
       if colorkey_cb.checked then flags+=LWA_COLORKEY;
       if alphatrans_cb.checked then flags+=LWA_ALPHA;
-      SetLayeredWindowAttributes(currentWindow,colorKeyShape.Brush.Color,alphatrans_sp.Value,flags);
-    end else if flags and WS_EX_LAYERED = WS_EX_LAYERED then
-        SetWindowLong(currentWindow,GWL_EXSTYLE,flags and not WS_EX_LAYERED);
+      if flags <> 0 then  windowfuncs.SetLayeredWindowAttributes(currentWindow,colorKeyShape.Brush.Color,alphatrans_sp.Value,flags)
+      else SetWindowLong(currentWindow,GWL_EXSTYLE,GetWindowLong(currentWindow,GWL_EXSTYLE) and not WS_EX_LAYERED);
+    {end else if flags and WS_EX_LAYERED = WS_EX_LAYERED then
+        SetWindowLong(currentWindow,GWL_EXSTYLE,flags and not WS_EX_LAYERED);}
   end else if prop=userdata_edt then SetWindowLong(currentWindow,GWL_USERDATA,Str2Cardinal(userdata_edt.Text));
 
 
@@ -697,6 +718,11 @@ begin
 end;
 
 procedure TmainForm.windowPropChangeClick(Sender: TObject);
+begin
+
+end;
+
+procedure TmainForm.windowPropertySheetClick(Sender: TObject);
 begin
 
 end;
@@ -843,6 +869,33 @@ begin
   end else ShowMessage('Keine Eigenschaft ausgewählt');
 end;
 
+procedure TmainForm.windowStylesClickCheck(Sender: TObject);
+begin
+
+end;
+
+procedure TmainForm.windowStylesItemClick(Sender: TObject; Index: integer);
+var currentSelected: string;
+begin
+  if index<0 then exit;
+  currentSelected:=TCheckListBox(sender).items[index];
+
+  if Sender=windowStyles then changeWindowStyle(currentWindow, currentSelected,windowStyles.checked[index])
+  else if Sender=windowExStyles then changeWindowExStyle(currentWindow, currentSelected,windowExStyles.checked[index]);
+  
+  //displayProperty(sender);
+  changeProperty(handleEdt); //update all, window styles can have strange effects
+  Application.ProcessMessages;
+  PostMessage(TCheckListBox(sender).Handle,LB_SETCURSEL,TCheckListBox(sender).items.IndexOf(currentSelected),0);
+  //TCheckListBox(sender).ItemIndex:=TCheckListBox(sender).items.IndexOf(currentSelected);
+//  caption:=caption+TCheckListBox(sender).items[TCheckListBox(sender).itemindex];
+end;
+
+procedure TmainForm.windowtextEdtChange(Sender: TObject);
+begin
+
+end;
+
 procedure TmainForm.windowAddPropertyClick(Sender: TObject);
 var name,value:string;
 begin
@@ -860,19 +913,36 @@ end;
 
 procedure TmainForm.mouseToolImageMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+var i:longint;
 begin
   if button=mbLeft then begin
     screen.Cursor:=crScanner;
     currentMouseWindow:=0;
+
+    if hideAPIVwhenSearching.Checked then
+      for i:=25 downto 7 do begin
+        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i,LWA_ALPHA);
+        Application.ProcessMessages;
+        if screen.Cursor<>crScanner then break;
+      end;
   end;
 end;
 
 procedure TmainForm.mouseToolImageMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+var i:longint;
 begin
   if button=mbLeft then begin
     screen.Cursor:=crDefault;
     toggleWindowMarkStatus(currentMouseWindow);
+    
+    if hideAPIVwhenSearching.Checked then begin
+      for i:=7 to 25 do begin
+        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i+5,LWA_ALPHA);
+        Application.ProcessMessages;
+      end;
+      windowfuncs.SetLayeredWindowAttributes(handle,0,0,0);
+    end;
     
     handleEdt.Text:=Cardinal2Str(currentMouseWindow);
     changeProperty(handleEdt);
@@ -952,7 +1022,7 @@ var x,xx:THandle;
     lb:LOGBRUSH;
 begin
   GetCursorPos(p);
-  mouseHandle:=GetRealWindowFromPoint(p);
+  mouseHandle:=GetRealWindowFromPoint(p,hideAPIVwhenSearching.Checked);
   if mouseHandle=currentMouseWindow then exit;
 
   if mouseHandle = miniScreen.Handle then begin
@@ -1030,31 +1100,82 @@ end;
 
 
 procedure TmainForm.displayProcessesClick(Sender: TObject);  //Sucht alle Processe
+type
+  TProcess32FN = FUNCTION(hSnapshot: DWORD; VAR lppe: tagPROCESSENTRY32): BOOL; stdcall;
+  TCreateTHSnap = FUNCTION(dwFlags, th32ProcessID: DWORD): DWORD; stdcall;
+
+VAR
+  hKernel, hProcessSnap: DWORD;
+  CreateToolhelp32Snapshot: TCreateTHSnap;
+  Process32First, Process32Next: TProcess32FN;
+  pe32: tagProcessEntry32;
+  noerr: bool;
+  procedure makeSnapshot;//taken from Assarbad
+  BEGIN
+    //init variables
+  //  hKernel := 0;
+    hProcessSnap := dword(-1);
+    
+    @CreateToolhelp32Snapshot := NIL;
+    @Process32First := NIL;
+    @Process32Next := NIL;
+
+    //I still don't understand, WHY 'kernel32.dll' is always loaded ;)
+    hKernel := GetModuleHandle('KERNEL32.DLL');
+    IF BOOL(hKernel) THEN BEGIN
+      @CreateToolhelp32Snapshot := GetProcAddress(hKernel, 'CreateToolhelp32Snapshot');
+      @Process32First := GetProcAddress(hKernel, 'Process32First');
+      @Process32Next := GetProcAddress(hKernel, 'Process32Next');
+    END;
+    //quit if we did not get all function addresses
+    IF NOT (assigned(@Process32Next) AND assigned(@Process32First) AND assigned(@CreateToolhelp32Snapshot)) THEN exit;
+    //take a snapshot of all processes at the moment
+    hProcessSnap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    //make sure we got, what we wanted ... else quit ...
+    IF hProcessSnap = DWORD(-1) THEN exit;
+    pe32.dwSize := sizeof(tagPROCESSENTRY32);
+  end;
+
 VAR
   i: integer;
   prio:integer;
   ttt:string;
   item:TListItem;
-  processes: TProcessrecs;
+
 BEGIN
   mainForm.listView1.Items.Clear;
-  setlength(processes, 0);
-  processes := proc9.GetProcesses9x ;
-  IF length(processes) > 0 THEN
-    FOR i := 0 TO length(processes) - 1 DO begin
+  makeSnapshot;
+  if hProcessSnap=dword(-1) then exit;
+  if not  Process32First(hProcessSnap, pe32) then exit;
+  repeat
+    item:=nil;
+    if pe32.th32ParentProcessID<>0 then
+      for i:=Listview1.Items.count-1 downto 0 do
+        if Str2Cardinal(ListView1.items[i].SubItems[0])=pe32.th32ParentProcessID then begin
+          item:=ListView1.Items.Insert(i+1);
+          item.Caption:='   '+copy(ListView1.items[i].caption,1,rpos(' ',ListView1.items[i].caption))+ExtractFileName(string(pe32.szExeFile));
+          break;
+        end;
+    if item = nil then begin
       item:=mainForm.listView1.Items.Add;
-      item.Caption:=Cardinal2Str {inttostr}(processes[i].PID);
-      item.SubItems.Add(ExtractFileName( string(processes[i].name)));
-      item.SubItems.Add(string(processes[i].name));
-      ttt:='';
-      prio:=GetProcessPriority( processes[i].pid);
-      if prio=HIGH_PRIORITY_CLASS then ttt:='HOHE';
-      if prio=IDLE_PRIORITY_CLASS then ttt:='NIEDRIG';
-      if prio=NORMAL_PRIORITY_CLASS then ttt:='NORMAL';
-      if prio=REALTIME_PRIORITY_CLASS then ttt:='ECHT ZEIT';
-      ttt:=ttt+'('+Cardinal2Str(prio)+')';
-      item.SubItems.Add(ttt);
-    end;//Refreshlist;
+      item.Caption:=ExtractFileName(string(pe32.szExeFile));
+    end;
+
+    item.SubItems.Add(Cardinal2Str(pe32.th32ProcessID));
+    item.SubItems.Add(string(pe32.szExeFile));
+
+    ttt:='';
+    prio:=GetProcessPriority( pe32.th32ProcessID);
+    if prio=HIGH_PRIORITY_CLASS then ttt:='HOHE';
+    if prio=IDLE_PRIORITY_CLASS then ttt:='NIEDRIG';
+    if prio=NORMAL_PRIORITY_CLASS then ttt:='NORMAL';
+    if prio=REALTIME_PRIORITY_CLASS then ttt:='ECHT ZEIT';
+    ttt:=ttt+'('+Cardinal2Str(prio)+')';
+    item.SubItems.Add(ttt);
+
+    item.SubItems.Add(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
+  until not Process32Next(hProcessSnap, pe32);
+  CloseHandle(hProcessSnap);
 end;
 
 procedure TmainForm.Button26Click(Sender: TObject);

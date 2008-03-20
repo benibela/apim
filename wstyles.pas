@@ -3,8 +3,8 @@ unit wstyles;
 interface
 {$mode delphi}{$h+}
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType;
+  LResources, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType,windowcontrolfuncs;
 const
   WS_EX_COMPOSITED = $02000000;
   WS_EX_NOACTIVATE = $08000000;
@@ -212,19 +212,11 @@ const
   TSS_WHITEFRAME:String = 'SS_WHITEFRAME';
   TSS_WHITERECT:String = 'SS_WHITERECT';
   TSS_WORDELLIPSIS:String = 'SS_WORDELLIPSIS';
- { T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';
-  T:String = '';          }
 
 type
+
+  { Twindowstyleform }
+
   Twindowstyleform = class(TForm)
     Panel2: TPanel;
     Splitter1: TSplitter;
@@ -248,11 +240,13 @@ type
     CheckBox1: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure windowexstylesItemClick(Sender: TObject; Index: integer);
     procedure windowstylesDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure windowstylesClickCheck(Sender: TObject);
     procedure windowexstylesClickCheck(Sender: TObject);
     procedure classstylesClickCheck(Sender: TObject);
+    procedure windowstylesItemClick(Sender: TObject; Index: integer);
   private
     { Private-Deklarationen}
   public
@@ -272,299 +266,20 @@ uses applicationConfig;
 
 procedure Twindowstyleform.FormShow(Sender: TObject);
 var styles,i:longint;
-    wsout:TStringList;
     classname:array[0..255] of char;
 begin
- windowstyles.Clear;
- windowexstyles.Clear;
- classstyles.Clear;
- extrawindowstyle.Clear;
- wsout:=TStringList.create;
- styles:=GetWindowLong(han,GWL_STYLE);
- labelws.Caption:='Window styles:   '+Cardinal2Str(styles);
- if styles and WS_BORDER = WS_BORDER then windowstyles.Items.Add(TWS_BORDER) else wsout.Add(TWS_BORDER);
- if styles and WS_CAPTION = WS_CAPTION then windowstyles.Items.Add(TWS_CAPTION) else wsout.Add(TWS_CAPTION);
- if styles and WS_CHILD = WS_CHILD then windowstyles.Items.Add(TWS_CHILD) else wsout.Add(TWS_CHILD);
- if styles and WS_CHILDWINDOW = WS_CHILDWINDOW then windowstyles.Items.Add(TWS_CHILDWINDOW) else wsout.Add(TWS_CHILDWINDOW);
- if styles and WS_CLIPCHILDREN = WS_CLIPCHILDREN then windowstyles.Items.Add(TWS_CLIPCHILDREN) else wsout.Add(TWS_CLIPCHILDREN);
- if styles and WS_CLIPSIBLINGS = WS_CLIPSIBLINGS then windowstyles.Items.Add(TWS_CLIPSIBLINGS) else wsout.Add(TWS_CLIPSIBLINGS);
- if styles and WS_DISABLED = WS_DISABLED then windowstyles.Items.Add(TWS_DISABLED) else wsout.Add(TWS_DISABLED);
- if styles and WS_DLGFRAME = WS_DLGFRAME then windowstyles.Items.Add(TWS_DLGFRAME) else wsout.Add(TWS_DLGFRAME);
- if styles and WS_GROUP = WS_GROUP then windowstyles.Items.Add(TWS_GROUP) else wsout.Add(TWS_GROUP);
- if styles and WS_HSCROLL = WS_HSCROLL then windowstyles.Items.Add(TWS_HSCROLL) else wsout.Add(TWS_HSCROLL);
- if styles and WS_ICONIC = WS_ICONIC then windowstyles.Items.Add(TWS_ICONIC) else wsout.Add(TWS_ICONIC);
- if styles and WS_MAXIMIZE = WS_MAXIMIZE then windowstyles.Items.Add(TWS_MAXIMIZE) else wsout.Add(TWS_MAXIMIZE);
- if styles and WS_MAXIMIZEBOX = WS_MAXIMIZEBOX then windowstyles.Items.Add(TWS_MAXIMIZEBOX) else wsout.Add(TWS_MAXIMIZEBOX);
- if styles and WS_MINIMIZE = WS_MINIMIZE then windowstyles.Items.Add(TWS_MINIMIZE) else wsout.Add(TWS_MINIMIZE);
- if styles and WS_MINIMIZEBOX = WS_MINIMIZEBOX then windowstyles.Items.Add(TWS_MINIMIZEBOX) else wsout.Add(TWS_MINIMIZEBOX);
- if styles and WS_OVERLAPPED = WS_OVERLAPPED then windowstyles.Items.Add(TWS_OVERLAPPED)else wsout.Add(TWS_OVERLAPPED);
- if styles and WS_OVERLAPPEDWINDOW = WS_OVERLAPPEDWINDOW then windowstyles.Items.Add(TWS_OVERLAPPEDWINDOW) else wsout.Add(TWS_OVERLAPPEDWINDOW);
+ windowStylesToCheckListBox(han, windowstyles, labelws);
+// labelws.Caption:='Window styles:   '+labelws.Caption;
 
- if styles and WS_POPUP = WS_POPUP then windowstyles.Items.Add(TWS_POPUP) else wsout.Add(TWS_POPUP);
- if styles and WS_POPUPWINDOW = WS_POPUPWINDOW then windowstyles.Items.Add(TWS_POPUPWINDOW) else wsout.Add(TWS_POPUPWINDOW);
- if styles and WS_SIZEBOX = WS_SIZEBOX then windowstyles.Items.Add(TWS_SIZEBOX) else wsout.Add(TWS_SIZEBOX);
- if styles and WS_SYSMENU = WS_SYSMENU then windowstyles.Items.Add(TWS_SYSMENU) else wsout.Add(TWS_SYSMENU);
- if styles and WS_TABSTOP = WS_TABSTOP then windowstyles.Items.Add(TWS_TABSTOP)else wsout.Add(TWS_TABSTOP);
- if styles and WS_THICKFRAME = WS_THICKFRAME then windowstyles.Items.Add(TWS_THICKFRAME)else wsout.Add(TWS_THICKFRAME);
- if styles and WS_TILED = WS_TILED then windowstyles.Items.Add(TWS_TILED)else wsout.Add(TWS_TILED);
- if styles and WS_TILEDWINDOW = WS_TILEDWINDOW then windowstyles.Items.Add(TWS_TILEDWINDOW)else wsout.Add(TWS_TILEDWINDOW);
- if styles and WS_VISIBLE = WS_VISIBLE then windowstyles.Items.Add(TWS_VISIBLE)else wsout.Add(TWS_VISIBLE);
- if styles and WS_VSCROLL = WS_VSCROLL then windowstyles.Items.Add(TWS_VSCROLL)else wsout.Add(TWS_VSCROLL);
- for i:=0 to windowstyles.Items.Count-1 do
-   windowstyles.Checked[i]:=true;
- windowstyles.Items.AddStrings(wsout);
- wsout.Clear;
+ windowCustomStylesToCheckListBox(han,extrawindowstyle,labeles);
+ extraclass.Visible:=extrawindowstyle.Items.Count>0;
+ //labeles.Caption:=string(classname)+' Styles (=Window Styles): '+labeles.Caption;
 
- GetClassName(han,classname,255);
- extraclass.Visible:=false;
- if UpperCase(string( classname))='BUTTON' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Button Styles (=Window Styles): '+Cardinal2Str(styles);
-   if styles and BS_3STATE = BS_3STATE then extrawindowstyle.Items.Add(TBS_3STATE)else wsout.Add(TBS_3STATE);
-   if styles and BS_AUTO3STATE = BS_AUTO3STATE then extrawindowstyle.Items.Add(TBS_AUTO3STATE)else wsout.Add(TBS_AUTO3STATE);
-   if styles and BS_AUTOCHECKBOX = BS_AUTOCHECKBOX then extrawindowstyle.Items.Add(TBS_AUTOCHECKBOX)else wsout.Add(TBS_AUTOCHECKBOX);
-   if styles and BS_AUTORADIOBUTTON = BS_AUTORADIOBUTTON then extrawindowstyle.Items.Add(TBS_AUTORADIOBUTTON)else wsout.Add(TBS_AUTORADIOBUTTON);
-   if styles and BS_CHECKBOX = BS_CHECKBOX then extrawindowstyle.Items.Add(TBS_CHECKBOX)else wsout.Add(TBS_CHECKBOX);
-   if styles and BS_DEFPUSHBUTTON = BS_DEFPUSHBUTTON then extrawindowstyle.Items.Add(TBS_DEFPUSHBUTTON)else wsout.Add(TBS_DEFPUSHBUTTON);
-   if styles and BS_GROUPBOX = BS_GROUPBOX then extrawindowstyle.Items.Add(TBS_GROUPBOX)else wsout.Add(TBS_GROUPBOX);
-   if styles and BS_LEFTTEXT = BS_LEFTTEXT then extrawindowstyle.Items.Add(TBS_LEFTTEXT)else wsout.Add(TBS_LEFTTEXT);
-   if styles and BS_OWNERDRAW = BS_OWNERDRAW then extrawindowstyle.Items.Add(TBS_OWNERDRAW)else wsout.Add(TBS_OWNERDRAW);
-   if styles and BS_PUSHBUTTON = BS_PUSHBUTTON then extrawindowstyle.Items.Add(TBS_PUSHBUTTON)else wsout.Add(TBS_PUSHBUTTON);
-   if styles and BS_RADIOBUTTON = BS_RADIOBUTTON then extrawindowstyle.Items.Add(TBS_RADIOBUTTON)else wsout.Add(TBS_RADIOBUTTON);
-   if styles and BS_USERBUTTON = BS_USERBUTTON then extrawindowstyle.Items.Add(TBS_USERBUTTON)else wsout.Add(TBS_USERBUTTON);
-   if styles and BS_BITMAP = BS_BITMAP then extrawindowstyle.Items.Add(TBS_BITMAP)else wsout.Add(TBS_BITMAP);
-   if styles and BS_BOTTOM = BS_BOTTOM then extrawindowstyle.Items.Add(TBS_BOTTOM)else wsout.Add(TBS_BOTTOM);
-   if styles and BS_CENTER = BS_CENTER then extrawindowstyle.Items.Add(TBS_CENTER)else wsout.Add(TBS_CENTER);
-   if styles and BS_ICON = BS_ICON then extrawindowstyle.Items.Add(TBS_ICON)else wsout.Add(TBS_ICON);
-   if styles and BS_FLAT = BS_FLAT then extrawindowstyle.Items.Add(TBS_FLAT)else wsout.Add(TBS_FLAT);
-   if styles and BS_LEFT = BS_LEFT then extrawindowstyle.Items.Add(TBS_LEFT)else wsout.Add(TBS_LEFT);
-   if styles and BS_MULTILINE = BS_MULTILINE then extrawindowstyle.Items.Add(TBS_MULTILINE)else wsout.Add(TBS_MULTILINE);
-   if styles and BS_NOTIFY = BS_NOTIFY then extrawindowstyle.Items.Add(TBS_NOTIFY)else wsout.Add(TBS_NOTIFY);
-   if styles and BS_PUSHLIKE = BS_PUSHLIKE then extrawindowstyle.Items.Add(TBS_PUSHLIKE)else wsout.Add(TBS_PUSHLIKE);
-   if styles and BS_RIGHT = BS_RIGHT then extrawindowstyle.Items.Add(TBS_RIGHT)else wsout.Add(TBS_RIGHT);
-   if styles and BS_RIGHTBUTTON = BS_RIGHTBUTTON then extrawindowstyle.Items.Add(TBS_RIGHTBUTTON)else wsout.Add(TBS_RIGHTBUTTON);
-   if styles and BS_TEXT = BS_TEXT then extrawindowstyle.Items.Add(TBS_TEXT)else wsout.Add(TBS_TEXT);
-   if styles and BS_TOP = BS_TOP then extrawindowstyle.Items.Add(TBS_TOP)else wsout.Add(TBS_TOP);
-   if styles and BS_VCENTER = BS_VCENTER then extrawindowstyle.Items.Add(TBS_VCENTER)else wsout.Add(TBS_VCENTER);
-  { if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-}
- end;
- if UpperCase(string( classname))='COMBOBOX' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Combobox styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and CBS_AUTOHSCROLL = CBS_AUTOHSCROLL then extrawindowstyle.Items.Add(TCBS_AUTOHSCROLL)else wsout.Add(TCBS_AUTOHSCROLL);
-   if styles and CBS_DISABLENOSCROLL = CBS_DISABLENOSCROLL then extrawindowstyle.Items.Add(TCBS_DISABLENOSCROLL)else wsout.Add(TCBS_DISABLENOSCROLL);
-   if styles and CBS_DROPDOWN = CBS_DROPDOWN then extrawindowstyle.Items.Add(TCBS_DROPDOWN)else wsout.Add(TCBS_DROPDOWN);
-   if styles and CBS_DROPDOWNLIST = CBS_DROPDOWNLIST then extrawindowstyle.Items.Add(TCBS_DROPDOWNLIST)else wsout.Add(TCBS_DROPDOWNLIST);
-   if styles and CBS_HASSTRINGS = CBS_HASSTRINGS then extrawindowstyle.Items.Add(TCBS_HASSTRINGS)else wsout.Add(TCBS_HASSTRINGS);
-   if styles and CBS_LOWERCASE = CBS_LOWERCASE then extrawindowstyle.Items.Add(TCBS_LOWERCASE)else wsout.Add(TCBS_LOWERCASE);
-   if styles and CBS_NOINTEGRALHEIGHT = CBS_NOINTEGRALHEIGHT then extrawindowstyle.Items.Add(TCBS_NOINTEGRALHEIGHT)else wsout.Add(TCBS_NOINTEGRALHEIGHT);
-   if styles and CBS_OEMCONVERT = CBS_OEMCONVERT then extrawindowstyle.Items.Add(TCBS_OEMCONVERT)else wsout.Add(TCBS_OEMCONVERT);
-   if styles and CBS_OWNERDRAWFIXED = CBS_OWNERDRAWFIXED then extrawindowstyle.Items.Add(TCBS_OWNERDRAWFIXED)else wsout.Add(TCBS_OWNERDRAWFIXED);
-   if styles and CBS_OWNERDRAWVARIABLE = CBS_OWNERDRAWVARIABLE then extrawindowstyle.Items.Add(TCBS_OWNERDRAWVARIABLE)else wsout.Add(TCBS_OWNERDRAWVARIABLE);
-   if styles and CBS_SIMPLE = CBS_SIMPLE then extrawindowstyle.Items.Add(TCBS_SIMPLE)else wsout.Add(TCBS_SIMPLE);
-   if styles and CBS_SORT = CBS_SORT then extrawindowstyle.Items.Add(TCBS_SORT)else wsout.Add(TCBS_SORT);
-   if styles and CBS_UPPERCASE = CBS_UPPERCASE then extrawindowstyle.Items.Add(TCBS_UPPERCASE)else wsout.Add(TCBS_UPPERCASE);
+ windowExStylesToCheckListBox(han,windowexstyles, labelwsex);
+ //labelwsex.Caption:='Extended Window styles:   '+labelwsex.caption;
 
-  { if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-}
- end;
- if UpperCase(string( classname))='EDIT' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Edit Styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and  ES_AUTOHSCROLL=ES_AUTOHSCROLL  then extrawindowstyle.Items.Add(TES_AUTOHSCROLL)else wsout.Add(TES_AUTOHSCROLL);
-   if styles and  ES_AUTOVSCROLL=ES_AUTOVSCROLL  then extrawindowstyle.Items.Add(TES_AUTOVSCROLL)else wsout.Add(TES_AUTOVSCROLL);
-   if styles and  ES_CENTER=ES_CENTER  then extrawindowstyle.Items.Add(TES_CENTER)else wsout.Add(TES_CENTER);
-   if styles and  ES_LEFT=ES_LEFT  then extrawindowstyle.Items.Add(TES_LEFT)else wsout.Add(TES_LEFT);
-   if styles and  ES_LOWERCASE=ES_LOWERCASE  then extrawindowstyle.Items.Add(TES_LOWERCASE)else wsout.Add(TES_LOWERCASE);
-   if styles and ES_MULTILINE = ES_MULTILINE then extrawindowstyle.Items.Add(TES_MULTILINE)else wsout.Add(TES_MULTILINE);
-   if styles and  ES_NOHIDESEL=ES_NOHIDESEL  then extrawindowstyle.Items.Add(TES_NOHIDESEL)else wsout.Add(TES_NOHIDESEL);
-   if styles and ES_NUMBER =ES_NUMBER  then extrawindowstyle.Items.Add(TES_NUMBER)else wsout.Add(TES_NUMBER);
-   if styles and ES_OEMCONVERT =ES_OEMCONVERT  then extrawindowstyle.Items.Add(TES_OEMCONVERT)else wsout.Add(TES_OEMCONVERT);
-   if styles and ES_PASSWORD =ES_PASSWORD  then extrawindowstyle.Items.Add(TES_PASSWORD)else wsout.Add(TES_PASSWORD);
-   if styles and ES_READONLY = ES_READONLY then extrawindowstyle.Items.Add(TES_READONLY)else wsout.Add(TES_READONLY);
-   if styles and ES_RIGHT = ES_RIGHT then extrawindowstyle.Items.Add(TES_RIGHT)else wsout.Add(TES_RIGHT);
-   if styles and ES_UPPERCASE =ES_UPPERCASE  then extrawindowstyle.Items.Add(TES_UPPERCASE)else wsout.Add(TES_UPPERCASE);
-   if styles and ES_WANTRETURN = ES_WANTRETURN then extrawindowstyle.Items.Add(TES_WANTRETURN)else wsout.Add(TES_WANTRETURN);
- {  if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-}
- end;
- if UpperCase(string( classname))='LISTBOX' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Listbox Styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and LBS_DISABLENOSCROLL = LBS_DISABLENOSCROLL then extrawindowstyle.Items.Add(TLBS_DISABLENOSCROLL)else wsout.Add(TLBS_DISABLENOSCROLL);
-   if styles and LBS_EXTENDEDSEL = LBS_EXTENDEDSEL then extrawindowstyle.Items.Add(TLBS_EXTENDEDSEL)else wsout.Add(TLBS_EXTENDEDSEL);
-   if styles and LBS_HASSTRINGS = LBS_HASSTRINGS then extrawindowstyle.Items.Add(TLBS_HASSTRINGS)else wsout.Add(TLBS_HASSTRINGS);
-   if styles and LBS_MULTICOLUMN = LBS_MULTICOLUMN then extrawindowstyle.Items.Add(TLBS_MULTICOLUMN)else wsout.Add(TLBS_MULTICOLUMN);
-   if styles and LBS_MULTIPLESEL = LBS_MULTIPLESEL then extrawindowstyle.Items.Add(TLBS_MULTIPLESEL)else wsout.Add(TLBS_MULTIPLESEL);
-   if styles and LBS_NODATA = LBS_NODATA then extrawindowstyle.Items.Add(TLBS_NODATA)else wsout.Add(TLBS_NODATA);
-   if styles and LBS_NOINTEGRALHEIGHT = LBS_NOINTEGRALHEIGHT then extrawindowstyle.Items.Add(TLBS_NOINTEGRALHEIGHT)else wsout.Add(TLBS_NOINTEGRALHEIGHT);
-   if styles and LBS_NOREDRAW = LBS_NOREDRAW then extrawindowstyle.Items.Add(TLBS_NOREDRAW)else wsout.Add(TLBS_NOREDRAW);
-   if styles and LBS_NOSEL =  LBS_NOSEL  then extrawindowstyle.Items.Add(TLBS_NOSEL)else wsout.Add(TLBS_NOSEL);
-   if styles and LBS_NOTIFY = LBS_NOTIFY then extrawindowstyle.Items.Add(TLBS_NOTIFY)else wsout.Add(TLBS_NOTIFY);
-   if styles and LBS_OWNERDRAWFIXED = LBS_OWNERDRAWFIXED then extrawindowstyle.Items.Add(TLBS_OWNERDRAWFIXED)else wsout.Add(TLBS_OWNERDRAWFIXED);
-   if styles and LBS_OWNERDRAWVARIABLE = LBS_OWNERDRAWVARIABLE then extrawindowstyle.Items.Add(TLBS_OWNERDRAWVARIABLE)else wsout.Add(TLBS_OWNERDRAWVARIABLE);
-   if styles and LBS_SORT = LBS_SORT then extrawindowstyle.Items.Add(TLBS_SORT)else wsout.Add(TLBS_SORT);
-   if styles and LBS_STANDARD = LBS_STANDARD then extrawindowstyle.Items.Add(TLBS_STANDARD)else wsout.Add(TLBS_STANDARD);
-   if styles and LBS_USETABSTOPS = LBS_USETABSTOPS then extrawindowstyle.Items.Add(TLBS_USETABSTOPS)else wsout.Add(TLBS_USETABSTOPS);
-   if styles and LBS_WANTKEYBOARDINPUT = LBS_WANTKEYBOARDINPUT then extrawindowstyle.Items.Add(TLBS_WANTKEYBOARDINPUT)else wsout.Add(TLBS_WANTKEYBOARDINPUT);
-   {if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-}
- end;
- if (UpperCase(string( classname))='RICHEDIT') or (UpperCase(string( classname))='RICHEDIT_CLASS') then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Richedit Styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and  ES_AUTOHSCROLL=ES_AUTOHSCROLL  then extrawindowstyle.Items.Add(TES_AUTOHSCROLL)else wsout.Add(TES_AUTOHSCROLL);
-   if styles and  ES_AUTOVSCROLL=ES_AUTOVSCROLL  then extrawindowstyle.Items.Add(TES_AUTOVSCROLL)else wsout.Add(TES_AUTOVSCROLL);
-   if styles and  ES_CENTER=ES_CENTER  then extrawindowstyle.Items.Add(TES_CENTER)else wsout.Add(TES_CENTER);
-   if styles and  ES_LEFT=ES_LEFT  then extrawindowstyle.Items.Add(TES_LEFT)else wsout.Add(TES_LEFT);
-   if styles and ES_MULTILINE = ES_MULTILINE then extrawindowstyle.Items.Add(TES_MULTILINE)else wsout.Add(TES_MULTILINE);
-   if styles and  ES_NOHIDESEL=ES_NOHIDESEL  then extrawindowstyle.Items.Add(TES_NOHIDESEL)else wsout.Add(TES_NOHIDESEL);
-   if styles and ES_NUMBER =ES_NUMBER  then extrawindowstyle.Items.Add(TES_NUMBER)else wsout.Add(TES_NUMBER);
-   if styles and ES_PASSWORD =ES_PASSWORD  then extrawindowstyle.Items.Add(TES_PASSWORD)else wsout.Add(TES_PASSWORD);
-   if styles and ES_READONLY = ES_READONLY then extrawindowstyle.Items.Add(TES_READONLY)else wsout.Add(TES_READONLY);
-   if styles and ES_RIGHT = ES_RIGHT then extrawindowstyle.Items.Add(TES_RIGHT)else wsout.Add(TES_RIGHT);
-   if styles and ES_WANTRETURN = ES_WANTRETURN then extrawindowstyle.Items.Add(TES_WANTRETURN)else wsout.Add(TES_WANTRETURN);
-   if styles and  ES_DISABLENOSCROLL=ES_DISABLENOSCROLL then extrawindowstyle.Items.Add(TES_DISABLENOSCROLL)else wsout.Add(TES_DISABLENOSCROLL);
-   if styles and ES_NOIME = ES_NOIME then extrawindowstyle.Items.Add(TES_NOIME)else wsout.Add(TES_NOIME);
-   if styles and ES_SELFIME = ES_SELFIME then extrawindowstyle.Items.Add(TES_SELFIME)else wsout.Add(TES_SELFIME);
-   if styles and  ES_SUNKEN=ES_SUNKEN  then extrawindowstyle.Items.Add(TES_SUNKEN)else wsout.Add(TES_SUNKEN);
-   if styles and ES_VERTICAL = ES_VERTICAL then extrawindowstyle.Items.Add(TES_VERTICAL)else wsout.Add(TES_VERTICAL);
-{   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-
-   if styles and  =  then extrawindowstyle.Items.Add(T)else wsout.Add(T);
-}
- end;
- if UpperCase(string( classname))='SCROLLBAR' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Scrollbar Styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and SBS_BOTTOMALIGN = SBS_BOTTOMALIGN then extrawindowstyle.Items.Add(TSBS_BOTTOMALIGN)else wsout.Add(TSBS_BOTTOMALIGN);
-   if styles and SBS_HORZ = SBS_HORZ then extrawindowstyle.Items.Add(TSBS_HORZ)else wsout.Add(TSBS_HORZ);
-   if styles and SBS_LEFTALIGN =SBS_LEFTALIGN  then extrawindowstyle.Items.Add(TSBS_LEFTALIGN)else wsout.Add(TSBS_LEFTALIGN);
-   if styles and SBS_RIGHTALIGN =SBS_RIGHTALIGN then extrawindowstyle.Items.Add(TSBS_RIGHTALIGN)else wsout.Add(TSBS_RIGHTALIGN);
-   if styles and SBS_SIZEBOX =SBS_SIZEBOX  then extrawindowstyle.Items.Add(TSBS_SIZEBOX)else wsout.Add(TSBS_SIZEBOX);
-   if styles and SBS_SIZEBOXBOTTOMRIGHTALIGN= SBS_SIZEBOXBOTTOMRIGHTALIGN then extrawindowstyle.Items.Add(TSBS_SIZEBOXBOTTOMRIGHTALIGN)else wsout.Add(TSBS_SIZEBOXBOTTOMRIGHTALIGN);
-   if styles and SBS_SIZEBOXTOPLEFTALIGN = SBS_SIZEBOXTOPLEFTALIGN then extrawindowstyle.Items.Add(TSBS_SIZEBOXTOPLEFTALIGN)else wsout.Add(TSBS_SIZEBOXTOPLEFTALIGN);
-   if styles and SBS_SIZEGRIP = SBS_SIZEGRIP then extrawindowstyle.Items.Add(TSBS_SIZEGRIP)else wsout.Add(TSBS_SIZEGRIP);
-   if styles and SBS_TOPALIGN = SBS_TOPALIGN then extrawindowstyle.Items.Add(TSBS_TOPALIGN)else wsout.Add(TSBS_TOPALIGN);
-   if styles and SBS_VERT = SBS_VERT then extrawindowstyle.Items.Add(TSBS_VERT)else wsout.Add(TSBS_VERT);
- end;
- if UpperCase(string( classname))='STATIC' then begin
-   extraclass.Visible:=true;
-   labeles.Caption:='Static Styles(=Window Styles): '+Cardinal2Str(styles);
-   if styles and SS_BITMAP = SS_BITMAP then extrawindowstyle.Items.Add(TSS_BITMAP)else wsout.Add(TSS_BITMAP);
-   if styles and SS_BLACKFRAME = SS_BLACKFRAME then extrawindowstyle.Items.Add(TSS_BLACKFRAME)else wsout.Add(TSS_BLACKFRAME);
-   if styles and SS_BLACKRECT = SS_BLACKRECT then extrawindowstyle.Items.Add(TSS_BLACKRECT)else wsout.Add(TSS_BLACKRECT);
-   if styles and SS_CENTER = SS_CENTER then extrawindowstyle.Items.Add(TSS_CENTER)else wsout.Add(TSS_CENTER);
-   if styles and SS_CENTERIMAGE = SS_CENTERIMAGE then extrawindowstyle.Items.Add(TSS_CENTERIMAGE)else wsout.Add(TSS_CENTERIMAGE);
- {TODO: wieder einfügen
-   if styles and SS_ENDELLIPSIS  = SS_ENDELLIPSIS  then extrawindowstyle.Items.Add(TSS_ENDELLIPSIS )else wsout.Add(TSS_ENDELLIPSIS );
-   if styles and SS_ENHMETAFILE = SS_ENHMETAFILE then extrawindowstyle.Items.Add(TSS_ENHMETAFILE)else wsout.Add(TSS_ENHMETAFILE);
-   if styles and SS_ETCHEDFRAME = SS_ETCHEDFRAME then extrawindowstyle.Items.Add(TSS_ETCHEDFRAME)else wsout.Add(TSS_ETCHEDFRAME);
-   if styles and SS_ETCHEDHORZ = SS_ETCHEDHORZ then extrawindowstyle.Items.Add(TSS_ETCHEDHORZ)else wsout.Add(TSS_ETCHEDHORZ);
-   if styles and SS_ETCHEDVERT = SS_ETCHEDVERT then extrawindowstyle.Items.Add(TSS_ETCHEDVERT)else wsout.Add(TSS_ETCHEDVERT);
-   if styles and SS_GRAYFRAME = SS_GRAYFRAME then extrawindowstyle.Items.Add(TSS_GRAYFRAME)else wsout.Add(TSS_GRAYFRAME);
-   if styles and SS_GRAYRECT = SS_GRAYRECT then extrawindowstyle.Items.Add(TSS_GRAYRECT)else wsout.Add(TSS_GRAYRECT);
-   if styles and SS_ICON = SS_ICON then extrawindowstyle.Items.Add(TSS_ICON)else wsout.Add(TSS_ICON);
-   if styles and SS_LEFT = SS_LEFT then extrawindowstyle.Items.Add(TSS_LEFT)else wsout.Add(TSS_LEFT);
-   if styles and SS_LEFTNOWORDWRAP = SS_LEFTNOWORDWRAP then extrawindowstyle.Items.Add(TSS_LEFTNOWORDWRAP)else wsout.Add(TSS_LEFTNOWORDWRAP);
-   if styles and SS_NOPREFIX = SS_NOPREFIX then extrawindowstyle.Items.Add(TSS_NOPREFIX)else wsout.Add(TSS_NOPREFIX);
-   if styles and SS_NOTIFY = SS_NOTIFY then extrawindowstyle.Items.Add(TSS_NOTIFY)else wsout.Add(TSS_NOTIFY);
-   if styles and SS_OWNERDRAW = SS_OWNERDRAW then extrawindowstyle.Items.Add(TSS_OWNERDRAW)else wsout.Add(TSS_OWNERDRAW);
-   if styles and SS_PATHELLIPSIS = SS_PATHELLIPSIS then extrawindowstyle.Items.Add(TSS_PATHELLIPSIS)else wsout.Add(TSS_PATHELLIPSIS);
-//   if styles and SS_REALSIZECONTROL = SS_REALSIZECONTROL then extrawindowstyle.Items.Add(TSS_REALSIZECONTROL)else wsout.Add(TSS_REALSIZECONTROL);
-   if styles and SS_REALSIZEIMAGE = SS_REALSIZEIMAGE then extrawindowstyle.Items.Add(TSS_REALSIZEIMAGE)else wsout.Add(TSS_REALSIZEIMAGE);
-   if styles and SS_RIGHT = SS_RIGHT then extrawindowstyle.Items.Add(TSS_RIGHT)else wsout.Add(TSS_RIGHT);
-   if styles and SS_RIGHTJUST = SS_RIGHTJUST then extrawindowstyle.Items.Add(TSS_RIGHTJUST)else wsout.Add(TSS_RIGHTJUST);
-   if styles and SS_SIMPLE = SS_SIMPLE then extrawindowstyle.Items.Add(TSS_SIMPLE)else wsout.Add(TSS_SIMPLE);
-   if styles and SS_SUNKEN = SS_SUNKEN then extrawindowstyle.Items.Add(TSS_SUNKEN)else wsout.Add(TSS_SUNKEN);
-   if styles and SS_WHITEFRAME = SS_WHITEFRAME then extrawindowstyle.Items.Add(TSS_WHITEFRAME)else wsout.Add(TSS_WHITEFRAME);
-   if styles and SS_WHITERECT = SS_WHITERECT then extrawindowstyle.Items.Add(TSS_WHITERECT)else wsout.Add(TSS_WHITERECT);
-   if styles and SS_WORDELLIPSIS = SS_WORDELLIPSIS then extrawindowstyle.Items.Add(TSS_WORDELLIPSIS)else wsout.Add(TSS_WORDELLIPSIS);
-   }
- end;
- if extraclass.Visible then begin
-   for i:=0 to extrawindowstyle.Items.Count-1 do
-     extrawindowstyle.Checked[i]:=true;
-   extrawindowstyle.Items.AddStrings(wsout);
-   wsout.Clear;
- end;
- //WS_EX_STYLES:
- styles:=GetWindowLong(han,GWL_EXSTYLE);
- labelwsex.Caption:='Extended Window styles:   '+Cardinal2Str(styles);
- if styles and  WS_EX_ACCEPTFILES=WS_EX_ACCEPTFILES  then windowexstyles.Items.Add(TWS_EX_ACCEPTFILES) else wsout.Add(TWS_EX_ACCEPTFILES);
- if styles and  WS_EX_APPWINDOW=WS_EX_APPWINDOW  then windowexstyles.Items.Add(TWS_EX_APPWINDOW) else wsout.Add(TWS_EX_APPWINDOW);
- if styles and  WS_EX_CLIENTEDGE=WS_EX_CLIENTEDGE  then windowexstyles.Items.Add(TWS_EX_CLIENTEDGE) else wsout.Add(TWS_EX_CLIENTEDGE);
- if styles and  WS_EX_COMPOSITED=WS_EX_COMPOSITED   then windowexstyles.Items.Add(TWS_EX_COMPOSITED ) else wsout.Add(TWS_EX_COMPOSITED );
- if styles and  WS_EX_CONTEXTHELP=WS_EX_CONTEXTHELP  then windowexstyles.Items.Add(TWS_EX_CONTEXTHELP) else wsout.Add(TWS_EX_CONTEXTHELP);
- if styles and  WS_EX_CONTROLPARENT=WS_EX_CONTROLPARENT  then windowexstyles.Items.Add(TWS_EX_CONTROLPARENT) else wsout.Add(TWS_EX_CONTROLPARENT);
- if styles and  WS_EX_DLGMODALFRAME=WS_EX_DLGMODALFRAME  then windowexstyles.Items.Add(TWS_EX_DLGMODALFRAME) else wsout.Add(TWS_EX_DLGMODALFRAME);
- if styles and  WS_EX_LAYERED=WS_EX_LAYERED  then windowexstyles.Items.Add(TWS_EX_LAYERED) else wsout.Add(TWS_EX_LAYERED);
- if styles and  WS_EX_LAYOUTRTL=WS_EX_LAYOUTRTL  then windowexstyles.Items.Add(TWS_EX_LAYOUTRTL) else wsout.Add(TWS_EX_LAYOUTRTL);
- if styles and  WS_EX_LEFT=WS_EX_LEFT  then windowexstyles.Items.Add(TWS_EX_LEFT) else wsout.Add(TWS_EX_LEFT);
- if styles and  WS_EX_LEFTSCROLLBAR=WS_EX_LEFTSCROLLBAR  then windowexstyles.Items.Add(TWS_EX_LEFTSCROLLBAR) else wsout.Add(TWS_EX_LEFTSCROLLBAR);
- if styles and  WS_EX_LTRREADING=WS_EX_LTRREADING  then windowexstyles.Items.Add(TWS_EX_LTRREADING) else wsout.Add(TWS_EX_LTRREADING);
- if styles and  WS_EX_MDICHILD=WS_EX_MDICHILD  then windowexstyles.Items.Add(TWS_EX_MDICHILD) else wsout.Add(TWS_EX_MDICHILD);
-// if styles and  WS_EX_MDICHILD=WS_EX_MDICHILD  then windowexstyles.Items.Add(TWS_EX_MDICHILD) else wsout.Add(TWS_EX_MDICHILD);
- if styles and  WS_EX_NOACTIVATE=WS_EX_NOACTIVATE  then windowexstyles.Items.Add(TWS_EX_NOACTIVATE) else wsout.Add(TWS_EX_NOACTIVATE);
- if styles and  WS_EX_NOINHERITLAYOUT=WS_EX_NOINHERITLAYOUT  then windowexstyles.Items.Add(TWS_EX_NOINHERITLAYOUT) else wsout.Add(TWS_EX_NOINHERITLAYOUT);
- if styles and  WS_EX_NOPARENTNOTIFY=WS_EX_NOPARENTNOTIFY  then windowexstyles.Items.Add(TWS_EX_NOPARENTNOTIFY) else wsout.Add(TWS_EX_NOPARENTNOTIFY);
- if styles and  WS_EX_OVERLAPPEDWINDOW=WS_EX_OVERLAPPEDWINDOW  then windowexstyles.Items.Add(TWS_EX_OVERLAPPEDWINDOW) else wsout.Add(TWS_EX_OVERLAPPEDWINDOW);
- if styles and  WS_EX_PALETTEWINDOW=WS_EX_PALETTEWINDOW  then windowexstyles.Items.Add(TWS_EX_PALETTEWINDOW) else wsout.Add(TWS_EX_PALETTEWINDOW);
- if styles and  WS_EX_RIGHT=WS_EX_RIGHT  then windowexstyles.Items.Add(TWS_EX_RIGHT) else wsout.Add(TWS_EX_RIGHT);
- if styles and  WS_EX_RIGHTSCROLLBAR=WS_EX_RIGHTSCROLLBAR  then windowexstyles.Items.Add(TWS_EX_RIGHTSCROLLBAR) else wsout.Add(TWS_EX_RIGHTSCROLLBAR);
- if styles and  WS_EX_RTLREADING=WS_EX_RTLREADING  then windowexstyles.Items.Add(TWS_EX_RTLREADING) else wsout.Add(TWS_EX_RTLREADING);
- if styles and  WS_EX_STATICEDGE=WS_EX_STATICEDGE  then windowexstyles.Items.Add(TWS_EX_STATICEDGE) else wsout.Add(TWS_EX_STATICEDGE);
- if styles and  WS_EX_TOOLWINDOW=WS_EX_TOOLWINDOW  then windowexstyles.Items.Add(TWS_EX_TOOLWINDOW) else wsout.Add(TWS_EX_TOOLWINDOW);
- if styles and  WS_EX_TOPMOST=WS_EX_TOPMOST  then windowexstyles.Items.Add(TWS_EX_TOPMOST) else wsout.Add(TWS_EX_TOPMOST);
- if styles and  WS_EX_TRANSPARENT=WS_EX_TRANSPARENT  then windowexstyles.Items.Add(TWS_EX_TRANSPARENT) else wsout.Add(TWS_EX_TRANSPARENT);
- if styles and  WS_EX_WINDOWEDGE=WS_EX_WINDOWEDGE  then windowexstyles.Items.Add(TWS_EX_WINDOWEDGE) else wsout.Add(TWS_EX_WINDOWEDGE);
- for i:=0 to windowexstyles.Items.Count-1 do
-   windowexstyles.Checked[i]:=true;
- windowexstyles.Items.AddStrings(wsout);
-
- wsout.Clear;
- styles:=GetClassLong(han,GCL_STYLE);
- labelcs.Caption:='Window Class styles:   '+Cardinal2Str(styles);
- if styles and CS_BYTEALIGNCLIENT =CS_BYTEALIGNCLIENT then classstyles.Items.Add(TCS_BYTEALIGNCLIENT) else wsout.Add(TCS_BYTEALIGNCLIENT) ;
- if styles and CS_BYTEALIGNWINDOW =CS_BYTEALIGNWINDOW then classstyles.Items.Add(TCS_BYTEALIGNWINDOW)else wsout.Add(TCS_BYTEALIGNWINDOW);
- if styles and CS_CLASSDC =CS_CLASSDC then classstyles.Items.Add(TCS_CLASSDC) else wsout.Add(TCS_CLASSDC) ;
- if styles and CS_DBLCLKS =CS_DBLCLKS then classstyles.Items.Add(TCS_DBLCLKS) else wsout.Add(TCS_DBLCLKS) ;
- if styles and CS_DROPSHADOW =CS_DROPSHADOW then classstyles.Items.Add(TCS_DROPSHADOW) else wsout.Add(TCS_DROPSHADOW) ;
- if styles and CS_GLOBALCLASS =CS_GLOBALCLASS then classstyles.Items.Add(TCS_GLOBALCLASS)else wsout.Add(TCS_GLOBALCLASS);
- if styles and CS_HREDRAW =CS_HREDRAW then classstyles.Items.Add(TCS_HREDRAW) else wsout.Add(TCS_HREDRAW) ;
- if styles and CS_NOCLOSE =CS_NOCLOSE then classstyles.Items.Add(TCS_NOCLOSE) else wsout.Add(TCS_NOCLOSE) ;
- if styles and CS_OWNDC =CS_OWNDC then classstyles.Items.Add(TCS_OWNDC) else wsout.Add(TCS_OWNDC) ;
- if styles and CS_PARENTDC =CS_PARENTDC then classstyles.Items.Add(TCS_PARENTDC) else wsout.Add(TCS_PARENTDC) ;
- if styles and CS_SAVEBITS =CS_SAVEBITS then classstyles.Items.Add(TCS_SAVEBITS)else wsout.Add(TCS_SAVEBITS);
- if styles and CS_VREDRAW =CS_VREDRAW then classstyles.Items.Add(TCS_VREDRAW) else wsout.Add(TCS_VREDRAW);
- for i:=0 to classstyles.Items.Count-1 do
-   classstyles.Checked[i]:=true;
- classstyles.Items.AddStrings(wsout);
- wsout.free;
-
- windowexstyles.Perform(LB_SETHORIZONTALEXTENT,windowexstyles.Canvas.TextWidth(TWS_EX_PALETTEWINDOW)+30,0);
- windowstyles.Perform(LB_SETHORIZONTALEXTENT,windowstyles.Canvas.TextWidth(TWS_OVERLAPPEDWINDOW)+30,0);
+ classStylesToCheckListBox(styles,classstyles,labelcs);
+ //labelcs.Caption:='Window Class styles:   '+labelcs.Caption;
 end;
 
 procedure Twindowstyleform.Button1Click(Sender: TObject);
@@ -573,25 +288,15 @@ ModalResult:=mrOk;
 Close;
 end;
 
+procedure Twindowstyleform.windowexstylesItemClick(Sender: TObject;
+  Index: integer);
+begin
+
+end;
+
 procedure Twindowstyleform.windowstylesDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
-var sender:TCheckListBox;
 begin
-sender:=(control as TCheckListBox);
-sender.Canvas.brush.Color:=clBlack;
-if not (odFocused in State) then begin
-  sender.Canvas.pen.Color:=clBlack;
-end else begin
-  sender.Canvas.pen.Color:=clBlack;
-end;
-sender.Canvas.Rectangle(rect.left,rect.top,Rect.Right,rect.Bottom);
-if sender.Checked[index] then begin
-  sender.Canvas.Font.Color:=clLime;
-end else begin
-  sender.Canvas.Font.Color:=clRed;
-end;
-sender.Canvas.TextOut(rect.Left,rect.top,sender.Items[index]);
-//exit;
 end;
 
 procedure Twindowstyleform.windowstylesClickCheck(Sender: TObject);
@@ -601,33 +306,6 @@ begin
   style:=0;
   for i:=0 to windowstyles.Items.Count-1 do begin
     if windowstyles.Checked[i] then begin
-      if windowstyles.Items[i]=TWS_BORDER then style:=style or WS_BORDER else
-      if windowstyles.Items[i]=TWS_CAPTION then style:=style or WS_CAPTION else
-      if windowstyles.Items[i]=TWS_CHILD then style:=style or WS_CHILD else
-      if windowstyles.Items[i]=TWS_CHILDWINDOW then style:=style or WS_CHILDWINDOW else
-      if windowstyles.Items[i]=TWS_CLIPCHILDREN then style:=style or WS_CLIPCHILDREN else
-      if windowstyles.Items[i]=TWS_CLIPSIBLINGS then style:=style or WS_CLIPSIBLINGS else
-      if windowstyles.Items[i]=TWS_DISABLED then style:=style or WS_DISABLED else
-      if windowstyles.Items[i]=TWS_DLGFRAME then style:=style or WS_DLGFRAME else
-      if windowstyles.Items[i]=TWS_GROUP then style:=style or WS_GROUP else
-      if windowstyles.Items[i]=TWS_HSCROLL then style:=style or WS_HSCROLL else
-      if windowstyles.Items[i]=TWS_ICONIC then style:=style or WS_ICONIC else
-      if windowstyles.Items[i]=TWS_MAXIMIZE then style:=style or WS_MAXIMIZE else
-      if windowstyles.Items[i]=TWS_MAXIMIZEBOX then style:=style or WS_MAXIMIZEBOX else
-      if windowstyles.Items[i]=TWS_MINIMIZE then style:=style or WS_MINIMIZE else
-      if windowstyles.Items[i]=TWS_MINIMIZEBOX then style:=style or WS_MINIMIZEBOX else
-      if windowstyles.Items[i]=TWS_OVERLAPPED then style:=style or WS_OVERLAPPED else
-      if windowstyles.Items[i]=TWS_OVERLAPPEDWINDOW then style:=style or WS_OVERLAPPEDWINDOW else
-      if windowstyles.Items[i]=TWS_POPUP then style:=style or WS_POPUP else
-      if windowstyles.Items[i]=TWS_POPUPWINDOW then style:=style or WS_POPUPWINDOW else
-      if windowstyles.Items[i]=TWS_SIZEBOX then style:=style or WS_SIZEBOX else
-      if windowstyles.Items[i]=TWS_SYSMENU then style:=style or WS_SYSMENU else
-      if windowstyles.Items[i]=TWS_TABSTOP then style:=style or WS_TABSTOP else
-      if windowstyles.Items[i]=TWS_THICKFRAME then style:=style or WS_THICKFRAME else
-      if windowstyles.Items[i]=TWS_TILED then style:=style or WS_TILED else
-      if windowstyles.Items[i]=TWS_TILEDWINDOW then style:=style or WS_TILEDWINDOW else
-      if windowstyles.Items[i]=TWS_VISIBLE then style:=style or WS_VISIBLE else
-      if windowstyles.Items[i]=TWS_VSCROLL then style:=style or WS_VSCROLL;
     end;
   end;
   if extraclass.Visible then begin
@@ -771,52 +449,7 @@ end;
 
 
 procedure Twindowstyleform.windowexstylesClickCheck(Sender: TObject);
-var i:integer;
-    style:Cardinal;
 begin
-//  if not runonNT then exit;
-  style:=0;
-  for i:=0 to windowexstyles.Items.Count-1 do begin
-    if windowexstyles.Checked[i] then begin
-      if windowexstyles.Items[i]=TWS_EX_ACCEPTFILES then style:=style or WS_EX_ACCEPTFILES else
-      if windowexstyles.Items[i]=TWS_EX_APPWINDOW then style:=style or WS_EX_APPWINDOW else
-      if windowexstyles.Items[i]=TWS_EX_CLIENTEDGE then style:=style or WS_EX_CLIENTEDGE else
-      if windowexstyles.Items[i]=TWS_EX_COMPOSITED  then style:=style or WS_EX_COMPOSITED  else
-      if windowexstyles.Items[i]=TWS_EX_CONTEXTHELP then style:=style or WS_EX_CONTEXTHELP else
-      if windowexstyles.Items[i]=TWS_EX_CONTROLPARENT then style:=style or WS_EX_CONTROLPARENT else
-      if windowexstyles.Items[i]=TWS_EX_DLGMODALFRAME then style:=style or WS_EX_DLGMODALFRAME else
-      if windowexstyles.Items[i]=TWS_EX_LAYERED then style:=style or WS_EX_LAYERED else
-      if windowexstyles.Items[i]=TWS_EX_LAYOUTRTL then style:=style or WS_EX_LAYOUTRTL else
-      if windowexstyles.Items[i]=TWS_EX_LEFT then style:=style or WS_EX_LEFT else
-      if windowexstyles.Items[i]=TWS_EX_LEFTSCROLLBAR then style:=style or WS_EX_LEFTSCROLLBAR else
-      if windowexstyles.Items[i]=TWS_EX_LTRREADING then style:=style or WS_EX_LTRREADING else
-      if windowexstyles.Items[i]=TWS_EX_MDICHILD then style:=style or WS_EX_MDICHILD else
-      if windowexstyles.Items[i]=TWS_EX_NOACTIVATE then style:=style or WS_EX_NOACTIVATE else
-      if windowexstyles.Items[i]=TWS_EX_NOINHERITLAYOUT then style:=style or WS_EX_NOINHERITLAYOUT else
-      if windowexstyles.Items[i]=TWS_EX_NOPARENTNOTIFY then style:=style or WS_EX_NOPARENTNOTIFY else
-      if windowexstyles.Items[i]=TWS_EX_OVERLAPPEDWINDOW then style:=style or WS_EX_OVERLAPPEDWINDOW else
-      if windowexstyles.Items[i]=TWS_EX_PALETTEWINDOW then style:=style or WS_EX_PALETTEWINDOW else
-      if windowexstyles.Items[i]=TWS_EX_RIGHT then style:=style or WS_EX_RIGHT else
-      if windowexstyles.Items[i]=TWS_EX_RIGHTSCROLLBAR then style:=style or WS_EX_RIGHTSCROLLBAR else
-      if windowexstyles.Items[i]=TWS_EX_RTLREADING then style:=style or WS_EX_RTLREADING else
-      if windowexstyles.Items[i]=TWS_EX_STATICEDGE then style:=style or WS_EX_STATICEDGE else
-      if windowexstyles.Items[i]=TWS_EX_TOOLWINDOW then style:=style or WS_EX_TOOLWINDOW else
-      if windowexstyles.Items[i]=TWS_EX_TOPMOST then style:=style or WS_EX_TOPMOST else
-      if windowexstyles.Items[i]=TWS_EX_TRANSPARENT then style:=style or WS_EX_TRANSPARENT else
-      if windowexstyles.Items[i]=TWS_EX_WINDOWEDGE then style:=style or WS_EX_WINDOWEDGE else
-    end;
-  end;
-  if (CheckBox1.Checked)  then  begin
-    //InstallHookNewStyle(han,style,true);
-  end else begin
-    SetWindowLong(han,GWL_EXSTYLE,style);
-  end;
-  if windows.getParent(han)=0 then
-    RedrawWindow(han,nil,0,RDW_INVALIDATE or RDW_UPDATENOW or RDW_ALLCHILDREN or RDW_ERASENOW or RDW_ERASE)
-   else
-    RedrawWindow(windows.getParent(han),nil,0,RDW_INVALIDATE or RDW_UPDATENOW or RDW_ALLCHILDREN or RDW_ERASENOW or RDW_ERASE);
-  windowexstyles.Refresh;
-
 end;
 
 procedure Twindowstyleform.classstylesClickCheck(Sender: TObject);
@@ -851,4 +484,13 @@ begin
 //  FormShow(mainform);
 end;
 
+procedure Twindowstyleform.windowstylesItemClick(Sender: TObject; Index: integer
+  );
+begin
+  if index<0 then exit;
+  changeWindowStyle(han,windowstyles.Items[index],windowstyles.checked[index]);
+end;
+
+initialization
+  {$I wstyles.lrs}
 end.

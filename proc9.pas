@@ -23,30 +23,12 @@
  unit proc9;
  interface
  {$mode delphi}{$h+}
-  uses windows,sysutils,commontypes;
-
-CONST
-  //greets go to tlhelp32.h ;)))
-  TH32CS_SNAPPROCESS = $00000002;
-  SE_DEBUG_NAME:string = 'SeDebugPrivilege';
-
-TYPE
-  tagPROCESSENTRY32 = PACKED RECORD
-    dwSize,
-      cntUsage,
-      th32ProcessID,
-      th32DefaultHeapID,
-      th32ModuleID,
-      cntThreads,
-      th32ParentProcessID: DWORD;
-    pcPriClassBase: LongInt;
-    dwFlags: DWORD;
-    szExeFile: ARRAY[0..MAX_PATH - 1] OF char;
-  END;
-
+  uses windows,sysutils,commontypes,TLHelp32;
+type
   TProcess32FN = FUNCTION(hSnapshot: DWORD; VAR lppe: tagPROCESSENTRY32): BOOL; stdcall;
   TCreateTHSnap = FUNCTION(dwFlags, th32ProcessID: DWORD): DWORD; stdcall;
-  FUNCTION getprocesses9x: TProcessrecs;
+
+
   function KillProcess(PID: Cardinal): boolean; //von Assa? Ich weiﬂ es nicht, ich habs hier reinkopiert, weils hier passt.
   function SetPrivilege(sPrivilegeName: string; bEnabled: boolean): boolean;//von Assa? Ich weiﬂ es nicht, ich habs hier reinkopiert, weils hier passt.
   function GetProcessPriority(pid:THandle):dword;//von mir (BeniBela), benutzt SetPrivilege;
@@ -70,6 +52,7 @@ begin
   end;
   CloseHandle(Token);
 end;
+
 
 function KillProcess(PID: Cardinal): boolean;
 var
@@ -146,6 +129,46 @@ BEGIN
   CloseHandle(hProcessSnap);
 END;
 
+{FUNCTION getprocesses9x: TProcessrecs;
+VAR
+  hKernel, hProcessSnap: DWORD;
+  CreateToolhelp32Snapshot: TCreateTHSnap;
+  Process32First,
+    Process32Next: TProcess32FN;
+  pe32: tagProcessEntry32;
+  noerr: bool;
+BEGIN
+  //init variables
+//  hKernel := 0;
+//  hProcessSnap := 0;
+  @CreateToolhelp32Snapshot := NIL;
+  @Process32First := NIL;
+  @Process32Next := NIL;
+  exit(0);
+  //I still don't understand, WHY 'kernel32.dll' is always loaded ;)
+  hKernel := GetModuleHandle('KERNEL32.DLL');
+  IF BOOL(hKernel) THEN BEGIN
+    @CreateToolhelp32Snapshot := GetProcAddress(hKernel, 'CreateToolhelp32Snapshot');
+    @Process32First := GetProcAddress(hKernel, 'Process32First');
+    @Process32Next := GetProcAddress(hKernel, 'Process32Next');
+  END;
+  //quit if we did not get all function addresses
+  IF NOT (assigned(@Process32Next) AND assigned(@Process32First) AND assigned(@CreateToolhelp32Snapshot)) THEN exit;
+  //take a snapshot of all processes at the moment
+  hProcessSnap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  //make sure we got, what we wanted ... else quit ...
+  IF hProcessSnap = DWORD(-1) THEN exit;
+  pe32.dwSize := sizeof(tagPROCESSENTRY32);
+  noerr := Process32First(hProcessSnap, pe32);
+  WHILE noerr DO BEGIN
+    setlength(result, length(result) + 1);
+    result[length(result) - 1].name := pe32.szExeFile;
+    result[length(result) - 1].PID := pe32.th32ProcessID;
+    noerr := Process32Next(hProcessSnap, pe32);
+  END;
+  CloseHandle(hProcessSnap);
+END;
+}
 {$WARNINGS ON}
 {$HINTS ON}
 end.

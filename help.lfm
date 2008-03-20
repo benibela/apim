@@ -1,20 +1,20 @@
 object helpform: Thelpform
-  Left = 192
+  Left = 207
   Height = 449
   Top = 107
-  Width = 601
-  HorzScrollBar.Page = 600
+  Width = 586
+  HorzScrollBar.Page = 585
   VertScrollBar.Page = 448
   BorderStyle = bsToolWindow
   Caption = 'Hilfe'
   ClientHeight = 449
-  ClientWidth = 601
+  ClientWidth = 586
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   LCLVersion = '0.9.25'
   object Memo1: TMemo
     Height = 408
-    Width = 601
+    Width = 586
     Align = alClient
     Color = clBlack
     Font.CharSet = ANSI_CHARSET
@@ -66,8 +66,10 @@ object helpform: Thelpform
       'Durch anklicken eines der Handles, wird das Top-Level-Fenster'
       'ausgewählt.'
       ''
-      'Der Handle des ausgewählten Fensters steht im unteren mittleren'
-      'Teil. Durch Änderung dieses Wertes kann auch ein anderes Fenster'
+      'Der Handle des ausgewählten Fensters steht im unteren '
+      'mittleren'
+      'Teil. Durch Änderung dieses Wertes kann auch ein anderes '
+      'Fenster'
       'ausgewählt werden.'
       ''
       'Klickt man auf den Button "invertieren" wird der Teil des'
@@ -93,23 +95,30 @@ object helpform: Thelpform
       'ist oder nicht. Allerdings lässt sich mit ihr der Status des'
       'Fensters nicht ändern.'
       ''
-      'Die ComboBox die den Text "normal", "maximiert" oder "minimiert"'
-      'trägt, zeigt an ob ein Fenster normal, maximiert oder minimiert'
+      'Die ComboBox die den Text "normal", "maximiert" oder '
+      '"minimiert"'
+      'trägt, zeigt an ob ein Fenster normal, maximiert oder '
+      'minimiert'
       'ist. Durch Änderung der ComboBox wird, auch der Stauts des'
       'Fensters geändert.'
       ''
       'Klickt man auf den Button "WindowStyles", öffnet sich ein '
       'Fenster'
-      'in dem man die decodierten Window Styles, Extended Window Styles'
+      'in dem man die decodierten Window Styles, Extended Window '
+      'Styles'
       'und die Class Styles sieht.'
-      '  Durch änderung des Häckchens vor einem Stylewert, kann man ihn'
+      '  Durch änderung des Häckchens vor einem Stylewert, kann man '
+      'ihn'
       '  aktivieren und deaktivieren.'
       ''
-      '  Mit der Checkbox "hook benutzten" kann eingestellt werden, ob'
+      '  Mit der Checkbox "hook benutzten" kann eingestellt werden, '
+      'ob'
       '  der Style direkt oder über einen Hook geändert werden soll.'
       '  Eine Änderung ohne den Hook hat den Nachteil, dass es häufig'
-      '  vorkommt das Änderungen über die Prozessgrenzen nicht möglich'
-      '  sind. Der Hook gehört allerdings zu einem anderen Prozess, so'
+      '  vorkommt das Änderungen über die Prozessgrenzen nicht '
+      'möglich'
+      '  sind. Der Hook gehört allerdings zu einem anderen Prozess, '
+      'so'
       '  dass die Änderung trotzdem durchgeführt wird.'
       '  Auf alten Systemen (Windows 95, Windows 98...) funktioniert'
       '  die Änderung nur über einen Hook.'
@@ -168,7 +177,8 @@ object helpform: Thelpform
       ''
       'Der gewählte Prozess steht im unteren Bereich, hinter dem Text'
       '"ProcessID".'
-      'Durch ändern dieses Wertes, wird ein anderer Prozess ausgewählt.'
+      'Durch ändern dieses Wertes, wird ein anderer Prozess '
+      'ausgewählt.'
       'Mit Hilfe der ComboBox "Priorität", die die Priorität des '
       'Processes'
       'anzeigt, kann man die Priorität auch ändern.'
@@ -191,10 +201,12 @@ object helpform: Thelpform
       ''
       '|¯¯¯|  /\   |¯¯¯ |¯¯¯ \    /\    /   • •  |¯¯| ¯¯|¯¯ |¯¯¯ |¯¯|'
       '|¯¯¯  /——\  ''——. ''——.  \  /  \  /   |¯¯¯| |¯¯\   |   |——  |¯¯\'
-      '|    /    \ ___| ___|   \/    \/    |___| |   \  |   |___ |   \'
+      '|    /    \ ___| ___|   \/    \/    |___| |   \  |   |___ |   '
+      '\'
       'Dieser Abschnitt besteht nur aus einem Teil, in dem sämtliche'
       'gefundenen Passwörter aufgelistet werden.'
-      'Manche Passwörter können allerdings nicht entschlüsselt werden,'
+      'Manche Passwörter können allerdings nicht entschlüsselt '
+      'werden,'
       'und stehen deshalb, verschlüsselt in der Liste.'
       'Dieser Abschnitt funktioniert nur unter alten Systemen.'
       ''
@@ -208,7 +220,8 @@ object helpform: Thelpform
       '  automatisch aktualisiert werden soll.'
       ''
       '• Bei "Zahlen hexadezimal darstellen" kann man einstellen, ob'
-      '  die Zahlen hexadezimal oder dezimal eingegeben werden sollen.'
+      '  die Zahlen hexadezimal oder dezimal eingegeben werden '
+      'sollen.'
       ''
       '|¯¯¯\   /\   |\  | |  / |¯¯¯          /\   |\  |  •'
       '|   |  /——\  | \ | |--  |——          /——\  | \ |'
@@ -233,17 +246,17 @@ object helpform: Thelpform
   object Panel1: TPanel
     Height = 41
     Top = 408
-    Width = 601
+    Width = 586
     Align = alBottom
     Caption = 'Panel1'
     ClientHeight = 41
-    ClientWidth = 601
+    ClientWidth = 586
     TabOrder = 1
     object Button1: TButton
       Left = 232
       Height = 25
       Top = 8
-      Width = 138
+      Width = 123
       Anchors = [akTop, akLeft, akRight]
       Caption = 'OK'
       OnClick = Button1Click

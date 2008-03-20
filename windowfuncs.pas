@@ -30,7 +30,7 @@ end;
 function LoadFuncFromDLL(dll,func:pchar):pointer;
 
 function EnumWindowsToIntList(parent:HWND;subChilds:boolean):TIntArray; //Liefert die Handles sämtlicher Top-Level-Fenster in einem Array zurück
-function GetRealWindowFromPoint(p:TPoint):THANDLE; //Findet das Fenster an der Position p. Entspricht der Funktion von EDA 6.0f (funktionieren beide nicht richtig)
+function GetRealWindowFromPoint(p:TPoint; ignoreOurWindows:boolean=false):THANDLE; //Findet das Fenster an der Position p. Entspricht der Funktion von EDA 6.0f (funktionieren beide nicht richtig)
 function GetRealWindowsFromPoint(p:TPoint):TIntArray; //Findet alle Fenster an der Position p. Hat den Vorteil gegenüber GetRealWindowFromPoint, das es auf jeden Fall geht ;-)
 function GetWindowTextS(handle:HWND):string; //Entspricht GetWindowText, nur liefert es einen String zurück
 function GetWindowClassNameS(handle:HWND):string; //Entspricht GetClassName, nur liefert es einen String zurück
@@ -133,6 +133,8 @@ type TPointResult=record
   diff:cardinal;
   rect:TRect;
 end;
+PPointResult=^TPointResult;
+
 
 function EnumWindowsChildProc(handle:hwnd;lP:LPARAM):boolean;stdcall;
 var
@@ -152,18 +154,38 @@ begin
       end;
 end;
 
-function GetRealWindowFromPoint(p:TPoint):THANDLE;
+function RealWindowFromPointEnumWindowsProc(wnd:HWND; pr: PPointResult):WINBOOL;stdcall;
+var q:TPoint;
+    r:TRect;
+begin
+  if not IsWindowVisible(wnd) then exit(true);
+  if GetWindowThreadProcessId(wnd,0)=MainThreadID then exit(true);//skip ours
+  GetWindowRect(wnd,r);
+  q:=pr.point;
+  if (q.x<r.left) or (q.y<r.top) or (q.x>r.Right) or (q.y>r.Bottom) then
+    exit(true);
+  ScreenToClient(wnd,q);
+  pr.result:=ChildWindowFromPointEx(wnd,q,CWP_SKIPINVISIBLE);
+  if pr.result=0 then pr.result:=wnd;
+  result:=pr.result=0;
+end;
+
+function GetRealWindowFromPoint(p:TPoint; ignoreOurWindows:boolean=false):THANDLE;
 var
     pr:TPointResult;
 begin
-  Result:=WindowFromPoint(p);
-  if GetWindowLong(result,GWL_STYLE) and ws_child = ws_child then begin
+  pr.Result:=WindowFromPoint(p);
+  if pr.result=0 then exit(0);
+  if ignoreOurWindows and (GetWindowThreadProcessId(pr.result,0)=MainThreadID) then begin
+     pr.point:=p;
+     EnumWindows(@RealWindowFromPointEnumWindowsProc,lparam(@pr));
+  end;
+  if GetWindowLong(pr.result,GWL_STYLE) and ws_child = ws_child then begin
     pr.point:=p;
     pr.diff:=MAXLONG;
-    pr.result:=Result;
-    EnumChildWindows(getparent(result),@EnumWindowsChildProc,integer(@pr));
-    result:=pr.Result;
+    EnumChildWindows(getparent(pr.result),@EnumWindowsChildProc,integer(@pr));
   end;
+  result:=pr.result;
 end;
 
 function GetRealWindowsFromPoint(p:TPoint):TIntArray;
@@ -381,13 +403,15 @@ var
   SetLayeredWindowAttributesf: TSetLayeredWindowAttributes;
 begin
   Result := false;
+  //disabling layered makes the window black, so we don't do it
+
   // Here we import the function from USER32.DLL
   @SetLayeredWindowAttributesf := LoadFuncFromDLL('USER32.DLL','SetLayeredWindowAttributes');
   // If the import did not succeed, make sure your app can handle it!
   if @SetLayeredWindowAttributesf <> nil then
   begin
     // Check the current state of the dialog, and then add the WS_EX_LAYERED attribute
-    SetWindowLong(Wnd, GWL_EXSTYLE, GetWindowLong(Wnd, GWL_EXSTYLE) or WS_EX_LAYERED);
+    if dwFlags<>0 then SetWindowLong(Wnd, GWL_EXSTYLE, GetWindowLong(Wnd, GWL_EXSTYLE) or WS_EX_LAYERED);
     // The SetLayeredWindowAttributes function sets the opacity and
   // transparency color key of a layered window
     SetLayeredWindowAttributesf(Wnd, crKey, bAlpha, dwFlags);

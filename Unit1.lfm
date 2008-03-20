@@ -81,6 +81,7 @@ object mainForm: TmainForm
           VertScrollBar.Visible = True
           Align = alClient
           TabOrder = 0
+          OnClick = windowPropertySheetClick
           object Label8: TLabel
             Left = 11
             Height = 14
@@ -219,11 +220,35 @@ object mainForm: TmainForm
             ParentColor = False
           end
           object Label34: TLabel
-            Left = 10
+            Left = 258
             Height = 14
-            Top = 234
+            Top = 207
             Width = 57
             Caption = 'WNDPROC:'
+            ParentColor = False
+          end
+          object windowExStyles_lb: TLabel
+            Left = 336
+            Height = 14
+            Top = 230
+            Width = 7
+            Caption = '0'
+            ParentColor = False
+          end
+          object Label35: TLabel
+            Left = 10
+            Height = 14
+            Top = 247
+            Width = 34
+            Caption = 'Styles:'
+            ParentColor = False
+          end
+          object windowStyles_lb: TLabel
+            Left = 106
+            Height = 14
+            Top = 230
+            Width = 7
+            Caption = '0'
             ParentColor = False
           end
           object alphatrans_cb: TCheckBox
@@ -305,15 +330,18 @@ object mainForm: TmainForm
             Hint = 'Zeigt und ändern den Text des Fensters.'
             Top = 61
             Width = 455
+            OnChange = windowtextEdtChange
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 5
           end
           object Button5: TButton
-            Left = 282
+            Left = 18
             Height = 25
-            Top = 140
+            Top = 272
             Width = 75
-            Caption = 'windowstyles'
+            Caption = 'erweitert'
+            Enabled = False
+            OnClick = Button5Click
             TabOrder = 6
           end
           object handleEdt: TEdit
@@ -378,6 +406,7 @@ object mainForm: TmainForm
             Top = 408
             Width = 145
             MaxValue = 255
+            OnChange = windowPropertyChanged1
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 13
             Value = 128
@@ -449,14 +478,35 @@ object mainForm: TmainForm
           end
           object wndproc_edt: TEdit
             Tag = 1
-            Left = 104
+            Left = 322
             Height = 23
-            Top = 232
+            Top = 200
             Width = 145
             Color = clBtnFace
             OnKeyUp = updatePropertyKeyUp
             ReadOnly = True
             TabOrder = 20
+          end
+          object windowStyles: TCheckListBox
+            Tag = 1
+            Left = 104
+            Height = 64
+            Top = 248
+            Width = 218
+            ItemHeight = 13
+            OnClickCheck = windowStylesClickCheck
+            OnItemClick = windowStylesItemClick
+            TabOrder = 21
+          end
+          object windowExStyles: TCheckListBox
+            Tag = 1
+            Left = 334
+            Height = 65
+            Top = 248
+            Width = 224
+            ItemHeight = 13
+            OnItemClick = windowStylesItemClick
+            TabOrder = 22
           end
         end
         object PageControl2: TPageControl
@@ -503,7 +553,7 @@ object mainForm: TmainForm
               ParentColor = False
             end
             object mouseToolImage: TImage
-              Left = 160
+              Left = 144
               Height = 20
               Top = 3
               Width = 20
@@ -643,6 +693,16 @@ object mainForm: TmainForm
               Color = clBlack
               ParentColor = False
               TabOrder = 5
+            end
+            object hideAPIVwhenSearching: TCheckBox
+              Left = 176
+              Height = 19
+              Top = 3
+              Width = 108
+              Caption = 'APIV ausblenden'
+              Checked = True
+              State = cbChecked
+              TabOrder = 8
             end
           end
           object TabSheet7: TTabSheet
@@ -852,11 +912,11 @@ object mainForm: TmainForm
           Align = alClient
           Columns = <          
             item
-              Caption = 'ProcessID'
+              Caption = 'Name'
               Width = 150
             end          
             item
-              Caption = 'Name'
+              Caption = 'ProcessID'
               Width = 150
             end          
             item

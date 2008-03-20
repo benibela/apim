@@ -8,7 +8,8 @@ uses
   help in 'help.pas' {helpform},
   windowfuncs in 'windowfuncs.pas',
  // temp in 'temp.pas' {BenMessages},
-  passwort in 'passwort.pas', applicationConfig, winconstwindow;
+  passwort in 'passwort.pas', applicationConfig, winconstwindow,
+windowcontrolfuncs;
   
 begin
   Application.Initialize;

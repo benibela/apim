@@ -39,6 +39,7 @@ object windowstyleform: Twindowstyleform
     Align = alBottom
     ClientHeight = 147
     ClientWidth = 740
+    ParentFont = True
     TabOrder = 0
     object classstyles: TCheckListBox
       Left = 1
@@ -47,18 +48,12 @@ object windowstyleform: Twindowstyleform
       Top = 20
       Width = 738
       Align = alClient
-      Color = clBlack
-      Font.Color = clLime
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
       Items.Strings = (
         'Keine Window aktiv'
       )
-      ItemHeight = 13
       OnClickCheck = classstylesClickCheck
       OnDrawItem = windowstylesDrawItem
-      Style = lbOwnerDrawFixed
+      ParentFont = True
       TabOrder = 0
       Data = {
         0100000000
@@ -72,9 +67,7 @@ object windowstyleform: Twindowstyleform
       Align = alTop
       BevelOuter = bvNone
       Caption = 'Window Class styles:'
-      Color = clBlack
-      Font.Color = clLime
-      Font.Height = -16
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -134,18 +127,13 @@ object windowstyleform: Twindowstyleform
       Top = 19
       Width = 740
       Align = alClient
-      Color = clBlack
-      Font.Color = clLime
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
       Items.Strings = (
         'Keine Window aktiv'
       )
-      ItemHeight = 13
       OnClickCheck = windowexstylesClickCheck
       OnDrawItem = windowstylesDrawItem
-      Style = lbOwnerDrawFixed
+      OnItemClick = windowexstylesItemClick
+      ParentFont = True
       TabOrder = 0
       Data = {
         0100000000
@@ -157,10 +145,6 @@ object windowstyleform: Twindowstyleform
       Align = alTop
       BevelOuter = bvNone
       Caption = 'Extended Window styles:'
-      Color = clBlack
-      Font.Color = clLime
-      Font.Height = -16
-      Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
       TabOrder = 1
@@ -174,6 +158,8 @@ object windowstyleform: Twindowstyleform
     Caption = 'Panel4'
     ClientHeight = 239
     ClientWidth = 740
+    ParentColor = False
+    ParentFont = True
     TabOrder = 3
     object Splitter3: TSplitter
       Cursor = crVSplit
@@ -199,18 +185,13 @@ object windowstyleform: Twindowstyleform
         Top = 19
         Width = 740
         Align = alClient
-        Color = clBlack
-        Font.Color = clLime
-        Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
         Items.Strings = (
           'Keine Window aktiv'
         )
-        ItemHeight = 13
         OnClickCheck = windowstylesClickCheck
         OnDrawItem = windowstylesDrawItem
-        Style = lbOwnerDrawFixed
+        OnItemClick = windowstylesItemClick
+        ParentFont = True
         TabOrder = 0
         Data = {
           0100000000
@@ -222,10 +203,6 @@ object windowstyleform: Twindowstyleform
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Window styles:'
-        Color = clBlack
-        Font.Color = clLime
-        Font.Height = -16
-        Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
         TabOrder = 1
@@ -247,18 +224,13 @@ object windowstyleform: Twindowstyleform
         Top = 20
         Width = 738
         Align = alClient
-        Color = clBlack
-        Font.Color = clLime
-        Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
+        Color = clBtnFace
         Items.Strings = (
           'Keine Window aktiv'
         )
-        ItemHeight = 13
         OnClickCheck = windowstylesClickCheck
         OnDrawItem = windowstylesDrawItem
-        Style = lbOwnerDrawFixed
+        ParentFont = True
         TabOrder = 0
         Data = {
           0100000000
@@ -272,10 +244,6 @@ object windowstyleform: Twindowstyleform
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Window styles:'
-        Color = clBlack
-        Font.Color = clLime
-        Font.Height = -16
-        Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
         TabOrder = 1
