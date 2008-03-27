@@ -1,3 +1,14 @@
+{History:
+  - 2008:
+    Weiterentwicklung, Wechsel von Delphi -> Lazarus
+    Umbenennung von APIV (API Verwalter??) in API Manager
+    (wegen Namenskonflikt einem anderen APIV von 2000)
+  - Ende 2002:
+    Fertigstellung der Version 2
+  - 2001:
+    Erste Veröffentlichung von APIV (entweder Version 1 oder 2)
+}
+
 unit Unit1;
 
 interface
@@ -6,7 +17,7 @@ uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,commontypes,
   ImgList,windowfuncs,passwort, Spin,sysutils,richedit, Menus,FileUtil,
-  CheckLst;
+  CheckLst,TreeListView,windowcontrolfuncs;
 
 type
 
@@ -14,8 +25,27 @@ type
 
   TmainForm = class(TForm)
     alphatrans_cb: TCheckBox;
+    Button1: TButton;
+    callAPI: TButton;
+    callAPIDLL: TEdit;
+    callAPIProc: TEdit;
+    callAPIParameter: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    systemProperties: TListView;
+    windowsListFilterThread: TEdit;
+    Label12: TLabel;
+    windowProcessIDedt: TEdit;
+    windowThreadIdEdt: TEdit;
+    showHandle: TButton;
+    Label38: TLabel;
+    posRBEdt: TEdit;
+    sizeEdt: TEdit;
+    Label37: TLabel;
+    ownerWnd_edt: TEdit;
     hideAPIVwhenSearching: TCheckBox;
     Label35: TLabel;
+    Label36: TLabel;
     windowStyles_lb: TLabel;
     windowExStyles_lb: TLabel;
     windowStyles: TCheckListBox;
@@ -63,7 +93,7 @@ type
     PageControl2: TPageControl;
     PaintBox1: TPaintBox;
     parentWndCmb: TComboBox;
-    posSizeEdt: TEdit;
+    posLTEdt: TEdit;
     Label2: TLabel;
     Label24: TLabel;
     rechtsunten: TPanel;
@@ -74,39 +104,22 @@ type
     handleEdt: TEdit;
     Label23: TLabel;
     TabSheet6: TTabSheet;
-    TabSheet7: TTabSheet;
+    windowListTabSheet: TTabSheet;
     findTimer: TTimer;
     Label7: TLabel;
     Panel1: TPanel;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
-    TabSheet3: TTabSheet;
+    processTabSheet: TTabSheet;
     Panel5: TPanel;
     displayProcesses: TButton;
     TabSheet2: TTabSheet;
-    Label3: TLabel;
-    Label5: TLabel;
-    Label4: TLabel;
-    Label6: TLabel;
-    Bevel1: TBevel;
-    Button19: TButton;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
-    Label19: TLabel;
-    Label20: TLabel;
-    TabSheet4: TTabSheet;
-    ListBox1: TListBox;
-    password: TLabel;
     Button26: TButton;
     TabSheet5: TTabSheet;
     CheckBox3: TCheckBox;
     Edit14: TEdit;
     Label21: TLabel;
-    PaintBox2: TPaintBox;
-    ListView1: TListView;
     ImageList1: TImageList;
-    windowList: TListView;
     windowPropertySheet: TScrollBox;
     Label8: TLabel;
     enabledCb: TCheckBox;
@@ -122,23 +135,28 @@ type
     Label11: TLabel;
     processidedit: TEdit;
     checkhex: TCheckBox;
-    Label12: TLabel;
     Label13: TLabel;
-    Label14: TLabel;
     labclassname: TLabel;
     Label15: TLabel;
     Button5: TButton;
     ColorDialog1: TColorDialog;
 //    ss1: Tss;
+    procedure Button1Click(Sender: TObject);
+    procedure callAPIClick(Sender: TObject);
     procedure enabledCbChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure messagemes_cbKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure ownerWnd_edtDblClick(Sender: TObject);
     procedure parentWndCmbDblClick(Sender: TObject);
-    procedure TabSheet3Show(Sender: TObject);
+    procedure posLTEdtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
+      );
+    procedure showHandleClick(Sender: TObject);
+    procedure processTabSheetShow(Sender: TObject);
     procedure windowListDblClick(Sender: TObject);
     procedure windowListFilterParentUpClick(Sender: TObject);
     procedure windowListFilterParent_edtChange(Sender: TObject);
+    procedure windowProcessIDedtDblClick(Sender: TObject);
     procedure windowPropChangeClick(Sender: TObject);
     procedure windowPropertySheetClick(Sender: TObject);
     procedure windowsListfilterDirectChildsChange(Sender: TObject);
@@ -152,8 +170,6 @@ type
       Y: Integer);
     procedure ComboBox2Change(Sender: TObject);
     procedure processideditChange(Sender: TObject);
-    procedure ListView1Change(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
     procedure checkhexClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Label14Click(Sender: TObject);
@@ -185,12 +201,11 @@ type
       Y: Integer);
     procedure PaintBox1Paint(Sender: TObject);
     procedure parentwndEdtDblClick(Sender: TObject);
-    procedure TabSheet7Show(Sender: TObject);
+    procedure windowListTabSheetShow(Sender: TObject);
     procedure windowAddPropertyClick(Sender: TObject);
     procedure windowListKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState
       );
-    procedure windowListSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
+    procedure windowListSelectItem(Sender: TObject; Item: TTreeListItem);
     procedure windowPropertyChanged1(Sender: TObject);
     procedure windowPropertyListChange(Sender: TObject; Item: TListItem;
       Change: TItemChange);
@@ -199,6 +214,7 @@ type
     procedure windowStylesClickCheck(Sender: TObject);
     procedure windowStylesItemClick(Sender: TObject; Index: integer);
     procedure windowtextEdtChange(Sender: TObject);
+    procedure windowTreeListExpandItem(sender: TObject; item: TTreeListItem);
   private
     { Private-Deklarationen}
     procedure LoadWNetEnumCachedPasswords;
@@ -206,18 +222,33 @@ type
     procedure WM_HELP(var message:TMessage);message WM_HELP;
     procedure WM_SYSCOMMAND(var message:TMessage);message WM_SYSCOMMAND;
     
+    
 
     mouseToolActive: boolean;
     currentMouseWindow:HWND;
     
     currentWindow:HWND;
     displayCalls: longint;
+    niceVisible: boolean;
+    procedure niceSetVisible(vis: boolean; needMouseEvents: boolean);
+    
     procedure displayProperty(prop:TObject);
     procedure changeProperty(prop:TObject);
 
-    procedure displayWindows;
-    
+    //Fensterliste
+    windowTreeList: TTreeListView;
+    procedure displayWindows(itemExtend:TTreeListItem=nil);
+
     procedure openWindowsConst;
+    
+    
+    //Processliste
+    processTreeList: TTreeListView;
+
+
+    //System/Sonstiges
+    procedure setDisplayedSysProperty(name, value: string);
+    procedure displaySysProperties();
   public
   runonNT: boolean ;
     { Public-Deklarationen}
@@ -235,136 +266,11 @@ var
    WNetEnumCachedPasswords:TWNetEnumCachedPasswords=nil;
 
 implementation
-uses TLHelp32,proc9, wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow,windowcontrolfuncs;
+uses TLHelp32,proc9, wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow;
 {$R cursor.res}
 
 
 
-type TMemoryBlock = array of byte;
-     TMemoryBlocks = array of TMemoryBlock;
-//Erzeugt Memory Blocks aus Strings mit Pascalsyntax
-//Ein Block: ('1214', 65, $10, 27)  => '1214A'#16#27
-//Erlaubt Nesting: ('abc',('test')) => 'abctest'#0
-//Erlaubt Pointer: ('p',@'abc','q') => 'p????q'#0 mit ???? = 32 Bit Pointer auf 'abc'#0
-//                                     (also gibt es zwei Blocks)
-//
-//Für Zahlen wird der kleinster LE Datentyp (signed/unsigned 1 Byte, 2 Byte, 4 Byte oder 8 Byte)
-//gewählt, in die der Wert passt
-//Beispiele: 255 => #255 (byte); 256 => #0#1 (LE word); -128 => #255 (shortint)
-//           -129 => #$7F#$FF (LE small int)
-//2147483647 => #$F9#$FF#$FF#$7F (LE dword)
-//
-//Letzte Strings in Klammern werden nullterminier
-//Beispiele: ('hallo ','welt') => 'hallo welt'#0; (('hallo '),'welt') => 'hallo '#0'welt'#0
-//Die Metazeichen ''' für ein ' und #xx für ein Zeichen mit Nummer xx werden nicht unterstützt
-//(da man einfach Zahlen nehmen kann)
-function createMemoryBlocks(s:string):TMemoryBlocks;
-var p: pchar;
-    brackets,currentBlock: longint;
-    blocks:TMemoryBlocks;
-    inStr: boolean;
-    blockStack: array of record
-      blockID: longint;
-      bracketCount: longint;
-    end;
-    newBlock: boolean; //created a new block in the step before
-  procedure currentBlockAddBuffer(block: pointer; size:longint);
-  var oldSize:longint;
-  begin
-    oldSize:=length(blocks[currentBlock]);
-    SetLength(blocks[currentBlock],length(blocks[currentBlock])+size);
-    move(block^,blocks[currentBlock][oldSize],size);
-  end;
-  procedure currentBlockAddByte(b: byte);
-  begin
-    currentBlockAddBuffer(@b,1);
-  end;
-  procedure currentBlockAddPointer(p:pointer);
-  begin
-    currentBlockAddBuffer(@p,4);
-  end;
-  procedure closeBlocks;
-  var block:longint;
-  begin
-    while (length(blockStack)>0) and (blockStack[high(blockStack)].bracketCount>=brackets) do begin
-      block:=currentBlock;
-      currentBlock:=blockStack[high(blockStack)].blockID;
-      currentBlockAddPointer(@blocks[block][0]);
-      setlength(blockStack,high(blockStack));
-    end;
-  end;
-  var lastData: (ldNone,ldNum,ldStr);
-      numStr: string;
-      num:int64;
-begin
-  if s='' then exit(nil);
-  p:=@s[1];
-  brackets:=0;
-  inStr:=false;
-  currentBlock:=0;
-  SetLength(blocks,1);
-  newBlock:=false;
-  lastData:=ldNone;
-  while p^<>#0 do begin
-    if inStr and (p^<>'''') then currentBlockAddByte(ord(p^))
-    else case p^ of
-      '@': begin
-        SetLength(blockStack,length(blockStack)+1);
-        blockStack[high(blockStack)].blockID:=currentBlock;
-        blockStack[high(blockStack)].bracketCount:=brackets;
-        SetLength(blocks,length(blocks)+1);
-        currentBlock:=high(blocks);
-      end;
-      '(': brackets+=1;
-      ')': begin
-        if lastData = ldStr then currentBlockAddByte(0); //Str nullterminiert
-        lastData:=ldNone;
-        brackets-=1;
-      end;
-      ',',' ': closeBlocks;
-      '''': begin
-        inStr:=not inStr;
-        if inStr then lastData:=ldStr;
-      end;
-      '$','-','0'..'9': begin
-        numStr:=p^;
-        repeat inc(p); until p^<>' ';
-        if ((p^ = '$') or (p^='-')) and (numStr<>p^) then begin
-          numStr+=p^;
-          repeat inc(p); until p^<>' ';
-        end;
-        if pos('$',numStr)>0 then begin
-          while p^ in ['0'..'9','A'..'F','a'..'f'] do begin
-            numstr+=p^;
-            inc(p);
-          end;
-        end else
-          while p^ in ['0'..'9'] do begin
-            numstr+=p^;
-            inc(p);
-          end;
-        dec(p);
-        num:=StrToInt64(numStr);
-        if num>=0 then begin //Optimaler Datentyp
-          if num<256 then currentBlockAddBuffer(@num,1)
-          else if num<65536 then currentBlockAddBuffer(@num,2)
-          else if num<4294967296 then currentBlockAddBuffer(@num,4)
-          else currentBlockAddBuffer(@num,8);
-        end else if num<0 then
-          if num>=-128 then currentBlockAddBuffer(@num,1)
-          else if num>=-32768 then currentBlockAddBuffer(@num,2)
-          else if num>=-2147483648 then currentBlockAddBuffer(@num,4)
-          else currentBlockAddBuffer(@num,8);
-      end;
-      else raise Exception.Create('Unexpected character '+p^+' at '+string(p));
-    end;
-    inc(p);
-  end;
-  if instr then raise Exception.Create('String nicht geschlossen');
-  if lastData=ldStr then currentBlockAddByte(0);
-  closeBlocks;
-  result:=blocks;
-end;
 
 function getWindowClassNameToDisplay(wnd:hwnd):string;
 begin
@@ -377,20 +283,6 @@ begin
   Result:=GetFileNameFromHandle(wnd)+' ('+Cardinal2Str(pid)+')';
 end;
 
-procedure AddProcF1(text:string);
-begin
-  mainForm.ListBox1.items.add(text);
-end;
-//Sucht Passwörter
-procedure TmainForm.LoadWNetEnumCachedPasswords;
-var lib:THandle;
-begin
-  if runonNT then exit;
-  lib:=LoadLibrary(@mpr[1]);
-  if lib=0 then exit;
-  @WNetEnumCachedPasswords := GetProcAddress(lib, @'WNetEnumCachedPasswords'[1]);
-  if not Assigned(WNetEnumCachedPasswords) then WNetEnumCachedPasswords:=nil;
-end;
 
 procedure TmainForm.WM_HELP(var message:TMessage);
 var helpinfo:tHELPINFO;
@@ -441,6 +333,36 @@ begin
   inherited;
 end;
 
+procedure TmainForm.niceSetVisible(vis: boolean; needMouseEvents: boolean);
+var i:longint;
+begin
+  if niceVisible=vis then exit;
+  niceVisible:=vis;
+  if runonNT then begin;
+    if vis then begin
+      for i:=7 to 25 do begin
+        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i+5,LWA_ALPHA);
+        Application.ProcessMessages;
+      end;
+      windowfuncs.SetLayeredWindowAttributes(handle,0,0,0);
+      if (PageControl2.ActivePage=windowListTabSheet) or
+         (PageControl1.ActivePage=processTabSheet) then //TreeList doesn't like layered windows
+        SetWindowLong(handle, GWL_EXSTYLE, GetWindowLong(handle, GWL_EXSTYLE) and not WS_EX_LAYERED);
+    end else begin
+      SetWindowLong(handle, GWL_EXSTYLE, GetWindowLong(handle, GWL_EXSTYLE) or WS_EX_LAYERED);
+      Application.ProcessMessages;
+      for i:=25 downto 7 do begin
+        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i,LWA_ALPHA);
+        Application.ProcessMessages;
+        if niceVisible then exit;
+      end;
+    end;
+  end else begin
+    if needMouseEvents then exit;
+    visible:=vis;
+  end;
+end;
+
 function WindowPropertyEnumProc(wnd:HWND;  name:LPTSTR;  hData:HANDLE;  listView: TListView):boolean;stdcall;
 var nameStr: array[0..255] of char;
 begin
@@ -459,6 +381,7 @@ end;
 procedure TmainForm.displayProperty(prop: TObject);
 var propEdt:TEdit;
     rect:TRect;
+    tempHandle: THandle;
     parent: hwnd;
     s:string;
     color:COLORREF;
@@ -479,6 +402,7 @@ begin
       parent:=GetParent(parent);
     end;
   end else if prop=windowtextEdt then windowtextEdt.Text:=GetWindowTextS(currentWindow)
+  else if prop=ownerWnd_edt then ownerWnd_edt.Text:=Cardinal2Str(GetWindow(currentWindow,GW_OWNER))
   else if prop=classNameEdt then classNameEdt.text:=getWindowClassNameToDisplay(currentWindow)
   else if prop=enabledCb then enabledCb.Checked:=IsWindowEnabled(currentWindow)
   else if prop=visibleCb then visibleCb.Checked:=IsWindowVisible(currentWindow)
@@ -490,8 +414,15 @@ begin
       SW_MINIMIZE:showStateCmb.ItemIndex:=1;
       else showStateCmb.ItemIndex:=0;
     end;
-  end else if prop=posSizeEdt then posSizeEdt.Text:=GetWindowPosStr(currentWindow)
-  else if (prop=alphatrans_cb) or (prop=alphatrans_sp) or
+  end else if (prop=posLTEdt) or (prop=posRBEdt) or (prop=sizeEdt) then begin
+    FillChar(rect,sizeof(rect),0);
+    GetWindowRect(currentWindow, rect);
+    windows.ScreenToClient(getParent(currentWindow),rect.TopLeft);
+    windows.ScreenToClient(getParent(currentWindow),rect.BottomRight);
+    posLTEdt.Text:='('+IntToStr(rect.left) + ', '+IntToStr(rect.top)+')';
+    posRBEdt.Text:='('+IntToStr(rect.Right) + ', '+IntToStr(rect.Bottom)+')';
+    sizeEdt.Text:=IntToStr(rect.Right-rect.Left) + 'x'+IntToStr(rect.Bottom-rect.Top);
+  end else if (prop=alphatrans_cb) or (prop=alphatrans_sp) or
           (prop=colorkey_cb) or (prop=colorKeyShape)  then begin
     if runonNT and GetWindowAlphaColorKey(currentWindow,color,alpha,flags) then begin
       alphatrans_cb.Caption:='Transparent:';
@@ -521,10 +452,15 @@ begin
       if not strbeginswith(WM_To_String(i),'Unknown') then
         messagemes_cb.items.Add(WM_To_String(i)+' = '+Cardinal2Str(i)+';');
 
-  end else if prop=userdata_edt then userdata_edt.Text:=Cardinal2Str(GetWindowLong(currentWindow,GWL_USERDATA))
-  else if prop=wndproc_edt then wndproc_edt.Text:=Cardinal2Str(GetWindowLong(currentWindow,GWL_WNDPROC))
+  end else if prop=userdata_edt then userdata_edt.Text:=Cardinal2Str(cardinal(GetWindowLong(currentWindow,GWL_USERDATA)))
+  else if prop=wndproc_edt then wndproc_edt.Text:=Cardinal2Str(cardinal(GetWindowLong(currentWindow,GWL_WNDPROC)))
   else if prop=windowStyles then windowStylesToCheckListBox(currentWindow,windowStyles,windowStyles_lb)
   else if prop=windowExStyles then windowExStylesToCheckListBox(currentWindow,windowExStyles,windowExStyles_lb)
+  else if (prop=windowProcessIDedt) or (prop=windowThreadIdEdt) then begin
+    tempHandle:=0;
+    windowThreadIdEdt.Text:=Cardinal2Str(GetWindowThreadProcessId(currentWindow,@tempHandle));
+    windowProcessIDedt.Text:=Cardinal2Str(tempHandle);
+  end;
 
   ;
 
@@ -555,8 +491,11 @@ begin
     displayProperty(unicodeCb);
     displayProperty(stayOnTopCb);
     displayProperty(showStateCmb);}
-  end else if prop=parentWndCmb then windows.SetParent(currentWindow,Str2Cardinal(parentWndCmb.Text))
-  else if prop=windowtextEdt then SetWindowText(currentWindow,pchar(windowtextEdt.Text))
+  end else if prop=parentWndCmb then begin
+    s:=parentWndCmb.Text;
+    if pos(' - ',s)>0 then s:=splitGet(' - ',s);
+    windows.SetParent(currentWindow,Str2Cardinal(s));
+  end else if prop=windowtextEdt then SetWindowText(currentWindow,pchar(windowtextEdt.Text))
   else if prop=enabledCb then EnableWindow(currentWindow,enabledCb.Checked)
   else if prop=visibleCb then begin
     if visibleCb.Checked then showWindow(currentWindow,sw_show)
@@ -571,14 +510,28 @@ begin
       1: ShowWindow(currentWindow,SW_MINIMIZE);
       2: ShowWindow(currentWindow,SW_MAXIMIZE);
     end;
-  end else if prop=posSizeEdt then begin
-    s:=StringReplace(posSizeEdt.text,' ','',[rfReplaceAll]);
+  end else if prop=posLTEdt then begin
+    s:=StringReplace(posLTEdt.text,' ','',[rfReplaceAll]);
     delete(s,1,pos('(',s));
     rec.Left:=StrToInt(splitGet(',',s));
-    rec.top:=StrToInt(splitGet(')-(',s));
+    rec.top:=StrToInt(splitGet(')',s));
+    SetWindowPos(currentWindow,0,rec.Left,rec.top,0,0,SWP_NOACTIVATE or SWP_NOZORDER or SWP_NOSIZE);
+    RedrawWindow(currentWindow,nil,0,RDW_ERASE or RDW_INVALIDATE);
+  end else if prop=posRBEdt then begin
+    s:=StringReplace(posLTEdt.text,' ','',[rfReplaceAll]);
+    delete(s,1,pos('(',s));
+    rec.Left:=StrToInt(splitGet(',',s));
+    rec.top:=StrToInt(splitGet(')',s));
+    s:=StringReplace(posRBEdt.text,' ','',[rfReplaceAll]);
+    delete(s,1,pos('(',s));
     rec.Right:=StrToInt(splitGet(',',s));
     rec.Bottom:=StrToInt(splitGet(')',s));
-    SetWindowPos(currentWindow,0,rec.Left,rec.top,rec.Right-Rec.Left,rec.Bottom-Rec.Top,SWP_NOACTIVATE or SWP_NOZORDER)
+    SetWindowPos(currentWindow,0,0,0,rec.Right-Rec.Left,rec.Bottom-Rec.Top,SWP_NOACTIVATE or SWP_NOZORDER or SWP_NOMOVE)
+  end else if prop=sizeEdt then begin
+    s:=StringReplace(sizeEdt.text,' ','',[rfReplaceAll]);
+    rec.Right:=StrToInt(splitGet('x',s));
+    rec.Bottom:=StrToInt(s);
+    SetWindowPos(currentWindow,0,0,0,rec.Right,rec.Bottom,SWP_NOACTIVATE or SWP_NOZORDER or SWP_NOMOVE)
   end else if (prop=alphatrans_sp) or (prop=alphatrans_cb) or
               (prop=colorkey_cb) or (prop=colorKeyShape) then begin
 {    flags:=GetWindowLong(currentWindow,GWL_EXSTYLE);
@@ -600,49 +553,61 @@ begin
   displayProperty(prop);
 end;
 
-procedure TmainForm.displayWindows;
-var i:longint;
-    wnd,nextParent:hwnd;
+procedure TmainForm.displayWindows(itemExtend:TTreeListItem);
+var i,j:longint;
+    wnd,parentWnd:hwnd;
+    parentItem: TTreeListItem;
     list:TIntArray;
     s,programS:string;
     filterParentWnd: thandle;
     filterProgram: string;
 begin
   filterProgram:=lowercase(windowListFilterProgram_edt.Text);
-  if windowListFilterParent_edt.text<>'' then
-    filterParentWnd:=Str2Cardinal(windowListFilterParent_edt.text)
-   else
-    filterParentWnd:=0;
+  if itemExtend <> nil then filterParentWnd:=Str2Cardinal(itemExtend.Caption)
+  else if windowListFilterParent_edt.text<>'' then filterParentWnd:=Str2Cardinal(windowListFilterParent_edt.text)
+  else filterParentWnd:=0;
   list:=EnumWindowsToIntList(filterParentWnd,not windowsListfilterDirectChilds.Checked);
-  windowList.Clear;
-  windowList.BeginUpdate;
+  windowTreeList.BeginUpdate;
+  if itemExtend=nil then windowTreeList.Items.Clear
+  else itemExtend.SubItems.Clear;
   for i:=0 to high(list) do begin
     wnd:=list[i];
     programS:=GetFileNameFromHandleToDisplay(wnd);
     if (filterProgram<>'') and (pos(filterProgram,LowerCase(programS))<=0) then continue;
-    with windowList.items.Add do begin
+    parentWnd:=GetParent(wnd);
+    parentItem:=nil;
+    if (parentWnd<>0) and (filterParentWnd <> 0) then
+      parentItem:=windowTreeList.Items.FindItemWithCaption(Cardinal2Str(parentWnd));
+    with windowTreeList.Items.AddChildItem(parentItem) do begin
+      if (filterParentWnd = 0) then
+        if GetWindow(wnd,GW_CHILD)<>0 then begin
+          SubItems.AddItemWithCaption('Dummy'); //will be expanded later
+          Expanded:=false;
+        end;
+
       caption:=Cardinal2Str(wnd);
-      if filterParentWnd <> 0 then begin
+{      if filterParentWnd <> 0 then begin
         nextParent:=getparent(wnd);
         while nextParent<>filterParentWnd do begin
           nextParent:=getparent(nextParent);
           Caption:='  '+Caption;
         end;
-      end;
-      SubItems.add(getwindowtexts(wnd));
-      SubItems.add(getWindowClassNameToDisplay(wnd));
+      end;}
+      
+      RecordItems.AddWithText(getwindowtexts(wnd));
+      RecordItems.AddWithText(getWindowClassNameToDisplay(wnd));
       s:='';
       if IsWindowVisible(wnd) then s:=s+'visible';//'Visible: true | ' else s:=s+'Visible: false | ';
       if IsWindowEnabled(wnd) then begin
         if s<>'' then s:=s+', ';//Enable: true' else s:=s+'Enable: false';
         s+='enabled';
       end;
-      SubItems.Add(s);
-      SubItems.Add(GetWindowPosStr(wnd));
-      SubItems.Add(programS);
+      RecordItems.AddWithText(s);
+      RecordItems.AddWithText(GetWindowPosStr(wnd));
+      RecordItems.AddWithText(programS);
     end;
   end;
-  windowList.EndUpdate;
+  windowTreeList.EndUpdate;
 end;
 
 procedure TmainForm.openWindowsConst;
@@ -672,6 +637,148 @@ begin
     end;
 end;
 
+procedure TmainForm.setDisplayedSysProperty(name, value: string);
+begin
+  with systemProperties.Items.add do begin
+    Caption:=name;
+    subitems.Add(value);
+  end;
+end;
+
+procedure AddProcF1(text:string);
+begin
+  //mainForm.ListBox1.items.add(text);
+end;
+//Sucht Passwörter
+procedure TmainForm.LoadWNetEnumCachedPasswords;
+var lib:THandle;
+begin
+  if runonNT then exit;
+  lib:=LoadLibrary(@mpr[1]);
+  if lib=0 then exit;
+  @WNetEnumCachedPasswords := GetProcAddress(lib, @'WNetEnumCachedPasswords'[1]);
+  if not Assigned(WNetEnumCachedPasswords) then WNetEnumCachedPasswords:=nil;
+end;
+
+procedure TmainForm.displaySysProperties();
+var buf:array[0..300] of  char;
+    reg:TRegistry;
+    a,b,anaus:integer;
+    ptemp:array[0..1024] of char;
+temp,pwd_dec:string;
+    ed:TEdit;
+    memory:TMemoryStatus;
+
+begin
+  systemProperties.Clear;
+
+setDisplayedSysProperty('Prozessorspeed',floatToStr(GetCPUSpeed)+' MHz');
+
+try //Nur 9xME
+  if Pchar(pointer($FE061))^<>#0 then
+    setDisplayedSysProperty('BIOS Name',String(Pchar(pointer($FE061)))); // BIOS Name
+  if Pchar(pointer($FFFF5))^<>#0 then
+    setDisplayedSysProperty('BIOS Datum',String(Pchar(pointer($FFFF5)))); // BIOS Datum
+  if Pchar(pointer($FEC71))^<>#0 then
+    setDisplayedSysProperty('BIOS Seriennummer',String(Pchar(Pointer($FEC71)))); // Seriennummer
+except
+end;
+
+memory.dwLength:=sizeof(memory);
+GlobalMemoryStatus(memory);
+setDisplayedSysProperty('Gesamter Ram: ',inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
+setDisplayedSysProperty('Freier Ram: ',inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
+
+GetWindowsDirectory(buf,256);
+setDisplayedSysProperty('Windowspfad',buf);
+
+GetTempPath(256,buf);
+setDisplayedSysProperty('Temppfad',buf);
+
+GetSystemDirectory( buf,256);
+setDisplayedSysProperty('Systempfad:',buf);
+
+
+reg:=TRegistry.create(KEY_READ);
+reg.RootKey:=HKEY_LOCAL_MACHINE;
+if reg.OpenKey('\Software\Microsoft\Windows NT\CurrentVersion',false) then begin //Nur Win NT
+  if reg.ValueExists('CSDVersion') then
+    setDisplayedSysProperty('Service Pack',reg.ReadString('CSDVersion'));
+end else if reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',false) then begin  //Nur Win9x
+  if reg.ValueExists('ProductKey') then
+    setDisplayedSysProperty('Produktkey',reg.ReadString('ProductKey'));
+  if reg.ValueExists('VersionNumber') then
+    setDisplayedSysProperty('Version:',reg.ReadString('VersionNumber'));
+end;
+if reg.ValueExists('ProductName') then
+  setDisplayedSysProperty('Betriebsystem',reg.ReadString('ProductName'));
+if reg.ValueExists('ProductId') then
+  setDisplayedSysProperty('Seriennummer',reg.ReadString('ProductId'));
+if reg.ValueExists('RegisteredOwner') then
+  setDisplayedSysProperty('Benutzer',reg.ReadString('RegisteredOwner'));
+if reg.ValueExists('RegisteredOrganization') then
+  setDisplayedSysProperty('Organisation',reg.ReadString('RegisteredOrganization'));
+if reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',false) then begin
+  if reg.ValueExists('Workgroup') then
+    setDisplayedSysProperty('Arbeitsgruppe',reg.ReadString('Workgroup'));
+  if reg.ValueExists('ComputerName') then
+    setDisplayedSysProperty('ComputerName',reg.ReadString('ComputerName'));
+end;
+
+//Passwörter (9x)
+if assigned(WNetEnumCachedPasswords) then
+  WNetEnumCachedPasswords(nil, 0, $FF, @AddPassword, 0);
+  
+reg.Rootkey:=HKEY_CURRENT_USER;
+IF reg.OpenKey('\Control Panel\Desktop\',False) and Reg.ValueExists('ScreenSaveUsePassword')
+   and Reg.ValueExists('ScreenSave_Data') THEN
+BEGIN
+  anaus:=reg.ReadInteger('ScreenSaveUsePassword'); // Passwortschutz aktiv ?
+  reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlüsseltes Passwort lesen
+  IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
+  BEGIN
+    pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
+     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// Entschlüsseltes Passwort ausgeben
+  END
+end;
+
+
+reg.free;
+end;
+
+function genericCall(dll, proc: string; stackParameters: TMemoryBlocks; alignment:longint=4): longint;
+
+var procAddress: pointer;
+    dllHandle: HINST;
+    stackParams: pointer;
+    i,stackSize: longint;
+    currentESP: pointer;
+begin
+  dllHandle:=LoadLibrary(pchar(dll));
+  if dllHandle=0 then exit(0);
+  procAddress:=GetProcAddress(dllHandle,pchar(proc));
+  if procAddress=nil then exit(0);
+
+  if length(stackParameters[0]) mod alignment <> 0 then begin
+    stackSize:=length(stackParameters[0]);
+    setlength(stackParameters[0],length(stackParameters[0])+alignment-length(stackParameters[0]) mod alignment);
+    for i:=stacksize to high(stackParameters[0]) do
+      stackParameters[0,stacksize]:=0;
+  end;
+  stackSize:=length(stackParameters[0])*sizeof(stackParameters[0,0]);
+  asm
+    sub esp, stacksize
+    mov currentESP, esp
+  end;
+  move(stackParameters[0,0],(currentESP)^,stackSize);
+  asm
+    mov eax, $12345678
+    //call
+    call procAddress
+  end;
+end;
+
+
 
 
 //---------------------------------------------------
@@ -684,24 +791,56 @@ begin
   if key=VK_RETURN then messageSend_btn.Click;
 end;
 
-procedure TmainForm.parentWndCmbDblClick(Sender: TObject);
+procedure TmainForm.ownerWnd_edtDblClick(Sender: TObject);
 begin
-  handleEdt.Text:=parentWndCmb.text;
+  handleEdt.Text:=ownerWnd_edt.Text;
   changeProperty(handleEdt);
 end;
 
-procedure TmainForm.TabSheet3Show(Sender: TObject);
+procedure TmainForm.parentWndCmbDblClick(Sender: TObject);
+var s:string;
 begin
+  s:=parentWndCmb.text;
+  if pos(' - ',s)>0 then s:=splitGet(' - ',s);
+  handleEdt.Text:=s;
+  changeProperty(handleEdt);
+end;
+
+procedure TmainForm.posLTEdtKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+end;
+
+procedure TmainForm.showHandleClick(Sender: TObject);
+begin
+  if GetWindowThreadProcessId(currentWindow,0)<>MainThreadID then
+    niceSetVisible(false,false);
+  toggleWindowMarkStatus(currentWindow);
+  sleep(125);
+  toggleWindowMarkStatus(currentWindow);
+  sleep(125);
+  toggleWindowMarkStatus(currentWindow);
+  sleep(125);
+  toggleWindowMarkStatus(currentWindow);
+  if GetWindowThreadProcessId(currentWindow,0)<>MainThreadID then
+    niceSetVisible(true,false);
+end;
+
+procedure TmainForm.processTabSheetShow(Sender: TObject);
+begin
+  SetWindowLong(Handle,GWL_EXSTYLE,GetWindowLong(handle,GWL_EXSTYLE) and not WS_EX_LAYERED);
   displayProcesses.Click;
 end;
 
 procedure TmainForm.windowListDblClick(Sender: TObject);
 var temp:word;
 begin
-  if windowList.Selected=nil then exit;
+//TODO: windowslist
+{  if windowList.Selected=nil then exit;
   windowListFilterParent_edt.Text:=trim(windowList.Selected.Caption);
   temp:=vk_return;
-  windowListFilterProgram_edtKeyUp(nil,temp,[]);
+  windowListFilterProgram_edtKeyUp(nil,temp,[]);}
 end;
 
 procedure TmainForm.windowListFilterParentUpClick(Sender: TObject);
@@ -715,6 +854,12 @@ end;
 procedure TmainForm.windowListFilterParent_edtChange(Sender: TObject);
 begin
   windowsListfilterDirectChilds.Enabled:=StrToIntDef(windowListFilterParent_edt.Text,0)<>0;
+end;
+
+procedure TmainForm.windowProcessIDedtDblClick(Sender: TObject);
+begin
+  processidedit.Text:=windowProcessIDedt.text;
+  processTabSheet.Show;
 end;
 
 procedure TmainForm.windowPropChangeClick(Sender: TObject);
@@ -830,6 +975,20 @@ begin
 
 end;
 
+procedure TmainForm.Button1Click(Sender: TObject);
+begin
+  windowListFilterParent_edt.Text:=Cardinal2Str(currentWindow);
+  windowListFilterProgram_edt.Text:='';
+  if PageControl2.ActivePage<>windowListTabSheet then windowListTabSheet.Show
+  else displayWindows;
+end;
+
+procedure TmainForm.callAPIClick(Sender: TObject);
+begin
+  genericCall(callAPIDLL.Text,callAPIProc.Text,createMemoryBlocks(callAPIParameter.Text));
+
+end;
+
 procedure TmainForm.Button4Click(Sender: TObject);
 var
     s:string;
@@ -842,14 +1001,15 @@ end;
 procedure TmainForm.windowPropertyListChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 begin
- { if change<>ctText then exit;
+//TODO:??
+  {if change<>ctText then exit;
   if item=nil then exit;
   if displayCalls>0 then exit; //change is called when internally changing *grr*
   ShowMessage(item.Caption);
-  ListView1.EditingDone;
+  systemProperties.EditingDone;
   RemoveProp(currentWindow, pchar(item.SubItems[2]));
   SetProp(currentWindow, pchar(item.Caption), Str2Cardinal(item.SubItems[0]));
-  displayProperty(windowPropertyList);       }
+  displayProperty(windowPropertyList);}
 end;
 
 procedure TmainForm.windowPropertyListDeletion(Sender: TObject; Item: TListItem
@@ -896,6 +1056,15 @@ begin
 
 end;
 
+procedure TmainForm.windowTreeListExpandItem(sender: TObject;
+  item: TTreeListItem);
+begin
+  if item.SubItems.count=0 then exit;
+  if item.SubItems[0].Caption='Dummy' then begin
+    displayWindows(item);
+  end;
+end;
+
 procedure TmainForm.windowAddPropertyClick(Sender: TObject);
 var name,value:string;
 begin
@@ -920,11 +1089,7 @@ begin
     currentMouseWindow:=0;
 
     if hideAPIVwhenSearching.Checked then
-      for i:=25 downto 7 do begin
-        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i,LWA_ALPHA);
-        Application.ProcessMessages;
-        if screen.Cursor<>crScanner then break;
-      end;
+      niceSetVisible(false, true);
   end;
 end;
 
@@ -936,13 +1101,8 @@ begin
     screen.Cursor:=crDefault;
     toggleWindowMarkStatus(currentMouseWindow);
     
-    if hideAPIVwhenSearching.Checked then begin
-      for i:=7 to 25 do begin
-        windowfuncs.SetLayeredWindowAttributes(handle,0,10*i+5,LWA_ALPHA);
-        Application.ProcessMessages;
-      end;
-      windowfuncs.SetLayeredWindowAttributes(handle,0,0,0);
-    end;
+    if hideAPIVwhenSearching.Checked then
+      niceSetVisible(true,true);
     
     handleEdt.Text:=Cardinal2Str(currentMouseWindow);
     changeProperty(handleEdt);
@@ -965,8 +1125,11 @@ begin
   changeProperty(handleEdt);
 end;
 
-procedure TmainForm.TabSheet7Show(Sender: TObject);
+procedure TmainForm.windowListTabSheetShow(Sender: TObject);
 begin
+  //Workaround treelistview works not correct when enabled
+  if GetWindowLong(handle, GWL_EXSTYLE) or WS_EX_LAYERED <>0then
+    SetWindowLong(handle, GWL_EXSTYLE, GetWindowLong(handle, GWL_EXSTYLE) and not WS_EX_LAYERED);
   displayWindows;
 end;
 
@@ -976,13 +1139,11 @@ begin
   if key=VK_F5 then displayWindows;
 end;
 
-procedure TmainForm.windowListSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
+procedure TmainForm.windowListSelectItem(Sender: TObject; Item: TTreeListItem);
 begin
-  if Selected then begin
-    handleEdt.Text:=item.Caption;
-    changeProperty(handleEdt);
-  end;
+  if item=nil then exit;
+  handleEdt.Text:=item.Caption;
+  changeProperty(handleEdt);
 end;
 
 {procedure TmainForm.setString(x:THandle;Spalte:integer);
@@ -1140,29 +1301,20 @@ VAR
   i: integer;
   prio:integer;
   ttt:string;
-  item:TListItem;
-
+  item:TTreeListItem;
+  parentItem: TTreeListItem;
 BEGIN
-  mainForm.listView1.Items.Clear;
+  if processTreeList=nil then exit;//wtf??
+  processTreeList.BeginUpdate;
+  processTreeList.items.clear;
   makeSnapshot;
   if hProcessSnap=dword(-1) then exit;
   if not  Process32First(hProcessSnap, pe32) then exit;
   repeat
-    item:=nil;
-    if pe32.th32ParentProcessID<>0 then
-      for i:=Listview1.Items.count-1 downto 0 do
-        if Str2Cardinal(ListView1.items[i].SubItems[0])=pe32.th32ParentProcessID then begin
-          item:=ListView1.Items.Insert(i+1);
-          item.Caption:='   '+copy(ListView1.items[i].caption,1,rpos(' ',ListView1.items[i].caption))+ExtractFileName(string(pe32.szExeFile));
-          break;
-        end;
-    if item = nil then begin
-      item:=mainForm.listView1.Items.Add;
-      item.Caption:=ExtractFileName(string(pe32.szExeFile));
-    end;
-
-    item.SubItems.Add(Cardinal2Str(pe32.th32ProcessID));
-    item.SubItems.Add(string(pe32.szExeFile));
+    parentItem:=processTreeList.Items.FindItemWithRecordText(0,Cardinal2Str(pe32.th32ParentProcessID));
+    item:=processTreeList.Items.AddChildItemWithCaption(parentItem, ExtractFileName(string(pe32.szExeFile)));
+    item.recordItems.AddWithText(Cardinal2Str(pe32.th32ProcessID));
+    //item.recordItems.AddWithText(string(pe32.szExeFile));
 
     ttt:='';
     prio:=GetProcessPriority( pe32.th32ProcessID);
@@ -1171,11 +1323,13 @@ BEGIN
     if prio=NORMAL_PRIORITY_CLASS then ttt:='NORMAL';
     if prio=REALTIME_PRIORITY_CLASS then ttt:='ECHT ZEIT';
     ttt:=ttt+'('+Cardinal2Str(prio)+')';
-    item.SubItems.Add(ttt);
+    item.recordItems.AddWithText(ttt);
 
-    item.SubItems.Add(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
+    item.recordItems.AddWithText(inttostr(pe32.cntUsage));// string(pe32.szExeFile));
+//    item.recordItems.AddWithText(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
   until not Process32Next(hProcessSnap, pe32);
   CloseHandle(hProcessSnap);
+  processTreeList.EndUpdate;
 end;
 
 procedure TmainForm.Button26Click(Sender: TObject);
@@ -1250,178 +1404,15 @@ mouseHandleEdt.text:=Cardinal2Str(WindowFromPoint(pp));
 end;
 
 
-function GetCPUSpeed: Double;
-const
-TimeOfDelay = 500;
-var
-TimerHigh,
-TimerLow: DWord;
-begin
-SetPriorityClass(GetCurrentProcess, REALTIME_PRIORITY_CLASS);
-SetThreadPriority(GetCurrentThread,
-THREAD_PRIORITY_TIME_CRITICAL);
-asm
-dw 310Fh
-mov TimerLow, eax
-mov TimerHigh, edx
-end;
-Sleep(TimeOfDelay);
-asm
-dw 310Fh
-sub eax, TimerLow
-sub edx, TimerHigh
-mov TimerLow, eax
-mov TimerHigh, edx
-end;
-Result := round (TimerLow / (1000.0 * TimeOfDelay));
-
-end;
 
 procedure TmainForm.PageControl1Change(Sender: TObject);
-var buf:array[0..300] of  char;
-    reg:TRegistry;
-    a,b,anaus:integer;
-    ptemp:array[0..1024] of char;
-temp,pwd_dec:string;
-    ed:TEdit;
-    memory:TMemoryStatus;
-
 begin
-if PageControl1.ActivePage=TabSheet4 then begin//TODO:
-listbox1.Clear;
-  if assigned(WNetEnumCachedPasswords) then
-  if WNetEnumCachedPasswords(nil, 0, $FF, @AddPassword, 0) <> 0 then
-   begin
-      ListBox1.Items.Add('Keine Passwörter gefunden!');
-    end
-  else
-   if Count = 0 then
-    ListBox1.Items.Add('Keine Passwörter gefunden!');
 
-     reg:=TRegistry.Create;
-     reg.Rootkey:=HKEY_CURRENT_USER;
-anaus:=0;
-     IF reg.OpenKey('\Control Panel\Desktop\',False) THEN // Registry öffnen
-       BEGIN
-         anaus:=reg.ReadInteger('ScreenSaveUsePassword'); // Passwortschutz aktiv ?
-         reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlüsseltes Passwort lesen
-       END;
-     temp:=ptemp;
-     IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
-       BEGIN
-         pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
-         listBox1.items.add('Bildschirmschoner Passwort:  '+pwd_dec);// Entschlüsseltes Passwort ausgeben
-       END
-     ELSE
-         listBox1.items.add('Bildschirmschoner Passwort:  NICHT DA');// Wenn kein Passwort existiert
-reg.free;
-end;
-if PageControl1.ActivePage=TabSheet2 then begin
-memory.dwLength:=sizeof(memory);
-GlobalMemoryStatus(memory);
-label16.Caption:='Gesamter Ram: '+inttostr(memory.dwTotalPhys div 1024000) +' MB';
-label17.Caption:='Freiere Ram: '+inttostr(memory.dwAvailPhys div 1024000)+' MB';
-
-GetWindowsDirectory(buf,256);
-Label3.Caption:='Windows installiert nach: '+buf;
-if Label3.Caption[Length(Label3.Caption)]<>'\' then
-Label3.Caption:=Label3.Caption+'\';
-buf:='';
-GetTempPath( 256,buf);
-Label5.Caption:='Temppfad: '+buf;
-if Label5.Caption[Length(Label5.Caption)]<>'\' then
-Label5.Caption:=Label5.Caption+'\';
-GetSystemDirectory( buf,256);
-Label4.Caption:='Systemverzeichnis: '+buf;
-if Label4.Caption[Length(Label4.Caption)]<>'\' then
-Label4.Caption:=Label4.Caption+'\';
-Label6.Caption:='Prozessor: '+floatToStr(GetCPUSpeed);
-reg:=TRegistry.create;
-reg.RootKey:=HKEY_LOCAL_MACHINE;
-reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',true);
-if reg.ValueExists('ProductId') then
-  (findComponent('edit10') as TEdit).text:=reg.ReadString('ProductId');
-if reg.ValueExists('ProductKey') then
-  (findComponent('edit11')as TEdit).text:=reg.ReadString('ProductKey');
-if reg.ValueExists('VersionNumber') then
-  (FindComponent('edit13') as TEdit).text:=reg.ReadString('VersionNumber');
-
-
-if reg.ValueExists('ProductName') then
-  (findComponent('edit12')as TEdit).text:=reg.ReadString('ProductName');
-  Application.ProcessMessages;
-if reg.ValueExists('RegisteredOwner') then
-  (findComponent('edit2') as TEdit ).text:=reg.ReadString('RegisteredOwner');
-  Application.ProcessMessages;
-if reg.ValueExists('RegisteredOrganization') then
-  (findComponent('edit7')as TEdit).text:=reg.ReadString('RegisteredOrganization');
-reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',true);
-if reg.ValueExists('Workgroup') then
-  (findComponent('edit8')as Tedit).text:=reg.ReadString('Workgroup')
-  else begin
-    (findComponent('edit8') as tedit).visible:=false;
-  end;
-if reg.ValueExists('ComputerName') then
-  (findComponent('edit9') as tedit).text:=reg.ReadString('ComputerName')
-  else begin
-    (findComponent('edit9') as  tedit).visible:=false;
-  end;
-b:=0;
-for a:=1 to 13 do begin
-ed:=findcomponent('Edit'+IntToStr(a)) as Tedit;
-if ed <> nil then begin
-font:=ed.Font;
-if (ed.width < canvas.textwidth(ed.text))and(b<canvas.textwidth(ed.text)) then
-b:=canvas.textwidth(ed.text)+10;
-end;
-end;
-if b<>0  then
-for a:=1 to 13 do
-(findcomponent('Edit'+IntToStr(a)) as Tedit).Width:=b;
-
-  reg.free;
-paintbox2.Canvas.TextOut(2,1,'Betriebsystem:');
-paintbox2.Canvas.TextOut(2,16,'Version:');
-paintbox2.Canvas.TextOut(2,48,'Benutzter:');
-paintbox2.Canvas.TextOut(2,64,'Organisation:');
-paintbox2.Canvas.TextOut(2,80,'Seriennummer:');
-paintbox2.Canvas.TextOut(2,96,'Kodenummer:');
-paintbox2.Canvas.TextOut(2,112,'Arbeitsgruppe:');
-paintbox2.Canvas.TextOut(2,128,'ComputerName:');
-  try
-Label18.Caption := 'BIOS Name: '+String(Pchar(pointer($FE061))); // BIOS Name
-Application.ProcessMessages;
-Label19.Caption := 'BIOS Datum: '+String(Pchar(pointer($FFFF5))); // BIOS Datum
-Application.ProcessMessages;
-Label20.Caption := 'BIOS Seriennummer: '+String(Pchar(Pointer($FEC71))); // Seriennummer
-Application.ProcessMessages;
-except
-ShowMessage('Unbekannter Fehler beim BIOS zugrief');
-end;
-
-end;
+  displaySysProperties();
 end;
 
 procedure TmainForm.Button19Click(Sender: TObject);
-var reg:TRegistry;
 begin
-reg:=TRegistry.create;
-reg.RootKey:=HKEY_LOCAL_MACHINE;
-reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',true);
-reg.WriteString('RegisteredOwner',(findComponent('edit2') as TEdit ).text);
-reg.WriteString('RegisteredOrganization',(findComponent('edit7') as TEdit).text);
-
-reg.WriteString('ProductId',(findComponent('edit10')as Tedit).text);
-reg.WriteString('ProductKey',(findComponent('edit11') as tedit).text);
-reg.WriteString('ProductName',  (findComponent('edit12')as TEdit).text);
-reg.WriteString('VersionNumber',(FindComponent('edit13') as TEdit).text);
-reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',true);
-if (findComponent('edit8')as TEdit).Visible then
-reg.WriteString('Workgroup',(findComponent('edit8') as Tedit).Text);
-if (findComponent('edit9') as Tedit).Visible then
-reg.WriteString('ComputerName',(findComponent('edit9')as Tedit).Text);
-
-reg.free;
 end;
 
 
@@ -1433,72 +1424,7 @@ findTimer.Enabled:=CheckBox3.Checked;
 end;
 
 procedure TmainForm.Edit1Change(Sender: TObject);
-var han:THandle;
-    temp:cardinal;
-    flags:integer;
-    rect:TRect;
-    classNameEdt:string;
-    color:COLORREF;
-    alpha:byte;
-begin                       //TODO: remoive
-  if mouseHandleEdt.text='' then exit;
-try
-  han:=Str2Cardinal(mouseHandleEdt.text);
-  enabledCb.Checked:= IsWindowEnabled(han);
-  visibleCb.Checked:= IsWindowVisible(han);
-  unicodeCb.Checked:= IsWindowUnicode(han);
-  case getshowwindow(han) of
-    SW_MAXIMIZE:showStateCmb.ItemIndex:=2;
-    SW_MINIMIZE:showStateCmb.ItemIndex:=1;
-    else showStateCmb.ItemIndex:=0;
-  end;
-  windowtextEdt.Text:=getwindowtextS(han);
-  Label12.Caption:=Cardinal2Str( GetWindowThreadProcessId(han,@temp));
-  Label14.Caption:=Cardinal2Str( temp);
-  classNameEdt:=getWindowClassNameToDisplay(han);
-  labclassname.Caption:='Classname: '+classNameEdt;
-//  parentwndEdt.text:=Cardinal2Str(windows.getparent(han));
-  GetWindowRect(han,rect);
-  windows.ScreenToClient(getParent(han),rect.TopLeft);
-  windows.ScreenToClient(getParent(han),rect.BottomRight);
-  posSizeEdt.text:=IntToStr(rect.left);
-{  posYEdt.text:=IntToStr(rect.top);
-  sizeXEdt.text:=IntToStr(rect.Right-rect.left);
-  sizeYEdt.text:=IntToStr(rect.Bottom-rect.Top);}
-  messagemes_cb.ItemIndex:=-1;
-  messagemes_cb.Clear;
-  classNameEdt:=UpperCase(classNameEdt);
-  if (classNameEdt='EDIT')or(classNameEdt='RICHEDIT')or(classNameEdt='RICHEDIT_CLASS') then begin
-    messagemes_cb.Items.Add('EM_SETPASSWORDCHAR');
-    messagemes_cb.Items.Add('EM_LIMITTEXT');
-  end;
-  if (classNameEdt='COMBOBOX') then begin
-    messagemes_cb.Items.Add('CB_ADDSTRING');
-    messagemes_cb.Items.Add('CB_DELETESTRING');
-    messagemes_cb.Items.Add('CB_SETDROPPEDWIDTH');
-    messagemes_cb.Items.Add('CB_SETHORIZONTALEXTENT');
-    messagemes_cb.Items.Add('CB_SETITEMHEIGHT');
-  end;
-  if (classNameEdt='LISTBOX') then begin
-    messagemes_cb.Items.Add('LB_ADDSTRING');
-    messagemes_cb.Items.Add('LB_DELETESTRING');
-    messagemes_cb.Items.Add('LB_SETCOLUMNWIDTH');
-    messagemes_cb.Items.Add('LB_SETHORIZONTALEXTENT');
-    messagemes_cb.Items.Add('LB_SETITEMHEIGHT');
-  end;
-  if (classNameEdt='RICHEDIT')or(classNameEdt='RICHEDIT_CLASS') then begin
-    messagemes_cb.Items.Add('EM_SETBKGNDCOLOR');
-    messagemes_cb.Items.Add('EM_SETFONTSIZE');
-    messagemes_cb.Items.Add('EM_SETZOOM');
-    messagemes_cb.Items.Add('EM_SHOWSCROLLBAR');
-  end;
-  if (classNameEdt='SCROLLBAR') then begin
-    messagemes_cb.Items.Add('SBM_SETRANGE');
-  end;
-
-except
-  exit;
-end;
+begin
 end;
 
 procedure TmainForm.windowPropertyChanged1(Sender: TObject);
@@ -1511,7 +1437,74 @@ var reg:TRegistry;
     lb:LOGBRUSH  ;
 
 begin
+  niceVisible:=true;
+  
+  //=========Fensterliste===========
+  windowTreeList:= TTreeListView.create(windowListTabSheet);
+  windowTreeList.Parent:=windowListTabSheet;
+  windowTreeList.Visible:=true;
+  windowTreeList.Align:=alClient;
+  windowTreeList.OnExpandItem:=windowTreeListExpandItem;
+  windowTreeList.OnKeyUp:=windowListKeyUp;
+  windowTreeList.OnSelect:=windowListSelectItem;
+  windowTreeList.OnDblClick:=windowListDblClick;
+  windowTreeList.sorted:=true;
+  if windowTreeList.HeaderSections.Count>0 then
+    windowTreeList.HeaderSections[0].Text:='Handle'
+   else
+    windowTreeList.HeaderSections.add.Text:='Handle';
+  windowTreeList.HeaderSections[0].Width:=140;
+  with windowTreeList.HeaderSections.Add do begin
+    text:='Titel';
+    Width:=140;
+  end;
+  with windowTreeList.HeaderSections.Add do begin
+    text:='Klasse';
+    Width:=100;
+  end;
+  with windowTreeList.HeaderSections.Add do begin
+    text:='Status';
+    Width:=100;
+  end;
+  with windowTreeList.HeaderSections.Add do begin
+    text:='Größe';
+    Width:=130;
+  end;
+  with windowTreeList.HeaderSections.Add do begin
+    text:='Programm';
+    Width:=150;
+  end;
 
+  //Processliste
+  processTreeList:= TTreeListView.create(processTabSheet);
+  processTreeList.Parent:=processTabSheet;
+  processTreeList.Visible:=true;
+  processTreeList.Align:=alClient;
+{  processTreeList.OnExpandItem:=processTreeListExpandItem;
+  processTreeList.OnKeyUp:=windowListKeyUp;
+  processTreeList.OnSelect:=windowListSelectItem;
+  processTreeList.OnDblClick:=windowListDblClick;}
+  processTreeList.sorted:=true;
+  if processTreeList.HeaderSections.Count>0 then
+    processTreeList.HeaderSections[0].Text:='Programm'
+   else
+    processTreeList.HeaderSections.add.Text:='Programm';
+  processTreeList.HeaderSections[0].Width:=180;
+  with processTreeList.HeaderSections.Add do begin
+    text:='PID';
+    Width:=40;
+  end;
+  with processTreeList.HeaderSections.Add do begin
+    text:='Priority';
+    Width:=100;
+  end;
+  with processTreeList.HeaderSections.Add do begin
+    text:='Threads';
+    Width:=100;
+  end;
+
+  //================================
+  
   LoadWNetEnumCachedPasswords;
 //  desktopDC:=createDc('DISPLAY',nil,nil,nil);//getdc(GetDesktopWindow);
 //     messageho
@@ -1534,34 +1527,9 @@ end;
 
 procedure TmainForm.FormMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
-{var mes:TBenMessages;
-    handles:TIntArray;
-    p:TPoint;
-    i:integer;} //TODO: ???
+
 begin
-{if status=2 then begin
-  status:=1;
-  Screen.Cursor:=crDefault;
-  GetCursorPos(p);
-  handles:=getrealwindowsfrompoint(p);
-  if length(handles)>1 then begin
-    mes:=TBenMessages.Create(nil);
-    try
-      mes.Text.Caption:='Es wurden mehrere verschiedene Fenster an der aktuellen Position gefunden, sie können sich eines aussuchen:';
-      for i:=0 to high(handles) do begin
-        mes.list.Items.add('Handle: '+Cardinal2Str(handles[i])+'  Text: '+GetWindowTextS(handles[i])+'  Classname: '+GetWindowClassNameS(handles[i]));
-      end;
-      if mes.ShowModal=mrok then begin
-        MAUSHANDLE:=handles[mes.list.itemindex];
-        Timer1Timer(nil);
-      end;
-    finally
-      mes.free;
-    end;
-  end;
-  if mouseWindowFamily.Items.Count=0 then exit;
-  mouseHandleEdt.text:=mouseWindowFamily.Items[0].Caption;
-end;              }
+
 end;
 
 
@@ -1622,13 +1590,6 @@ case GetProcessPriority(Str2Cardinal(processidedit.text)) of
   else ComboBox2.ItemIndex:= 2;
 end;
 end;
-procedure TmainForm.ListView1Change(Sender: TObject; Item: TListItem;
-  Change: TItemChange);
-begin
-if (processidedit<>nil)and(ListView1.Selected<>nil) then
-  processidedit.text:=ListView1.Selected.Caption;
-
-end;
 
 procedure TmainForm.checkhexClick(Sender: TObject);
 begin
@@ -1663,8 +1624,6 @@ end;
 
 procedure TmainForm.Label14Click(Sender: TObject);
 begin
-  processidedit.Text:=Label14.Caption;
-  PageControl1.ActivePage:=TabSheet3;
 end;
 
 procedure TmainForm.Button5Click(Sender: TObject);
@@ -1675,166 +1634,10 @@ end;
 
 procedure TmainForm.ComboBox3Change(Sender: TObject);
 begin
-labwparam.Caption:='WParam (nicht benutzt):';
-lablparam.Caption:='LParam (nicht benutzt):';
-if messagemes_cb.text='EM_SETPASSWORDCHAR' then begin
-  labwparam.Caption:='WParam (Char oder nichts):';
-end else if messagemes_cb.text='EM_LIMITTEXT' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='CB_ADDSTRING' then begin
-  lablparam.Caption:='LParam (String):';
-end else if messagemes_cb.text='CB_DELETESTRING' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='CB_SETDROPPEDWIDTH' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='CB_SETHORIZONTALEXTENT' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='CB_SETITEMHEIGHT' then begin
-  labwparam.Caption:='WParam (Integer):';
-  lablparam.Caption:='LParam (Integer):';
-end else if messagemes_cb.text='LB_ADDSTRING' then begin
-  lablparam.Caption:='LParam (String):';
-end else if messagemes_cb.text='LB_DELETESTRING' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='LB_SETCOLUMNWIDTH' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='LB_SETHORIZONTALEXTENT' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='LB_SETITEMHEIGHT' then begin
-  labwparam.Caption:='WParam (Integer):';
-  lablparam.Caption:='LParam (Integer):';
-end else if messagemes_cb.text='EM_SETBKGNDCOLOR' then begin
-  labwparam.Caption:='WParam (Integer):';
-  lablparam.Caption:='LParam (Colorref (in Hex)):';
-end else if messagemes_cb.text='EM_SETFONTSIZE' then begin
-  labwparam.Caption:='WParam (Integer):';
-end else if messagemes_cb.text='EM_SETZOOM' then begin
-  labwparam.Caption:='WParam (Integer):';
-  lablparam.Caption:='LParam (Integer):';
-end else if messagemes_cb.text='EM_SHOWSCROLLBAR' then begin
-  labwparam.Caption:='WParam (SB_HORZ oder SB_VERT):';
-  lablparam.Caption:='LParam (true oder false):';
-end else if messagemes_cb.text='SBM_SETRANGE' then begin
-  labwparam.Caption:='WParam (Integer):';
-  lablparam.Caption:='LParam (Integer):';
-end ;
 end;
 
-//function InstallHookSendMessage(Hwnd: Cardinal;mes:cardinal;wp:WPARAM; lp:LPARAM): Boolean; stdcall; external 'hook.dll';
 procedure TmainForm.Button8Click(Sender: TObject);
-var han:THandle;
-    wp:WPARAM;
-    lp:LPARAM;
-    mes:Cardinal;
-    s:string;
 begin
-han:=Str2Cardinal(mouseHandleEdt.text);
-mes:=0;
-lp:=0;
-wp:=0;
-if messagemes_cb.text='EM_SETPASSWORDCHAR' then begin
-  if messagewparam_edt.text='' then
-    wp:=integer(messagewparam_edt.text[1]);
-  mes:=EM_SETPASSWORDCHAR;
-end;
-if messagemes_cb.text='EM_LIMITTEXT' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=EM_LIMITTEXT;
-end;
-if messagemes_cb.text='CB_ADDSTRING' then begin
-  s:=messagelparam_edt.text+#0;
-  lp:=integer(addr(s[1]));
-  mes:=CB_ADDSTRING;
-end;
-if messagemes_cb.text='CB_DELETESTRING' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=CB_DELETESTRING;
-end;
-if messagemes_cb.text='CB_SETDROPPEDWIDTH' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=CB_SETDROPPEDWIDTH;
-end;
-if messagemes_cb.text='CB_SETHORIZONTALEXTENT' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=CB_SETHORIZONTALEXTENT;
-end;
-if messagemes_cb.text='CB_SETITEMHEIGHT' then begin
-  lp:=StrToInt(messagelparam_edt.text);
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=CB_SETITEMHEIGHT;
-end;
-if messagemes_cb.text='LB_ADDSTRING' then begin
-  s:=messagelparam_edt.text+#0;
-  lp:=integer(addr(s[1]));
-  mes:=LB_ADDSTRING;
-end;
-if messagemes_cb.text='LB_DELETESTRING' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=LB_DELETESTRING;
-end;
-if messagemes_cb.text='LB_SETCOLUMNWIDTH' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=LB_SETCOLUMNWIDTH;
-end;
-if messagemes_cb.text='LB_SETHORIZONTALEXTENT' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=LB_SETHORIZONTALEXTENT;
-end;
-if messagemes_cb.text='LB_SETITEMHEIGHT' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=LB_SETITEMHEIGHT;
-end;
-if messagemes_cb.text='EM_SETBKGNDCOLOR' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  lp:=StrToInt('$'+messagelparam_edt.text);
-  mes:=EM_SETBKGNDCOLOR;
-end;
-if messagemes_cb.text='EM_SETFONTSIZE' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=EM_SETFONTSIZE;
-end;
-if messagemes_cb.text='EM_SETZOOM' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  lp:=StrToInt(messagelparam_edt.text);
-  mes:=EM_SETZOOM;
-end;
-if messagemes_cb.text='EM_SHOWSCROLLBAR' then begin
-  if pos('VERT',uppercase(messagewparam_edt.text))>0 then
-    wp:=sb_vert
-   else
-    wp:=sb_horz;
-  if (uppercase(messagelparam_edt.text)='true')or(messagelparam_edt.text='1') then
-    lp:=word(true)
-   else
-    lp:=word(false);
-  mes:=EM_SHOWSCROLLBAR;
-end;
-if messagemes_cb.text='SBM_SETRANGE' then begin
-  wp:=StrToInt(messagewparam_edt.text);
-  lp:=StrToInt(messagelparam_edt.text);
-  mes:=SBM_SETRANGE;
-end;
-
-{if messagemes_cb.text='EM_LIMITTEXT' then begin
-  lp:=0;
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=EM_LIMITTEXT;
-end;
-if messagemes_cb.text='EM_LIMITTEXT' then begin
-  lp:=0;
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=EM_LIMITTEXT;
-end;
-if messagemes_cb.text='EM_LIMITTEXT' then begin
-  lp:=0;
-  wp:=StrToInt(messagewparam_edt.text);
-  mes:=EM_LIMITTEXT;
-end;
-if mes<>0 then
-  if hookcheck.Checked then
-    InstallHookSendMessage(han,mes,wp,lp)
-   else
-    messagemes_cb(han,mes,wp,lp);}
 end;
 
 
@@ -1851,4 +1654,10 @@ initialization
 
   {$I unit1.lrs}
 end.
+
+
+
+
+
+
 

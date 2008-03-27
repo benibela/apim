@@ -20,6 +20,8 @@ object windowConstForm: TwindowConstForm
     Top = 23
     Width = 426
     Align = alClient
+    OnDblClick = ListBox1DblClick
+    OnKeyUp = Edit1KeyUp
     TabOrder = 1
     TabStop = False
   end

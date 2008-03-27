@@ -6,8 +6,14 @@ interface
 
 uses
   Classes, SysUtils, CheckLst,windows,Controls;
-procedure setCommonCaption(control: tcontrol;caption:string);
-procedure setCommonCaption(control: tcontrol;number:dword);
+  
+type TMemoryBlock = array of byte;
+     TMemoryBlocks = array of TMemoryBlock;
+
+procedure setCommonText(control: tcontrol;caption:string);
+procedure setCommonText(control: tcontrol;number:dword);
+
+function createMemoryBlocks(s:string):TMemoryBlocks;
 
 procedure windowStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
 procedure windowExStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
@@ -19,17 +25,152 @@ procedure changeWindowExStyle(window:THandle; name: string; enabled: boolean);
 procedure changeCustomStyle(window:THandle; name: string; enabled: boolean);
 implementation
 uses ExtCtrls,StdCtrls,applicationConfig;
-procedure setCommonCaption(control: tcontrol;caption:string);
+procedure setCommonText(control: tcontrol;caption:string);
 begin
   if control = nil then exit;
   if control is TCustomPanel then TCustomPanel(control).Caption:=caption
-  else if control is TCustomLabel then TCustomLabel(control).Caption:=caption;
+  else if control is TCustomLabel then TCustomLabel(control).Caption:=caption
+  else if control is TCustomEdit then TCustomEdit(control).Text:=caption
+  else if control is TCustomComboBox then TCustomComboBox(control).Text:=caption
 end;
 
-procedure setCommonCaption(control: tcontrol; number: dword);
+procedure setCommonText(control: tcontrol; number: dword);
 begin
-  setCommonCaption(control,Cardinal2Str(number));
+  setCommonText(control,Cardinal2Str(number));
 end;
+
+//Erzeugt Memory Blocks aus Strings mit Pascalsyntax
+//Ein Block: ('1214' 65 $10 27)  => '1214A'#16#27
+// (aligned):('1214',65,$10,27)  => '1214A'#0#0#0#16#0#0#0#27#0#0#0
+//Erlaubt Nesting: ('abc' ('test')) => 'abctest'#0
+//Erlaubt Pointer: ('p' @'abc' 'q') => 'p????q'#0 mit ???? = 32 Bit Pointer auf 'abc'#0
+//                                     (also gibt es zwei Blocks)
+//
+//Für Zahlen wird der kleinster LE Datentyp (signed/unsigned 1 Byte, 2 Byte, 4 Byte oder 8 Byte)
+//gewählt, in die der Wert passt
+//Beispiele: 255 => #255 (byte); 256 => #0#1 (LE word); -128 => #255 (shortint)
+//           -129 => #$7F#$FF (LE small int)
+//2147483647 => #$F9#$FF#$FF#$7F (LE dword)
+//Ein folgendes , machte die Zahl zu einem 32 Bit Typ auf Grund 4 Bit alignment
+//(also ,0, wird zu 64 Bit)
+//
+//Letzte Strings in Klammern werden nullterminier
+//Beispiele: ('hallo ','welt') => 'hallo welt'#0; (('hallo '),'welt') => 'hallo '#0'welt'#0
+//Die Metazeichen ''' für ein ' und #xx für ein Zeichen mit Nummer xx werden nicht unterstützt
+//(da man einfach Zahlen nehmen kann)
+function createMemoryBlocks(s:string):TMemoryBlocks;
+var p: pchar;
+    brackets,currentBlock: longint;
+    blocks:TMemoryBlocks;
+    inStr: boolean;
+    blockStack: array of record
+      blockID: longint;
+      bracketCount: longint;
+    end;
+    newBlock: boolean; //created a new block in the step before
+  procedure currentBlockAddBuffer(block: pointer; size:longint);
+  var oldSize:longint;
+  begin
+    oldSize:=length(blocks[currentBlock]);
+    SetLength(blocks[currentBlock],length(blocks[currentBlock])+size);
+    move(block^,blocks[currentBlock][oldSize],size);
+  end;
+  procedure currentBlockAddByte(b: byte);
+  begin
+    currentBlockAddBuffer(@b,1);
+  end;
+  procedure currentBlockAddPointer(p:pointer);
+  begin
+    currentBlockAddBuffer(@p,4);
+  end;
+  procedure closeBlocks;
+  var block:longint;
+  begin
+    while (length(blockStack)>0) and (blockStack[high(blockStack)].bracketCount>=brackets) do begin
+      block:=currentBlock;
+      currentBlock:=blockStack[high(blockStack)].blockID;
+      currentBlockAddPointer(@blocks[block][0]);
+      setlength(blockStack,high(blockStack));
+    end;
+  end;
+  var lastData: (ldNone,ldNum,ldStr);
+      numStr: string;
+      num:int64;
+begin
+  if s='' then exit(nil);
+  p:=@s[1];
+  brackets:=0;
+  inStr:=false;
+  currentBlock:=0;
+  SetLength(blocks,1);
+  newBlock:=false;
+  lastData:=ldNone;
+  while p^<>#0 do begin
+    if inStr and (p^<>'''') then currentBlockAddByte(ord(p^))
+    else case p^ of
+      '@': begin
+        SetLength(blockStack,length(blockStack)+1);
+        blockStack[high(blockStack)].blockID:=currentBlock;
+        blockStack[high(blockStack)].bracketCount:=brackets;
+        SetLength(blocks,length(blocks)+1);
+        currentBlock:=high(blocks);
+      end;
+      '(': brackets+=1;
+      ')': begin
+        if lastData = ldStr then currentBlockAddByte(0); //Str nullterminiert
+        lastData:=ldNone;
+        brackets-=1;
+      end;
+      ' ': closeBlocks;
+      ',': begin
+        closeBlocks();
+        while length(blocks[currentBlock]) mod 4 <> 0 do
+          currentBlockAddByte(0); //langsam, aber O(n), doesn't matter
+      end;
+      '''': begin
+        inStr:=not inStr;
+        if inStr then lastData:=ldStr;
+      end;
+      '$','-','0'..'9': begin
+        numStr:=p^;
+        repeat inc(p); until p^<>' ';
+        if ((p^ = '$') or (p^='-')) and (numStr<>p^) then begin
+          numStr+=p^;
+          repeat inc(p); until p^<>' ';
+        end;
+        if pos('$',numStr)>0 then begin
+          while p^ in ['0'..'9','A'..'F','a'..'f'] do begin
+            numstr+=p^;
+            inc(p);
+          end;
+        end else
+          while p^ in ['0'..'9'] do begin
+            numstr+=p^;
+            inc(p);
+          end;
+        dec(p);
+        num:=StrToInt64(numStr);
+        if num>=0 then begin //Optimaler Datentyp
+          if num<256 then currentBlockAddBuffer(@num,1)
+          else if num<65536 then currentBlockAddBuffer(@num,2)
+          else if num<4294967296 then currentBlockAddBuffer(@num,4)
+          else currentBlockAddBuffer(@num,8);
+        end else if num<0 then
+          if num>=-128 then currentBlockAddBuffer(@num,1)
+          else if num>=-32768 then currentBlockAddBuffer(@num,2)
+          else if num>=-2147483648 then currentBlockAddBuffer(@num,4)
+          else currentBlockAddBuffer(@num,8);
+      end;
+      else raise Exception.Create('Unexpected character '+p^+' at '+string(p));
+    end;
+    inc(p);
+  end;
+  if instr then raise Exception.Create('String nicht geschlossen');
+  if lastData=ldStr then currentBlockAddByte(0);
+  closeBlocks;
+  result:=blocks;
+end;
+
 
 const
   WS_EX_COMPOSITED = $02000000;
@@ -242,11 +383,11 @@ const
 
 procedure windowStylesToCheckListBox(window:THandle; listbox: TCheckListBox;numeric:tcontrol);
 var wsout:tstringlist;
-    i,styles:longint;
-
+    i:longint;
+    styles:long;
 begin
  styles:=GetWindowLong(window,GWL_STYLE);
- setCommonCaption(numeric,'Window styles:   '+Cardinal2Str(styles));
+ setCommonText(numeric,'Window styles:   '+Cardinal2Str(cardinal(styles)));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and WS_BORDER = WS_BORDER then listbox.Items.Add(TWS_BORDER) else wsout.add(TWS_BORDER);
@@ -289,7 +430,7 @@ var wsout:tstringlist;
     i,styles:longint;
 begin
  styles:=GetWindowLong(window,GWL_EXSTYLE);
- setCommonCaption(numeric,'Extended Window styles:   '+Cardinal2Str(styles));
+ setCommonText(numeric,'Extended Window styles:   '+Cardinal2Str(styles));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and  WS_EX_ACCEPTFILES=WS_EX_ACCEPTFILES  then listbox.Items.Add(TWS_EX_ACCEPTFILES) else wsout.Add(TWS_EX_ACCEPTFILES);
@@ -332,7 +473,7 @@ var wsout:tstringlist;
     i,styles:longint;
 begin
  styles:=GetClassLong(window,GCL_STYLE);
- setCommonCaption(numeric,'Window Class styles:   '+Cardinal2Str(styles));
+ setCommonText(numeric,'Window Class styles:   '+Cardinal2Str(styles));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and CS_BYTEALIGNCLIENT =CS_BYTEALIGNCLIENT then listbox.Items.Add(TCS_BYTEALIGNCLIENT) else wsout.Add(TCS_BYTEALIGNCLIENT) ;
@@ -365,7 +506,7 @@ begin
  SetLength(classname,GetClassName(window,@classname[1],255));
  wsout:=tstringlist.create;
  listbox.Clear;
- setCommonCaption(numeric,classname+' Styles (=Window Styles): '+Cardinal2Str(styles));
+ setCommonText(numeric,classname+' Styles (=Window Styles): '+Cardinal2Str(styles));
  classname:=UpperCase(string(classname));
  if classname='BUTTON' then begin
    if styles and BS_3STATE = BS_3STATE then listbox.Items.Add(TBS_3STATE)else wsout.Add(TBS_3STATE);

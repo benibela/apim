@@ -20,6 +20,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ListBox1DblClick(Sender: TObject);
   private
     { private declarations }
     winConsts: TStringList;
@@ -89,6 +90,12 @@ begin
   Edit1.text:=currentConst;
   edit1.SetFocus;
   edit1.SelStart:=length(edit1.text);
+end;
+
+procedure TwindowConstForm.ListBox1DblClick(Sender: TObject);
+begin
+  if ListBox1.ItemIndex<0 then exit;
+  Edit1.Text:=ListBox1.items[ListBox1.ItemIndex];
 end;
 
 procedure TwindowConstForm.Edit1Change(Sender: TObject);

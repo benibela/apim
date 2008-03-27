@@ -55,6 +55,7 @@ function MakeWndColorKeyOn(Wnd: HWND; color:COLORREF): Boolean;
 function MakeWndColorKeyOff(Wnd: HWND): Boolean;
 *)
 
+function GetCPUSpeed: Double;
 implementation
 uses unit1,sysutils;
 function LoadFuncFromDLL(dll,func:pchar):pointer;
@@ -315,23 +316,26 @@ var markDC:HDC;
     rec:TRect;
 begin
   if handle=0 then exit;
-  markDC:=GetWindowDC(handle);
   GetWindowRect(handle,rec);
-  rec.right-=rec.left;
-  rec.bottom-=rec.top;
-  rec.left:=0;
-  rec.top:=0;
+  if IsWindowVisible(handle) then begin //Draw on the window
+    markDC:=GetWindowDC(handle);
+    rec.right-=rec.left;
+    rec.bottom-=rec.top;
+    rec.left:=0;
+    rec.top:=0;
   {InvertRect(markDC,rec);
   rec.left+=3;
   rec.top+=3;
   rec.bottom-=3;
   rec.right-=3;
   InvertRect(markDC,rec);}
+  end else markDC:=CreateDC('DISPLAY',nil,nil,nil); //Draw on the screen
   InvertRect(markDC,rect(0,0,rec.Right,3));
   InvertRect(markDC,rect(0,rec.bottom-3,rec.Right,rec.Bottom));
   InvertRect(markDC,rect(0,3,3,rec.Bottom-3));
   InvertRect(markDC,rect(rec.Right-3,3,rec.Right,rec.Bottom-3));
-  ReleaseDC(handle, markDC);
+  if IsWindowVisible(handle) then ReleaseDC(handle, markDC)
+  else deleteDc(markDC);
 end;
 
 
@@ -462,4 +466,32 @@ begin
     result:=SetLayeredWindowAttributes(wnd,0,GetWindowAlpha(wnd),LWA_ALPHA);}
     result:=SetLayeredWindowAttributes(Wnd, 0, 0, LWA_COLORKEY);
 end;                    *)
+
+function GetCPUSpeed: Double;
+const
+TimeOfDelay = 500;
+var
+TimerHigh,
+TimerLow: DWord;
+begin
+SetPriorityClass(GetCurrentProcess, REALTIME_PRIORITY_CLASS);
+SetThreadPriority(GetCurrentThread,
+THREAD_PRIORITY_TIME_CRITICAL);
+asm
+dw 310Fh
+mov TimerLow, eax
+mov TimerHigh, edx
+end;
+Sleep(TimeOfDelay);
+asm
+dw 310Fh
+sub eax, TimerLow
+sub edx, TimerHigh
+mov TimerLow, eax
+mov TimerHigh, edx
+end;
+Result := round (TimerLow / (1000.0 * TimeOfDelay));
+
+end;
+
 end.

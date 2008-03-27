@@ -1,32 +1,51 @@
 object mainForm: TmainForm
-  Left = 269
-  Height = 734
+  Left = 255
+  Height = 646
+  Top = 57
   Width = 609
   HorzScrollBar.Page = 608
-  VertScrollBar.Page = 733
+  VertScrollBar.Page = 645
   BorderIcons = [biSystemMenu, biHelp]
-  Caption = 'APIV 3.0.0'
-  ClientHeight = 734
+  Caption = 'API Manager 3.0.0'
+  ClientHeight = 646
   ClientWidth = 609
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Icon.Data = {
-    E70100002F2A2058504D202A2F0A7374617469632063686172202A6772617068
-    69635B5D203D207B0A22313620313620382031222C0A222E2063204E6F6E6522
-    2C0A222C20632023303030303830222C0A222D20632023303030303030222C0A
-    222A20632023464646464646222C0A226120632023433043304330222C0A2262
-    20632023303030304646222C0A226320632023464630303030222C0A22642063
-    2023383038303830222C0A222E2E2E2E2E2E2E2E2E2E2E2E2E2E2E2E222C0A22
-    2E2C2C2C2C2C2C2C2C2C2C2E2E2E2E2E222C0A222E2C2C2C2C2C2C2C2C2C2C2E
-    2E2E2E2E222C0A222E2D2A2A2A2A2A2A2A2A2D2E2E2E2E2E222C0A222E2D2A61
-    2A6162626262626262622E2E222C0A222E2D2A612A612A61612A2D2E2E622E2E
-    222C0A222E2D632A612A612A2A2A2D2E2E622E2E222C0A222E6363632A2A2C2C
-    612C2C616162612C222C0A22632D632D632D2C612C612C612C62612C222C0A22
-    2E2E632E2E2E2D2A2A2A2A622A622A62222C0A222E2E632E2E2E2D2A6464642A
-    6262622D222C0A222E2E6363636363636364642A64622A2D222C0A222E2E2E2E
-    2E2E2D2A2A2A2A2A2A2A2A2D222C0A222E2E2E2E2E2E2D2A2A2A2A2A2A2A2A2D
-    222C0A222E2E2E2E2E2E2D2A2A2A2A2A2A2A2A2D222C0A222E2E2E2E2E2E2D2D
-    2D2D2D2D2D2D2D2D227D0A
+    36040000424D3604000000000000360000002800000010000000100000000100
+    2000000000000004000064000000640000000000000000000000000000000000
+    000000000000000000000000000000000000000000FF000000FF000000FF0000
+    00FF000000FF000000FF000000FF000000FF000000FF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF000000000000
+    00000000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF8080
+    80FF808080FFFFFFFFFF808080FFFF0000FFFFFFFFFF000000FF000000000000
+    00000000FFFF000000000000000000000000000000FFFFFFFFFF808080FF8080
+    80FF808080FFFFFFFFFFFF0000FFFF0000FFFF0000FF000000FF000000000000
+    00000000FFFF000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFF
+    FFFFFFFFFFFFFF0000FFFFFFFFFFFF0000FFFFFFFFFFFF0000FF0000FFFF0000
+    00FF0000FFFF000000FF0000FFFF000000FF800000FFC0C0C0FF800000FFC0C0
+    C0FF800000FFC0C0C0FF800000FFFF0000FFC0C0C0FF800000FF000000000000
+    FFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFF800000FF800000FFC0C0C0FF8000
+    00FF800000FFC0C0C0FFC0C0C0FFFF0000FFC0C0C0FF800000FF000000000000
+    00FF0000FFFFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000FF0000000000000000FF0000FF0000000000000000000000000000
+    00FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFC0C0C0FFFFFF
+    FFFF000000FF0000000000000000FF0000FF0000000000000000000000000000
+    00FFFFFFFFFFC0C0C0FFFFFFFFFFC0C0C0FFFF0000FFFF0000FFFF0000FFFF00
+    00FFFF0000FFFF0000FFFF0000FFFF0000FF0000000000000000000000000000
+    00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    FFFF000000FF0000000000000000000000000000000000000000000000008000
+    00FF800000FF800000FF800000FF800000FF800000FF800000FF800000FF8000
+    00FF800000FF0000000000000000000000000000000000000000000000008000
+    00FF800000FF800000FF800000FF800000FF800000FF800000FF800000FF8000
+    00FF800000FF0000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000
   }
   KeyPreview = True
   OnCreate = FormCreate
@@ -44,23 +63,23 @@ object mainForm: TmainForm
     ParentColor = False
   end
   object Panel1: TPanel
-    Height = 734
+    Height = 646
     Width = 609
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 734
+    ClientHeight = 646
     ClientWidth = 609
     TabOrder = 0
     object PageControl1: TPageControl
-      Height = 734
+      Height = 646
       Width = 609
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       Align = alClient
-      TabIndex = 0
+      TabIndex = 2
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Fenster'
-        ClientHeight = 708
+        ClientHeight = 620
         ClientWidth = 601
         object Splitter2: TSplitter
           Cursor = crVSplit
@@ -72,11 +91,11 @@ object mainForm: TmainForm
           ResizeAnchor = akTop
         end
         object windowPropertySheet: TScrollBox
-          Height = 524
+          Height = 436
           Top = 184
           Width = 601
-          HorzScrollBar.Page = 579
-          VertScrollBar.Page = 519
+          HorzScrollBar.Page = 580
+          VertScrollBar.Page = 431
           VertScrollBar.Range = 1000
           VertScrollBar.Visible = True
           Align = alClient
@@ -91,44 +110,19 @@ object mainForm: TmainForm
             ParentColor = False
           end
           object Label9: TLabel
-            Left = 306
+            Left = 426
             Height = 14
-            Top = 15
+            Top = 11
             Width = 53
             Caption = 'ThreadID: '
             ParentColor = False
           end
-          object Label12: TLabel
-            Left = 362
-            Height = 14
-            Hint = 'Zeigt die ThreadID des gewählten Fensters an'
-            Top = 15
-            Width = 7
-            Caption = '0'
-            Font.Color = clNavy
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            ParentColor = False
-          end
           object Label13: TLabel
-            Left = 226
+            Left = 292
             Height = 14
-            Top = 15
+            Top = 12
             Width = 56
             Caption = 'ProcessID: '
-            ParentColor = False
-          end
-          object Label14: TLabel
-            Cursor = crHandPoint
-            Left = 290
-            Height = 14
-            Hint = 'Zeigt die ProcessID des gewählten Fensters an'
-            Top = 15
-            Width = 7
-            Caption = '0'
-            Font.Color = clNavy
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
             ParentColor = False
           end
           object labclassname: TLabel
@@ -144,8 +138,8 @@ object mainForm: TmainForm
             Left = 12
             Height = 14
             Top = 38
-            Width = 57
-            Caption = 'Parentwnd:'
+            Width = 37
+            Caption = 'Parent:'
             ParentColor = False
           end
           object Label23: TLabel
@@ -159,7 +153,7 @@ object mainForm: TmainForm
           object Label2: TLabel
             Left = 11
             Height = 14
-            Top = 145
+            Top = 178
             Width = 36
             Caption = 'Status:'
             ParentColor = False
@@ -167,7 +161,7 @@ object mainForm: TmainForm
           object Label24: TLabel
             Left = 10
             Height = 14
-            Top = 173
+            Top = 146
             Width = 42
             Caption = 'Position:'
             ParentColor = False
@@ -175,14 +169,14 @@ object mainForm: TmainForm
           object colorKeyShape: TShape
             Left = 346
             Height = 22
-            Top = 408
+            Top = 431
             Width = 65
             OnMouseUp = colorKeyShapeMouseUp
           end
           object Label25: TLabel
             Left = 11
             Height = 14
-            Top = 324
+            Top = 347
             Width = 76
             Caption = 'Win-Properties:'
             ParentColor = False
@@ -190,7 +184,7 @@ object mainForm: TmainForm
           object Label22: TLabel
             Left = 106
             Height = 14
-            Top = 443
+            Top = 466
             Width = 23
             Caption = 'Typ:'
             ParentColor = False
@@ -198,7 +192,7 @@ object mainForm: TmainForm
           object labwparam: TLabel
             Left = 58
             Height = 14
-            Top = 489
+            Top = 512
             Width = 45
             Caption = 'WParam:'
             ParentColor = False
@@ -206,7 +200,7 @@ object mainForm: TmainForm
           object lablparam: TLabel
             Left = 59
             Height = 14
-            Top = 511
+            Top = 534
             Width = 40
             Caption = 'LParam:'
             ParentColor = False
@@ -214,7 +208,7 @@ object mainForm: TmainForm
           object Label33: TLabel
             Left = 11
             Height = 14
-            Top = 207
+            Top = 232
             Width = 49
             Caption = 'Userdata:'
             ParentColor = False
@@ -222,7 +216,7 @@ object mainForm: TmainForm
           object Label34: TLabel
             Left = 258
             Height = 14
-            Top = 207
+            Top = 232
             Width = 57
             Caption = 'WNDPROC:'
             ParentColor = False
@@ -230,7 +224,7 @@ object mainForm: TmainForm
           object windowExStyles_lb: TLabel
             Left = 336
             Height = 14
-            Top = 230
+            Top = 253
             Width = 7
             Caption = '0'
             ParentColor = False
@@ -238,7 +232,7 @@ object mainForm: TmainForm
           object Label35: TLabel
             Left = 10
             Height = 14
-            Top = 247
+            Top = 270
             Width = 34
             Caption = 'Styles:'
             ParentColor = False
@@ -246,16 +240,40 @@ object mainForm: TmainForm
           object windowStyles_lb: TLabel
             Left = 106
             Height = 14
-            Top = 230
+            Top = 253
             Width = 7
             Caption = '0'
+            ParentColor = False
+          end
+          object Label36: TLabel
+            Left = 434
+            Height = 14
+            Top = 38
+            Width = 37
+            Caption = 'Owner:'
+            ParentColor = False
+          end
+          object Label37: TLabel
+            Left = 257
+            Height = 14
+            Top = 145
+            Width = 34
+            Caption = 'Größe:'
+            ParentColor = False
+          end
+          object Label38: TLabel
+            Left = 176
+            Height = 14
+            Top = 148
+            Width = 5
+            Caption = '-'
             ParentColor = False
           end
           object alphatrans_cb: TCheckBox
             Tag = 1
             Left = 11
             Height = 19
-            Top = 411
+            Top = 434
             Width = 86
             Caption = 'Transparent:'
             OnChange = windowPropertyChanged1
@@ -300,7 +318,7 @@ object mainForm: TmainForm
             Left = 104
             Height = 21
             Hint = 'Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll.'
-            Top = 140
+            Top = 173
             Width = 145
             AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
             ItemHeight = 13
@@ -317,7 +335,7 @@ object mainForm: TmainForm
             Left = 10
             Height = 25
             Hint = 'Schick dem gewählten Fenster eine Nachricht'
-            Top = 455
+            Top = 478
             Width = 90
             Caption = 'Nachricht senden:'
             OnClick = messageSend_btnClick
@@ -329,7 +347,7 @@ object mainForm: TmainForm
             Height = 21
             Hint = 'Zeigt und ändern den Text des Fensters.'
             Top = 61
-            Width = 455
+            Width = 456
             OnChange = windowtextEdtChange
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 5
@@ -337,7 +355,7 @@ object mainForm: TmainForm
           object Button5: TButton
             Left = 18
             Height = 25
-            Top = 272
+            Top = 295
             Width = 75
             Caption = 'erweitert'
             Enabled = False
@@ -348,8 +366,8 @@ object mainForm: TmainForm
             Tag = 1
             Left = 104
             Height = 23
-            Top = 9
-            Width = 117
+            Top = 8
+            Width = 98
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 7
           end
@@ -358,7 +376,7 @@ object mainForm: TmainForm
             Left = 104
             Height = 23
             Top = 86
-            Width = 455
+            Width = 456
             Color = clBtnFace
             OnKeyUp = updatePropertyKeyUp
             ReadOnly = True
@@ -374,23 +392,24 @@ object mainForm: TmainForm
             OnChange = windowPropertyChanged1
             TabOrder = 9
           end
-          object posSizeEdt: TEdit
+          object posLTEdt: TEdit
             Tag = 1
             Left = 104
             Height = 21
             Hint = 'Zeigt die Position des Fensters an'
-            Top = 170
-            Width = 145
+            Top = 143
+            Width = 66
+            OnKeyDown = posLTEdtKeyDown
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 10
-            Text = '(0,0)-(0,0)'
+            Text = '(0,0)'
           end
           object parentWndCmb: TComboBox
             Tag = 1
             Left = 104
             Height = 21
             Top = 34
-            Width = 455
+            Width = 315
             AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
             Font.Color = clNavy
             Font.Style = [fsUnderline]
@@ -403,7 +422,7 @@ object mainForm: TmainForm
             Tag = -1
             Left = 104
             Height = 22
-            Top = 408
+            Top = 431
             Width = 145
             MaxValue = 255
             OnChange = windowPropertyChanged1
@@ -414,7 +433,7 @@ object mainForm: TmainForm
           object colorkey_cb: TCheckBox
             Left = 258
             Height = 19
-            Top = 411
+            Top = 434
             Width = 71
             Caption = 'ColorKey:'
             OnChange = windowPropertyChanged1
@@ -422,10 +441,10 @@ object mainForm: TmainForm
           end
           object windowPropertyList: TListView
             Tag = 1
-            Left = 106
+            Left = 104
             Height = 75
-            Top = 324
-            Width = 454
+            Top = 347
+            Width = 456
             Columns = <            
               item
                 Caption = 'Name'
@@ -444,7 +463,7 @@ object mainForm: TmainForm
           object messagemes_cb: TComboBox
             Left = 106
             Height = 21
-            Top = 459
+            Top = 482
             Width = 192
             AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
             ItemHeight = 13
@@ -454,7 +473,7 @@ object mainForm: TmainForm
           object messagewparam_edt: TEdit
             Left = 105
             Height = 21
-            Top = 487
+            Top = 510
             Width = 454
             OnKeyUp = messagemes_cbKeyUp
             TabOrder = 17
@@ -462,7 +481,7 @@ object mainForm: TmainForm
           object messagelparam_edt: TEdit
             Left = 104
             Height = 21
-            Top = 511
+            Top = 534
             Width = 454
             OnKeyUp = messagemes_cbKeyUp
             TabOrder = 18
@@ -471,8 +490,8 @@ object mainForm: TmainForm
             Tag = 1
             Left = 104
             Height = 23
-            Top = 200
-            Width = 145
+            Top = 225
+            Width = 146
             OnKeyUp = updatePropertyKeyUp
             TabOrder = 19
           end
@@ -480,7 +499,7 @@ object mainForm: TmainForm
             Tag = 1
             Left = 322
             Height = 23
-            Top = 200
+            Top = 225
             Width = 145
             Color = clBtnFace
             OnKeyUp = updatePropertyKeyUp
@@ -491,7 +510,7 @@ object mainForm: TmainForm
             Tag = 1
             Left = 104
             Height = 64
-            Top = 248
+            Top = 271
             Width = 218
             ItemHeight = 13
             OnClickCheck = windowStylesClickCheck
@@ -502,11 +521,88 @@ object mainForm: TmainForm
             Tag = 1
             Left = 334
             Height = 65
-            Top = 248
-            Width = 224
+            Top = 271
+            Width = 226
             ItemHeight = 13
             OnItemClick = windowStylesItemClick
             TabOrder = 22
+          end
+          object ownerWnd_edt: TEdit
+            Tag = 1
+            Left = 478
+            Height = 23
+            Top = 34
+            Width = 82
+            Color = clBtnFace
+            Font.Color = clNavy
+            Font.Style = [fsUnderline]
+            OnDblClick = ownerWnd_edtDblClick
+            ReadOnly = True
+            TabOrder = 23
+            Text = '0'
+          end
+          object sizeEdt: TEdit
+            Left = 322
+            Height = 23
+            Top = 141
+            Width = 145
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 24
+            Text = '0x0'
+          end
+          object posRBEdt: TEdit
+            Left = 183
+            Height = 21
+            Hint = 'Zeigt die Position des Fensters an'
+            Top = 143
+            Width = 66
+            OnKeyUp = updatePropertyKeyUp
+            TabOrder = 25
+            Text = '(0,0)'
+          end
+          object showHandle: TButton
+            Left = 250
+            Height = 23
+            Top = 8
+            Width = 35
+            Caption = 'blink'
+            OnClick = showHandleClick
+            TabOrder = 26
+          end
+          object windowProcessIDedt: TEdit
+            Tag = 1
+            Left = 354
+            Height = 23
+            Top = 9
+            Width = 65
+            Color = clBtnFace
+            Font.Color = clNavy
+            Font.Style = [fsUnderline]
+            OnDblClick = windowProcessIDedtDblClick
+            ReadOnly = True
+            TabOrder = 27
+            Text = '0'
+          end
+          object windowThreadIdEdt: TEdit
+            Left = 478
+            Height = 23
+            Top = 9
+            Width = 82
+            Color = clBtnFace
+            Font.Color = clNavy
+            Font.Style = [fsUnderline]
+            ReadOnly = True
+            TabOrder = 28
+            Text = '0'
+          end
+          object Button1: TButton
+            Left = 206
+            Height = 23
+            Top = 8
+            Width = 43
+            Caption = 'children'
+            OnClick = Button1Click
+            TabOrder = 29
           end
         end
         object PageControl2: TPageControl
@@ -681,6 +777,7 @@ object mainForm: TmainForm
               Color = clBlack
               ParentColor = False
               TabOrder = 6
+              OnMouseMove = linksobenMouseMove
             end
             object linksoben: TPanel
               Cursor = crSizeNWSE
@@ -693,6 +790,7 @@ object mainForm: TmainForm
               Color = clBlack
               ParentColor = False
               TabOrder = 5
+              OnMouseMove = linksobenMouseMove
             end
             object hideAPIVwhenSearching: TCheckBox
               Left = 176
@@ -705,58 +803,19 @@ object mainForm: TmainForm
               TabOrder = 8
             end
           end
-          object TabSheet7: TTabSheet
+          object windowListTabSheet: TTabSheet
             Caption = 'Fensterliste'
             ClientHeight = 155
-            ClientWidth = 592
-            OnShow = TabSheet7Show
-            object windowList: TListView
-              Height = 131
-              Top = 24
-              Width = 592
-              Align = alClient
-              Columns = <              
-                item
-                  Caption = 'Handle'
-                  Width = 100
-                end              
-                item
-                  Caption = 'Titel'
-                  Width = 140
-                end              
-                item
-                  Caption = 'Klasse'
-                  Width = 100
-                end              
-                item
-                  Caption = 'Status (visible, enabled)'
-                  Width = 100
-                end              
-                item
-                  Caption = 'Größe'
-                  Width = 130
-                end              
-                item
-                  Caption = 'Programm'
-                  Width = 150
-                end>
-              ReadOnly = True
-              RowSelect = True
-              SortType = stText
-              TabOrder = 0
-              ViewStyle = vsReport
-              OnDblClick = windowListDblClick
-              OnKeyUp = windowListKeyUp
-              OnSelectItem = windowListSelectItem
-            end
+            ClientWidth = 593
+            OnShow = windowListTabSheetShow
             object Panel2: TPanel
               Height = 24
-              Width = 592
+              Width = 593
               Align = alTop
               BevelOuter = bvNone
               ClientHeight = 24
-              ClientWidth = 592
-              TabOrder = 1
+              ClientWidth = 593
+              TabOrder = 0
               object Label30: TLabel
                 Left = 8
                 Height = 14
@@ -780,6 +839,14 @@ object mainForm: TmainForm
                 Top = 4
                 Width = 53
                 Caption = 'Programm:'
+                ParentColor = False
+              end
+              object Label12: TLabel
+                Left = 452
+                Height = 14
+                Top = 5
+                Width = 39
+                Caption = 'Thread:'
                 ParentColor = False
               end
               object windowListFilterParent_edt: TEdit
@@ -806,10 +873,8 @@ object mainForm: TmainForm
                 Top = 1
                 Width = 109
                 Caption = 'nur direkte Kinder'
-                Checked = True
                 Enabled = False
                 OnChange = windowsListfilterDirectChildsChange
-                State = cbChecked
                 TabOrder = 2
               end
               object windowListFilterParentUp: TButton
@@ -822,24 +887,31 @@ object mainForm: TmainForm
                 OnClick = windowListFilterParentUpClick
                 TabOrder = 3
               end
+              object windowsListFilterThread: TEdit
+                Left = 499
+                Height = 23
+                Top = 1
+                Width = 85
+                TabOrder = 4
+              end
             end
           end
         end
       end
-      object TabSheet3: TTabSheet
+      object processTabSheet: TTabSheet
         Caption = 'Prozesse'
-        ClientHeight = 611
-        ClientWidth = 600
+        ClientHeight = 620
+        ClientWidth = 601
         ImageIndex = 2
-        OnShow = TabSheet3Show
+        OnShow = processTabSheetShow
         object Panel5: TPanel
           Height = 96
-          Top = 515
-          Width = 600
+          Top = 524
+          Width = 601
           Align = alBottom
           BevelOuter = bvNone
           ClientHeight = 96
-          ClientWidth = 600
+          ClientWidth = 601
           TabOrder = 0
           object Label10: TLabel
             Left = 8
@@ -861,9 +933,9 @@ object mainForm: TmainForm
             Left = 191
             Height = 22
             Hint = 'Sucht alle Prozesse'
-            Top = 5
-            Width = 97
-            Caption = 'Prozesse suchen'
+            Top = 4
+            Width = 137
+            Caption = 'Prozessliste aktualisieren'
             OnClick = displayProcessesClick
             TabOrder = 0
           end
@@ -905,178 +977,85 @@ object mainForm: TmainForm
             TabOrder = 3
           end
         end
-        object ListView1: TListView
-          Height = 515
-          Hint = 'Zeigt die Prozesse an'
-          Width = 600
-          Align = alClient
-          Columns = <          
-            item
-              Caption = 'Name'
-              Width = 150
-            end          
-            item
-              Caption = 'ProcessID'
-              Width = 150
-            end          
-            item
-              Caption = 'ganzer Name'
-              Visible = False
-              Width = 200
-            end          
-            item
-              Caption = 'Priority'
-              Width = 143
-            end          
-            item
-              Caption = 'Threads'
-              Width = 70
-            end>
-          ReadOnly = True
-          RowSelect = True
-          TabOrder = 1
-          ViewStyle = vsReport
-        end
       end
       object TabSheet2: TTabSheet
         Caption = 'System'
-        ClientHeight = 584
-        ClientWidth = 661
+        ClientHeight = 620
+        ClientWidth = 601
         ImageIndex = 2
-        object PaintBox2: TPaintBox
-          Left = 5
-          Height = 145
-          Hint = 'Zeigt das Betriebsystem, die Version jenes, den Benutzter, die Organisation, die Windowsseriennummer, die Kodenummer, die Arbeitsgruppe und den Computernamen an. Die Daten lassen sich auch ändern.'
-          Top = 128
-          Width = 84
-        end
+        OnShow = PageControl1Change
         object Label3: TLabel
-          Left = 8
+          Left = 12
           Height = 14
-          Hint = 'Zeigt den Windowspfad an'
-          Top = 8
-          Width = 120
-          Caption = 'Windows installiert nach:'
-          ParentColor = False
-        end
-        object Label5: TLabel
-          Left = 8
-          Height = 14
-          Hint = 'Zeigt den Pfad für temporäre Dateien an'
-          Top = 24
-          Width = 53
-          Caption = 'Temppfad:'
+          Top = 18
+          Width = 108
+          Caption = 'Systemeigenschaften:'
           ParentColor = False
         end
         object Label4: TLabel
-          Left = 8
+          Left = 18
           Height = 14
-          Hint = 'Ziegt das Systemverzeichnis an'
-          Top = 40
-          Width = 22
-          Caption = 'Syst'
+          Top = 298
+          Width = 82
+          Caption = 'API-Ausführung:'
           ParentColor = False
         end
-        object Label6: TLabel
-          Left = 8
-          Height = 14
-          Hint = 'Zeigt die Taktfrequenz des Computers in Mhz an. Es kann Abweichungen von tatsächlichen Wert zwischen 0 bis 10 Mhz geben'
-          Top = 64
-          Width = 52
-          Caption = 'Prozessor:'
-          ParentColor = False
-        end
-        object Bevel1: TBevel
-          Left = -4
-          Height = 5
-          Top = 124
-          Width = 668
+        object systemProperties: TListView
+          Left = 12
+          Height = 240
+          Top = 42
+          Width = 576
           Anchors = [akTop, akLeft, akRight]
-          Shape = bsTopLine
-          Style = bsRaised
+          Columns = <          
+            item
+              Caption = 'Eigenschaft'
+              Width = 150
+            end          
+            item
+              Caption = 'Wert'
+              Width = 300
+            end>
+          TabOrder = 0
+          ViewStyle = vsReport
         end
-        object Label16: TLabel
-          Left = 8
-          Height = 14
-          Hint = 'Zeigt den gesamten RAM an'
-          Top = 88
-          Width = 38
-          Caption = 'Label16'
-          ParentColor = False
+        object callAPIDLL: TEdit
+          Left = 21
+          Height = 23
+          Top = 315
+          Width = 80
+          TabOrder = 1
+          Text = 'kernel32.dll'
         end
-        object Label17: TLabel
-          Left = 8
-          Height = 14
-          Hint = 'Zeigt den noch freien RAM an'
-          Top = 104
-          Width = 38
-          Caption = 'Label16'
-          ParentColor = False
+        object callAPIProc: TEdit
+          Left = 21
+          Height = 23
+          Top = 345
+          Width = 80
+          TabOrder = 2
+          Text = 'Beep'
         end
-        object Label18: TLabel
-          Left = 240
-          Height = 14
-          Hint = 'Zeigt den Namen des BIOS an.'
-          Top = 72
-          Width = 38
-          Caption = 'Label18'
-          ParentColor = False
+        object callAPIParameter: TEdit
+          Left = 21
+          Height = 23
+          Top = 378
+          Width = 263
+          TabOrder = 3
+          Text = '(100,1000)'
         end
-        object Label19: TLabel
-          Left = 240
-          Height = 14
-          Hint = 'Zeigt das im BIOS gespeicherte Datum an'
-          Top = 88
-          Width = 38
-          Caption = 'Label18'
-          ParentColor = False
-        end
-        object Label20: TLabel
-          Left = 240
-          Height = 14
-          Hint = 'Zeigt die Seriennummer des BIOS an.'
-          Top = 104
-          Width = 38
-          Caption = 'Label18'
-          ParentColor = False
-        end
-        object Button19: TButton
-          Left = 104
+        object callAPI: TButton
+          Left = 24
           Height = 25
-          Hint = 'ändert die Systeminformationen'
-          Top = 272
+          Top = 410
           Width = 75
-          Caption = 'ändern'
-          OnClick = Button19Click
-          TabOrder = 0
-        end
-      end
-      object TabSheet4: TTabSheet
-        Caption = 'Passwörter'
-        ClientHeight = 557
-        ClientWidth = 670
-        ImageIndex = 3
-        object password: TLabel
-          Left = 27
-          Height = 13
-          Top = 208
-          Width = 549
-          AutoSize = False
-          ParentColor = False
-        end
-        object ListBox1: TListBox
-          Height = 557
-          Hint = 'Zeigt gespeicherte Passwörter an.'
-          Width = 670
-          Align = alClient
-          ItemHeight = 13
-          TabOrder = 0
+          Caption = 'call'
+          OnClick = callAPIClick
+          TabOrder = 4
         end
       end
       object TabSheet5: TTabSheet
         Caption = 'Optionen'
-        ClientHeight = 584
-        ClientWidth = 597
+        ClientHeight = 620
+        ClientWidth = 601
         ImageIndex = 4
         object Label21: TLabel
           Left = 336
@@ -1136,7 +1115,7 @@ object mainForm: TmainForm
   object findTimer: TTimer
     Interval = 250
     OnTimer = findTimerTimer
-    left = 208
+    left = 216
     top = 56
   end
   object ImageList1: TImageList
@@ -1250,11 +1229,11 @@ object mainForm: TmainForm
   end
   object ColorDialog1: TColorDialog
     left = 400
-    top = 609
+    top = 618
   end
   object windowPropertyListPopup: TPopupMenu
     left = 360
-    top = 558
+    top = 581
     object windowAddProperty: TMenuItem
       Caption = 'Hinzufügen'
       OnClick = windowAddPropertyClick
