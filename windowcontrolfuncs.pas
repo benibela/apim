@@ -23,8 +23,22 @@ procedure windowCustomStylesToCheckListBox(window:THandle;listbox:TCheckListBox;
 procedure changeWindowStyle(window:THandle; name: string; enabled: boolean);
 procedure changeWindowExStyle(window:THandle; name: string; enabled: boolean);
 procedure changeCustomStyle(window:THandle; name: string; enabled: boolean);
+
+
+type EGenericCallException= class(Exception);
+function genericCall(dll, proc: string; stackParameters: TMemoryBlocks; alignment:longint=4): longint;
+
+
+//------------------System Properties----------------------------
+var
+  systemPropertiesArray: array of record
+    name,value:string;
+  end;
+
+procedure calculateSysProperties();
+
 implementation
-uses ExtCtrls,StdCtrls,applicationConfig;
+uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig;
 procedure setCommonText(control: tcontrol;caption:string);
 begin
   if control = nil then exit;
@@ -68,6 +82,7 @@ var p: pchar;
       bracketCount: longint;
     end;
     newBlock: boolean; //created a new block in the step before
+    lastData: (ldNone,ldNum,ldStr);
   procedure currentBlockAddBuffer(block: pointer; size:longint);
   var oldSize:longint;
   begin
@@ -86,6 +101,8 @@ var p: pchar;
   procedure closeBlocks;
   var block:longint;
   begin
+    if lastData = ldStr then currentBlockAddByte(0); //Str nullterminiert
+    lastData:=ldNone;
     while (length(blockStack)>0) and (blockStack[high(blockStack)].bracketCount>=brackets) do begin
       block:=currentBlock;
       currentBlock:=blockStack[high(blockStack)].blockID;
@@ -93,8 +110,7 @@ var p: pchar;
       setlength(blockStack,high(blockStack));
     end;
   end;
-  var lastData: (ldNone,ldNum,ldStr);
-      numStr: string;
+  var numStr: string;
       num:int64;
 begin
   if s='' then exit(nil);
@@ -751,6 +767,197 @@ begin
   if GetParent(window)<>0 then
     RedrawWindow(getparent(window),nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN)
 end;
+
+
+var globalESPSave,globalEBPSave:pointer;
+
+{$ASMMODE Intel}
+function genericCall(dll, proc: string; stackParameters: TMemoryBlocks; alignment:longint=4): longint;
+
+function getAddress(hmod:Thandle;name:string):pointer;
+var temp: longint;
+begin
+  result:=GetProcAddress(hmod,pchar(name));
+  if result<>nil then exit;
+  result:=GetProcAddress(hmod,pchar(name+'A'));
+  if result<>nil then exit;
+  result:=GetProcAddress(hmod,pchar(name+'W'));
+  if result<>nil then exit;
+  if TryStrToInt(name,temp) then
+    result:=GetProcAddress(hmod,pchar(temp));
+  if result<>nil then exit;
+end;
+
+var procAddress: pointer;
+    dllHandle: HINST;
+    stackParams: pointer;
+    i,stackSize: longint;
+    currentESP,currentEBP: pointer;
+const dllsToTry:array[1..10] of string = ('kernel32.dll','user32.dll','advapi32.dll','gdi32.dll',
+                                          'comctl32.dll','comdlg32.dll','version.dll','shell32.dll',
+                                          'wininet.dll','ntdll.dll');
+    
+begin
+  if dll<>'' then begin
+    dllHandle:=LoadLibrary(pchar(dll));
+    if dllHandle=0 then raise EGenericCallException.Create('DLL nicht gefunden');
+    procAddress:=getAddress(dllHandle,proc);
+  end else
+    for i:=low(dllsToTry) to high(dllsToTry) do begin
+      procAddress:=getAddress(LoadLibrary(pchar(dllsToTry[i])),proc);
+      if procAddress <> nil then break;
+    end;
+  if procAddress=nil then raise EGenericCallException.Create('Funktion nicht gefunden');
+  if length(stackParameters[0]) mod alignment <> 0 then begin
+    stackSize:=length(stackParameters[0]);
+    setlength(stackParameters[0],length(stackParameters[0])+alignment-length(stackParameters[0]) mod alignment);
+    for i:=stacksize to high(stackParameters[0]) do
+      stackParameters[0,stacksize]:=0;
+  end;
+  stackSize:=length(stackParameters[0])*sizeof(stackParameters[0,0]);
+  asm
+    //save stack
+    mov globalESPSave, esp
+    mov globalEBPSave, ebp
+
+    sub esp, stacksize
+    mov currentESP, esp
+  end;
+  move(stackParameters[0,0],(currentESP)^,stackSize);
+  asm
+    //mov eax, $12345678
+    //call
+    call procAddress
+    //restore stack
+    mov ecx, esp
+    mov ebx, ebp
+    mov esp, globalESPSave
+    mov ebp, globalEBPSave
+    mov currentESP, ecx
+    mov currentEBP, ebx
+    mov result, eax
+  end;
+  if (currentESP<globalESPSave) then
+    raise exception.create('Zu viele Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')');
+  if (currentESP>globalESPSave) then
+    raise exception.create('Zu wenig Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')'#13#10'Warnung: Stack vielleicht beschädigt');
+  if (currentEBP<>globalEBPSave) then
+    raise exception.create('Ungültige Parameterzahl?'#13#10'(ebp mismatch: new '+Pointer2Str(currentEBP)+' vs old '+Pointer2Str(globalEBPSave)+')'#13#10#13#10'Warnung: Stack kann korrupt sein');
+  
+end;
+
+
+//==========================System Properties==================================
+
+type TWNetEnumCachedPasswords= function (lp: lpStr; windowList: Word; b: Byte; PC: PChar; dw: DWord): Word; stdcall;
+var
+   WNetEnumCachedPasswords:TWNetEnumCachedPasswords=nil;
+
+//Sucht Passwörter
+procedure LoadWNetEnumCachedPasswords;
+var lib:THandle;
+begin
+  if runonNT then exit;
+  lib:=LoadLibrary(@mpr[1]);
+  if lib=0 then exit;
+  WNetEnumCachedPasswords := TWNetEnumCachedPasswords(GetProcAddress(lib, @'WNetEnumCachedPasswords'[1]));
+  if not Assigned(WNetEnumCachedPasswords) then WNetEnumCachedPasswords:=nil;
+end;
+
+procedure setDisplayedSysProperty(name, value: string);
+begin
+  SetLength(systemPropertiesArray,length(systemPropertiesArray)+1);
+  systemPropertiesArray[high(systemPropertiesArray)].name:=name;
+  systemPropertiesArray[high(systemPropertiesArray)].value:=value;
+end;
+
+procedure calculateSysProperties();
+var buf:array[0..300] of  char;
+    reg:TRegistry;
+    a,b,anaus:integer;
+    ptemp:array[0..1024] of char;
+temp,pwd_dec:string;
+    ed:TEdit;
+    memory:TMemoryStatus;
+
+begin
+  SetLength(systemPropertiesArray,0);
+
+setDisplayedSysProperty('Prozessorspeed (momentan)',floatToStr(GetCPUSpeed)+' MHz');
+
+if not runonNT then begin
+  if Pchar(pointer($FE061))^<>#0 then
+    setDisplayedSysProperty('BIOS Name',String(Pchar(pointer($FE061)))); // BIOS Name
+  if Pchar(pointer($FFFF5))^<>#0 then
+    setDisplayedSysProperty('BIOS Datum',String(Pchar(pointer($FFFF5)))); // BIOS Datum
+  if Pchar(pointer($FEC71))^<>#0 then
+    setDisplayedSysProperty('BIOS Seriennummer',String(Pchar(Pointer($FEC71)))); // Seriennummer
+end;
+
+memory.dwLength:=sizeof(memory);
+GlobalMemoryStatus(memory);
+setDisplayedSysProperty('Gesamter Ram: ',inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
+setDisplayedSysProperty('Freier Ram: ',inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
+
+GetWindowsDirectory(buf,256);
+setDisplayedSysProperty('Windowspfad',buf);
+
+GetTempPath(256,buf);
+setDisplayedSysProperty('Temppfad',buf);
+
+GetSystemDirectory( buf,256);
+setDisplayedSysProperty('Systempfad:',buf);
+
+
+reg:=TRegistry.create(KEY_READ);
+reg.RootKey:=HKEY_LOCAL_MACHINE;
+if reg.OpenKey('\Software\Microsoft\Windows NT\CurrentVersion',false) then begin //Nur Win NT
+  if reg.ValueExists('CSDVersion') then
+    setDisplayedSysProperty('Service Pack',reg.ReadString('CSDVersion'));
+end else if reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',false) then begin  //Nur Win9x
+  if reg.ValueExists('ProductKey') then
+    setDisplayedSysProperty('Produktkey',reg.ReadString('ProductKey'));
+  if reg.ValueExists('VersionNumber') then
+    setDisplayedSysProperty('Version:',reg.ReadString('VersionNumber'));
+end;
+if reg.ValueExists('ProductName') then
+  setDisplayedSysProperty('Betriebsystem',reg.ReadString('ProductName'));
+if reg.ValueExists('ProductId') then
+  setDisplayedSysProperty('Seriennummer',reg.ReadString('ProductId'));
+if reg.ValueExists('RegisteredOwner') then
+  setDisplayedSysProperty('Benutzer',reg.ReadString('RegisteredOwner'));
+if reg.ValueExists('RegisteredOrganization') then
+  setDisplayedSysProperty('Organisation',reg.ReadString('RegisteredOrganization'));
+if reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',false) then begin
+  if reg.ValueExists('Workgroup') then
+    setDisplayedSysProperty('Arbeitsgruppe',reg.ReadString('Workgroup'));
+  if reg.ValueExists('ComputerName') then
+    setDisplayedSysProperty('ComputerName',reg.ReadString('ComputerName'));
+end;
+
+//Passwörter (9x)
+if not runonNT then begin
+  LoadWNetEnumCachedPasswords;
+  WNetEnumCachedPasswords(nil, 0, $FF, pchar(@AddPassword), 0);
+end;
+reg.Rootkey:=HKEY_CURRENT_USER;
+IF reg.OpenKey('\Control Panel\Desktop\',False) and Reg.ValueExists('ScreenSaveUsePassword')
+   and Reg.ValueExists('ScreenSave_Data') THEN
+BEGIN
+  anaus:=reg.ReadInteger('ScreenSaveUsePassword'); // Passwortschutz aktiv ?
+  reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlüsseltes Passwort lesen
+  IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
+  BEGIN
+    pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
+     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// Entschlüsseltes Passwort ausgeben
+  END
+end;
+
+
+reg.free;
+end;
+
+
 
 end.
 

@@ -16,7 +16,7 @@ interface
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,commontypes,
-  ImgList,windowfuncs,passwort, Spin,sysutils,richedit, Menus,FileUtil,
+  ImgList,windowfuncs, Spin,sysutils,richedit, Menus,FileUtil,
   CheckLst,TreeListView,windowcontrolfuncs;
 
 type
@@ -30,8 +30,13 @@ type
     callAPIDLL: TEdit;
     callAPIProc: TEdit;
     callAPIParameter: TEdit;
+    Label14: TLabel;
+    Label16: TLabel;
+    callAPIResult_lbl: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
     systemProperties: TListView;
     windowsListFilterThread: TEdit;
     Label12: TLabel;
@@ -153,6 +158,11 @@ type
       );
     procedure showHandleClick(Sender: TObject);
     procedure processTabSheetShow(Sender: TObject);
+    procedure systemPropertiesAdvancedCustomDrawSubItem(
+      Sender: TCustomListView; Item: TListItem; SubItem: Integer;
+      State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean
+      );
+    procedure TabSheet2Show(Sender: TObject);
     procedure windowListDblClick(Sender: TObject);
     procedure windowListFilterParentUpClick(Sender: TObject);
     procedure windowListFilterParent_edtChange(Sender: TObject);
@@ -178,8 +188,6 @@ type
     procedure Button8Click(Sender: TObject);
     procedure updatePropertyKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure Button4Click(Sender: TObject);
-
 
     procedure Button19Click(Sender: TObject);
     procedure Button26Click(Sender: TObject);
@@ -217,8 +225,6 @@ type
     procedure windowTreeListExpandItem(sender: TObject; item: TTreeListItem);
   private
     { Private-Deklarationen}
-    procedure LoadWNetEnumCachedPasswords;
-
     procedure WM_HELP(var message:TMessage);message WM_HELP;
     procedure WM_SYSCOMMAND(var message:TMessage);message WM_SYSCOMMAND;
     
@@ -247,10 +253,8 @@ type
 
 
     //System/Sonstiges
-    procedure setDisplayedSysProperty(name, value: string);
     procedure displaySysProperties();
   public
-  runonNT: boolean ;
     { Public-Deklarationen}
 //    procedure MessageHandler;
   end;
@@ -261,12 +265,12 @@ var
 
   status:integer=0;
   helpon:boolean=false;
-type TWNetEnumCachedPasswords= function (lp: lpStr; windowList: Word; b: Byte; PC: PChar; dw: DWord): Word; stdcall;
-var
-   WNetEnumCachedPasswords:TWNetEnumCachedPasswords=nil;
 
 implementation
 uses TLHelp32,proc9, wstyles, help, bbutils, win32proc, applicationConfig,winConstWindow;
+const
+  crScanner:integer=101;
+
 {$R cursor.res}
 
 
@@ -637,151 +641,27 @@ begin
     end;
 end;
 
-procedure TmainForm.setDisplayedSysProperty(name, value: string);
-begin
-  with systemProperties.Items.add do begin
-    Caption:=name;
-    subitems.Add(value);
-  end;
-end;
-
 procedure AddProcF1(text:string);
 begin
   //mainForm.ListBox1.items.add(text);
 end;
-//Sucht Passwörter
-procedure TmainForm.LoadWNetEnumCachedPasswords;
-var lib:THandle;
-begin
-  if runonNT then exit;
-  lib:=LoadLibrary(@mpr[1]);
-  if lib=0 then exit;
-  @WNetEnumCachedPasswords := GetProcAddress(lib, @'WNetEnumCachedPasswords'[1]);
-  if not Assigned(WNetEnumCachedPasswords) then WNetEnumCachedPasswords:=nil;
-end;
+
 
 procedure TmainForm.displaySysProperties();
-var buf:array[0..300] of  char;
-    reg:TRegistry;
-    a,b,anaus:integer;
-    ptemp:array[0..1024] of char;
-temp,pwd_dec:string;
-    ed:TEdit;
-    memory:TMemoryStatus;
-
+var i:longint;
 begin
-  systemProperties.Clear;
+  systemProperties.BeginUpdate;
+  systemProperties.items.Clear;
+  for i:=0 to high(systemPropertiesArray) do
+    with systemProperties.Items.add,
+         systemPropertiesArray[i] do begin
+      Caption:=name;
+      subitems.Add(value);
+    end;
+  systemProperties.EndUpdate;
 
-setDisplayedSysProperty('Prozessorspeed',floatToStr(GetCPUSpeed)+' MHz');
-
-try //Nur 9xME
-  if Pchar(pointer($FE061))^<>#0 then
-    setDisplayedSysProperty('BIOS Name',String(Pchar(pointer($FE061)))); // BIOS Name
-  if Pchar(pointer($FFFF5))^<>#0 then
-    setDisplayedSysProperty('BIOS Datum',String(Pchar(pointer($FFFF5)))); // BIOS Datum
-  if Pchar(pointer($FEC71))^<>#0 then
-    setDisplayedSysProperty('BIOS Seriennummer',String(Pchar(Pointer($FEC71)))); // Seriennummer
-except
 end;
 
-memory.dwLength:=sizeof(memory);
-GlobalMemoryStatus(memory);
-setDisplayedSysProperty('Gesamter Ram: ',inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
-setDisplayedSysProperty('Freier Ram: ',inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
-
-GetWindowsDirectory(buf,256);
-setDisplayedSysProperty('Windowspfad',buf);
-
-GetTempPath(256,buf);
-setDisplayedSysProperty('Temppfad',buf);
-
-GetSystemDirectory( buf,256);
-setDisplayedSysProperty('Systempfad:',buf);
-
-
-reg:=TRegistry.create(KEY_READ);
-reg.RootKey:=HKEY_LOCAL_MACHINE;
-if reg.OpenKey('\Software\Microsoft\Windows NT\CurrentVersion',false) then begin //Nur Win NT
-  if reg.ValueExists('CSDVersion') then
-    setDisplayedSysProperty('Service Pack',reg.ReadString('CSDVersion'));
-end else if reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',false) then begin  //Nur Win9x
-  if reg.ValueExists('ProductKey') then
-    setDisplayedSysProperty('Produktkey',reg.ReadString('ProductKey'));
-  if reg.ValueExists('VersionNumber') then
-    setDisplayedSysProperty('Version:',reg.ReadString('VersionNumber'));
-end;
-if reg.ValueExists('ProductName') then
-  setDisplayedSysProperty('Betriebsystem',reg.ReadString('ProductName'));
-if reg.ValueExists('ProductId') then
-  setDisplayedSysProperty('Seriennummer',reg.ReadString('ProductId'));
-if reg.ValueExists('RegisteredOwner') then
-  setDisplayedSysProperty('Benutzer',reg.ReadString('RegisteredOwner'));
-if reg.ValueExists('RegisteredOrganization') then
-  setDisplayedSysProperty('Organisation',reg.ReadString('RegisteredOrganization'));
-if reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',false) then begin
-  if reg.ValueExists('Workgroup') then
-    setDisplayedSysProperty('Arbeitsgruppe',reg.ReadString('Workgroup'));
-  if reg.ValueExists('ComputerName') then
-    setDisplayedSysProperty('ComputerName',reg.ReadString('ComputerName'));
-end;
-
-//Passwörter (9x)
-if assigned(WNetEnumCachedPasswords) then
-  WNetEnumCachedPasswords(nil, 0, $FF, @AddPassword, 0);
-  
-reg.Rootkey:=HKEY_CURRENT_USER;
-IF reg.OpenKey('\Control Panel\Desktop\',False) and Reg.ValueExists('ScreenSaveUsePassword')
-   and Reg.ValueExists('ScreenSave_Data') THEN
-BEGIN
-  anaus:=reg.ReadInteger('ScreenSaveUsePassword'); // Passwortschutz aktiv ?
-  reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlüsseltes Passwort lesen
-  IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
-  BEGIN
-    pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
-     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// Entschlüsseltes Passwort ausgeben
-  END
-end;
-
-
-reg.free;
-end;
-
-function genericCall(dll, proc: string; stackParameters: TMemoryBlocks; alignment:longint=4): longint;
-
-var procAddress: pointer;
-    dllHandle: HINST;
-    stackParams: pointer;
-    i,stackSize: longint;
-    currentESP: pointer;
-begin
-  dllHandle:=LoadLibrary(pchar(dll));
-  if dllHandle=0 then exit(0);
-  procAddress:=GetProcAddress(dllHandle,pchar(proc));
-  if procAddress=nil then exit(0);
-
-  if length(stackParameters[0]) mod alignment <> 0 then begin
-    stackSize:=length(stackParameters[0]);
-    setlength(stackParameters[0],length(stackParameters[0])+alignment-length(stackParameters[0]) mod alignment);
-    for i:=stacksize to high(stackParameters[0]) do
-      stackParameters[0,stacksize]:=0;
-  end;
-  stackSize:=length(stackParameters[0])*sizeof(stackParameters[0,0]);
-  asm
-    sub esp, stacksize
-    mov currentESP, esp
-  end;
-  move(stackParameters[0,0],(currentESP)^,stackSize);
-  asm
-    mov eax, $12345678
-    //call
-    call procAddress
-  end;
-end;
-
-
-
-
-//---------------------------------------------------
 
 
 
@@ -831,6 +711,18 @@ procedure TmainForm.processTabSheetShow(Sender: TObject);
 begin
   SetWindowLong(Handle,GWL_EXSTYLE,GetWindowLong(handle,GWL_EXSTYLE) and not WS_EX_LAYERED);
   displayProcesses.Click;
+end;
+
+procedure TmainForm.systemPropertiesAdvancedCustomDrawSubItem(
+  Sender: TCustomListView; Item: TListItem; SubItem: Integer;
+  State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
+begin
+
+end;
+
+procedure TmainForm.TabSheet2Show(Sender: TObject);
+begin
+  threadedCall(calculateSysProperties,displaySysProperties);
 end;
 
 procedure TmainForm.windowListDblClick(Sender: TObject);
@@ -902,41 +794,9 @@ begin
   end;
 end;
 
-procedure CreateEdit(top:integer;name:string);
-begin
-edi:=TEdit.Create(mainForm);
-edi.Name:=name;
-edi.Parent:=mainForm.TabSheet2;
-edi.Left:=87;
-edi.Top:=top;
-edi.BorderStyle:=bsNone;
-edi.Text:='';
-edi.Visible:=true;
-edi.Height :=15;
-
-end;
 procedure TmainForm.FormShow(Sender: TObject);
 var reg:TRegistry;
 begin
-
-{AppendMenu(GetSystemMenu(handleEdt,false),MF_STRING,$F200,'Desktop umschalten');
-AppendMenu(GetSystemMenu(handleEdt,false),MF_STRING,$F201,'Delphi umschalten');
-AppendMenu(GetSystemMenu(handleEdt,false),MF_STRING,$F202,'Winpopup umschalten');
-AppendMenu(GetSystemMenu(handleEdt,false),MF_STRING,$F203,'Winpopup-Text umschalten');}
-CreateEdit(127,'Edit12');
-CreateEdit(143,'Edit13');
-CreateEdit(175,'Edit2');
-CreateEdit(191,'Edit7');
-CreateEdit(207,'Edit10');
-CreateEdit(223,'Edit11');
-CreateEdit(239,'Edit8');
-CreateEdit(255,'Edit9');
-
-
-
-addproc:=AddProcF1;
-//windowstyleform.mouseRefreshAllLive.Enabled:=runonNT;
-//windowstyleform.mouseRefreshAllLive.Checked:=not runonNT;
   reg:=TRegistry.create;
   try
     reg.RootKey:=HKEY_CURRENT_USER;
@@ -985,18 +845,10 @@ end;
 
 procedure TmainForm.callAPIClick(Sender: TObject);
 begin
-  genericCall(callAPIDLL.Text,callAPIProc.Text,createMemoryBlocks(callAPIParameter.Text));
+  callAPIResult_lbl.Caption:=Cardinal2Str(genericCall(callAPIDLL.Text,callAPIProc.Text,createMemoryBlocks(callAPIParameter.Text)));
 
 end;
 
-procedure TmainForm.Button4Click(Sender: TObject);
-var
-    s:string;
-begin
-s:=InputBox('Text-Eingabe','Bitte geben sie den Text ein','');
-SetWindowText(FindWindow('Winpopup',nil),Pchar(s));
-
-end;
 
 procedure TmainForm.windowPropertyListChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
@@ -1235,7 +1087,6 @@ end;
 procedure TmainForm.messageSend_btnClick(Sender: TObject);
 var wp,lp: cardinal;
     blockWP,blockLP: TMemoryBlocks;
-    b1,b0: PByteArray;
     msgStr: string;
 begin
   msgStr:=messagemes_cb.text;
@@ -1246,8 +1097,8 @@ begin
 
   blockWP:=createMemoryBlocks(messagewparam_edt.Text);
   blockLP:=createMemoryBlocks(messagelparam_edt.Text);
-  b0:=PByteArray(blockLP[0]);
-  b1:=PByteArray(blockLP[1]);
+//  b0:=PByteArray(blockLP[0]);
+//  b1:=PByteArray(blockLP[1]);
   wp:=0;
   lp:=0;
   if blockWP<>nil then
@@ -1325,8 +1176,8 @@ BEGIN
     ttt:=ttt+'('+Cardinal2Str(prio)+')';
     item.recordItems.AddWithText(ttt);
 
-    item.recordItems.AddWithText(inttostr(pe32.cntUsage));// string(pe32.szExeFile));
-//    item.recordItems.AddWithText(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
+//    item.recordItems.AddWithText(inttostr(pe32.cntUsage));// string(pe32.szExeFile));
+    item.recordItems.AddWithText(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
   until not Process32Next(hProcessSnap, pe32);
   CloseHandle(hProcessSnap);
   processTreeList.EndUpdate;
@@ -1407,8 +1258,6 @@ end;
 
 procedure TmainForm.PageControl1Change(Sender: TObject);
 begin
-
-  displaySysProperties();
 end;
 
 procedure TmainForm.Button19Click(Sender: TObject);
@@ -1505,10 +1354,9 @@ begin
 
   //================================
   
-  LoadWNetEnumCachedPasswords;
 //  desktopDC:=createDc('DISPLAY',nil,nil,nil);//getdc(GetDesktopWindow);
 //     messageho
-  runonNT:=Win32Platform=VER_PLATFORM_WIN32_NT;
+
   screen.cursors[crScanner]:=LoadCursor(HINSTANCE,makeintresource(101));
   reg:=TRegistry.create;
   try

@@ -11,7 +11,10 @@ uses
   passwort in 'passwort.pas', applicationConfig, winconstwindow,
 windowcontrolfuncs;
   
+{$IFDEF WINDOWS}{$R manifest.rc}{$ENDIF}
+
 begin
+  Application.Title:='API Manager';
   Application.Initialize;
   Application.CreateForm(TmainForm, mainForm);
   Application.CreateForm(Twindowstyleform, windowstyleform);

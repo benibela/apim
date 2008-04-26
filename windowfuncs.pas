@@ -40,7 +40,7 @@ function GetFileNameFromHandle(Handle: hwnd):string;//Von Leo, liefert den Datei
 function GetWindowPosStr(handle: hwnd): string;//Liefert formatierten String (l,t)-(r,b)
 procedure toggleWindowMarkStatus(handle: hwnd);
 
-function GetWindowAlphaColorKey(wnd:HWND;var color:COLORREF;var alpha:Byte;var Flags:Longint):boolean;//Liefert transparents Informationen
+function GetWindowAlphaColorKey(wnd:HWND;out color:COLORREF;out alpha:Byte;out Flags:Longint):boolean;//Liefert transparents Informationen
 function GetWindowColorKey(wnd:HWND):COLORREF; //Liefert eine einzige Transparentsinformation (ColorKey), benutzt GetWindowAlphaColorKey
 function GetWindowAlpha(wnd:HWND):byte; //Liefert eine einzige Transparentsinformation , benutzt GetWindowAlphaColorKey
 function GetWindowLayeredFlags(wnd:HWND):integer; //Liefert eine einzige Transparentsinformation , benutzt GetWindowAlphaColorKey
@@ -339,7 +339,7 @@ begin
 end;
 
 
-function GetWindowAlphaColorKey(wnd:HWND;var color:COLORREF;var alpha:Byte;var Flags:Longint):boolean;
+function GetWindowAlphaColorKey(wnd:HWND;out color:COLORREF;out alpha:Byte;out Flags:Longint):boolean;
 type
   PCOLORREF=^COLORREF;
 type

@@ -5,12 +5,14 @@ unit applicationConfig;
 interface
 
 uses
-  Classes, SysUtils; 
+  Classes, SysUtils,windows;
 
 var hexa:boolean=false;
     winConstPath:string='winconst\';
+    runonNT: boolean;
 function Str2Cardinal(s:string):cardinal;
 function Cardinal2Str(nr:cardinal):string;
+function Pointer2Str(p: pointer):string;
 
 implementation
 
@@ -30,5 +32,13 @@ begin
    else
     Result:= IntToStr(nr);
 end;
+
+function Pointer2Str(p: pointer): string;
+begin
+  result:=Cardinal2Str(cardinal(p));
+end;
+
+initialization
+  runonNT:=Win32Platform=VER_PLATFORM_WIN32_NT;
 end.
 

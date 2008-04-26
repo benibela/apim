@@ -16,7 +16,6 @@ type
 type TAddProc=procedure (text:string);
 const
   Count: Integer = 0;
-  crScanner:integer=101;
 var
   addproc:TAddProc=nil;
 function AddPassword(WinPassword: PWinPassword; dw: DWord): LongBool; stdcall;
