@@ -885,6 +885,7 @@ object mainForm: TmainForm
         ClientHeight = 620
         ClientWidth = 601
         ImageIndex = 2
+        OnResize = processTabSheetResize
         OnShow = processTabSheetShow
         object Panel5: TPanel
           Height = 96

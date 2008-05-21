@@ -156,6 +156,7 @@ type
     procedure parentWndCmbDblClick(Sender: TObject);
     procedure posLTEdtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
       );
+    procedure processTabSheetResize(Sender: TObject);
     procedure showHandleClick(Sender: TObject);
     procedure processTabSheetShow(Sender: TObject);
     procedure systemPropertiesAdvancedCustomDrawSubItem(
@@ -567,7 +568,7 @@ var i,j:longint;
     filterProgram: string;
 begin
   filterProgram:=lowercase(windowListFilterProgram_edt.Text);
-  if itemExtend <> nil then filterParentWnd:=Str2Cardinal(itemExtend.Caption)
+  if itemExtend <> nil then filterParentWnd:=Str2Cardinal(itemExtend.Text)
   else if windowListFilterParent_edt.text<>'' then filterParentWnd:=Str2Cardinal(windowListFilterParent_edt.text)
   else filterParentWnd:=0;
   list:=EnumWindowsToIntList(filterParentWnd,not windowsListfilterDirectChilds.Checked);
@@ -581,15 +582,15 @@ begin
     parentWnd:=GetParent(wnd);
     parentItem:=nil;
     if (parentWnd<>0) and (filterParentWnd <> 0) then
-      parentItem:=windowTreeList.Items.FindItemWithCaption(Cardinal2Str(parentWnd));
-    with windowTreeList.Items.AddChildItem(parentItem) do begin
+      parentItem:=windowTreeList.Items.FindItemWithText(Cardinal2Str(parentWnd));
+    with windowTreeList.Items.Add(parentItem) do begin
       if (filterParentWnd = 0) then
         if GetWindow(wnd,GW_CHILD)<>0 then begin
-          SubItems.AddItemWithCaption('Dummy'); //will be expanded later
+          SubItems.Add('Dummy'); //will be expanded later
           Expanded:=false;
         end;
 
-      caption:=Cardinal2Str(wnd);
+      Text:=Cardinal2Str(wnd);
 {      if filterParentWnd <> 0 then begin
         nextParent:=getparent(wnd);
         while nextParent<>filterParentWnd do begin
@@ -598,17 +599,17 @@ begin
         end;
       end;}
       
-      RecordItems.AddWithText(getwindowtexts(wnd));
-      RecordItems.AddWithText(getWindowClassNameToDisplay(wnd));
+      RecordItems.Add(getwindowtexts(wnd));
+      RecordItems.Add(getWindowClassNameToDisplay(wnd));
       s:='';
       if IsWindowVisible(wnd) then s:=s+'visible';//'Visible: true | ' else s:=s+'Visible: false | ';
       if IsWindowEnabled(wnd) then begin
         if s<>'' then s:=s+', ';//Enable: true' else s:=s+'Enable: false';
         s+='enabled';
       end;
-      RecordItems.AddWithText(s);
-      RecordItems.AddWithText(GetWindowPosStr(wnd));
-      RecordItems.AddWithText(programS);
+      RecordItems.Add(s);
+      RecordItems.Add(GetWindowPosStr(wnd));
+      RecordItems.Add(programS);
     end;
   end;
   windowTreeList.EndUpdate;
@@ -688,6 +689,11 @@ end;
 
 procedure TmainForm.posLTEdtKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+begin
+
+end;
+
+procedure TmainForm.processTabSheetResize(Sender: TObject);
 begin
 
 end;
@@ -912,7 +918,7 @@ procedure TmainForm.windowTreeListExpandItem(sender: TObject;
   item: TTreeListItem);
 begin
   if item.SubItems.count=0 then exit;
-  if item.SubItems[0].Caption='Dummy' then begin
+  if item.SubItems[0].Text='Dummy' then begin
     displayWindows(item);
   end;
 end;
@@ -994,7 +1000,7 @@ end;
 procedure TmainForm.windowListSelectItem(Sender: TObject; Item: TTreeListItem);
 begin
   if item=nil then exit;
-  handleEdt.Text:=item.Caption;
+  handleEdt.Text:=item.Text;
   changeProperty(handleEdt);
 end;
 
@@ -1157,14 +1163,15 @@ VAR
 BEGIN
   if processTreeList=nil then exit;//wtf??
   processTreeList.BeginUpdate;
+  //processTreeList.multiSelect:=true;
   processTreeList.items.clear;
   makeSnapshot;
   if hProcessSnap=dword(-1) then exit;
   if not  Process32First(hProcessSnap, pe32) then exit;
   repeat
-    parentItem:=processTreeList.Items.FindItemWithRecordText(0,Cardinal2Str(pe32.th32ParentProcessID));
-    item:=processTreeList.Items.AddChildItemWithCaption(parentItem, ExtractFileName(string(pe32.szExeFile)));
-    item.recordItems.AddWithText(Cardinal2Str(pe32.th32ProcessID));
+    parentItem:=processTreeList.Items.FindItemWithRecordText(1,Cardinal2Str(pe32.th32ParentProcessID));
+    item:=processTreeList.Items.Add(parentItem, ExtractFileName(string(pe32.szExeFile)));
+    item.recordItems.Add(Cardinal2Str(pe32.th32ProcessID));
     //item.recordItems.AddWithText(string(pe32.szExeFile));
 
     ttt:='';
@@ -1174,10 +1181,10 @@ BEGIN
     if prio=NORMAL_PRIORITY_CLASS then ttt:='NORMAL';
     if prio=REALTIME_PRIORITY_CLASS then ttt:='ECHT ZEIT';
     ttt:=ttt+'('+Cardinal2Str(prio)+')';
-    item.recordItems.AddWithText(ttt);
+    item.recordItems.Add(ttt);
 
 //    item.recordItems.AddWithText(inttostr(pe32.cntUsage));// string(pe32.szExeFile));
-    item.recordItems.AddWithText(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
+    item.recordItems.Add(inttostr(pe32.cntThreads));// string(pe32.szExeFile));
   until not Process32Next(hProcessSnap, pe32);
   CloseHandle(hProcessSnap);
   processTreeList.EndUpdate;
@@ -1298,28 +1305,29 @@ begin
   windowTreeList.OnSelect:=windowListSelectItem;
   windowTreeList.OnDblClick:=windowListDblClick;
   windowTreeList.sorted:=true;
-  if windowTreeList.HeaderSections.Count>0 then
-    windowTreeList.HeaderSections[0].Text:='Handle'
-   else
-    windowTreeList.HeaderSections.add.Text:='Handle';
-  windowTreeList.HeaderSections[0].Width:=140;
-  with windowTreeList.HeaderSections.Add do begin
+  windowTreeList.ColumnsDragable:=true;
+  windowTreeList.Columns.Clear;
+  with windowTreeList.Columns.add do begin
+    Text:='Handle';
+    Width:=140;
+  end;
+  with windowTreeList.Columns.Add do begin
     text:='Titel';
     Width:=140;
   end;
-  with windowTreeList.HeaderSections.Add do begin
+  with windowTreeList.Columns.Add do begin
     text:='Klasse';
     Width:=100;
   end;
-  with windowTreeList.HeaderSections.Add do begin
+  with windowTreeList.Columns.Add do begin
     text:='Status';
     Width:=100;
   end;
-  with windowTreeList.HeaderSections.Add do begin
+  with windowTreeList.Columns.Add do begin
     text:='Größe';
     Width:=130;
   end;
-  with windowTreeList.HeaderSections.Add do begin
+  with windowTreeList.Columns.Add do begin
     text:='Programm';
     Width:=150;
   end;
@@ -1334,20 +1342,21 @@ begin
   processTreeList.OnSelect:=windowListSelectItem;
   processTreeList.OnDblClick:=windowListDblClick;}
   processTreeList.sorted:=true;
-  if processTreeList.HeaderSections.Count>0 then
-    processTreeList.HeaderSections[0].Text:='Programm'
+  processTreeList.ColumnsDragable:=true;
+  if processTreeList.Columns.Count>0 then
+    processTreeList.Columns[0].Text:='Programm'
    else
-    processTreeList.HeaderSections.add.Text:='Programm';
-  processTreeList.HeaderSections[0].Width:=180;
-  with processTreeList.HeaderSections.Add do begin
+    processTreeList.Columns.add.Text:='Programm';
+  processTreeList.Columns[0].Width:=180;
+  with processTreeList.Columns.Add do begin
     text:='PID';
     Width:=40;
   end;
-  with processTreeList.HeaderSections.Add do begin
+  with processTreeList.Columns.Add do begin
     text:='Priority';
     Width:=100;
   end;
-  with processTreeList.HeaderSections.Add do begin
+  with processTreeList.Columns.Add do begin
     text:='Threads';
     Width:=100;
   end;
