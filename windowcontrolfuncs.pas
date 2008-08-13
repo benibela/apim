@@ -671,7 +671,7 @@ begin
 end;
 
 procedure changeWindowStyle(window: THandle; name: string; enabled: boolean);
-var styles,style:longint;
+var styles,style:longword;
 begin
   name:=UpperCase(name);
   if name=TWS_BORDER then style:=WS_BORDER else

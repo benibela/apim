@@ -6,7 +6,7 @@
   - Ende 2002:
     Fertigstellung der Version 2
   - 2001:
-    Erste Veröffentlichung von APIV (entweder Version 1 oder 2)
+    Erste VerÃ¶ffentlichung von APIV (entweder Version 1 oder 2)
 }
 
 unit Unit1;
@@ -15,8 +15,8 @@ interface
 {$mode delphi}{$h+}
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Grids, ComCtrls,registry,shellapi,commontypes,
-  ImgList,windowfuncs, Spin,sysutils,richedit, Menus,FileUtil,
+  StdCtrls, ExtCtrls,  ComCtrls,registry,
+  windowfuncs, Spin,sysutils,Menus,FileUtil,
   CheckLst,TreeListView,windowcontrolfuncs;
 
 type
@@ -231,7 +231,7 @@ type
     
     
 
-    mouseToolActive: boolean;
+    //mouseToolActive: boolean;
     currentMouseWindow:HWND;
     
     currentWindow:HWND;
@@ -322,7 +322,7 @@ begin
   if (comp<>nil) and (comp.hint<>'') then
     ShowMessage(comp.hint)
    else
-    ShowMessage('Keine Hilfe verfügbar');
+    ShowMessage('Keine Hilfe verfÃ¼gbar');
   inherited;
 end;
 procedure TmainForm.WM_SYSCOMMAND(var message:TMessage);
@@ -884,7 +884,7 @@ begin
   if windowPropertyList.Selected<>nil then begin
     RemoveProp(currentWindow, pchar(windowPropertyList.Selected.Caption));
     displayProperty(windowPropertyList);
-  end else ShowMessage('Keine Eigenschaft ausgewählt');
+  end else ShowMessage('Keine Eigenschaft ausgewÃ¤hlt');
 end;
 
 procedure TmainForm.windowStylesClickCheck(Sender: TObject);
@@ -1324,7 +1324,7 @@ begin
     Width:=100;
   end;
   with windowTreeList.Columns.Add do begin
-    text:='Größe';
+    text:='GrÃ¶ÃŸe';
     Width:=130;
   end;
   with windowTreeList.Columns.Add do begin

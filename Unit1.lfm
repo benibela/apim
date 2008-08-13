@@ -3,32 +3,12 @@ object mainForm: TmainForm
   Height = 646
   Top = 57
   Width = 609
-  HorzScrollBar.Page = 608
-  VertScrollBar.Page = 645
   BorderIcons = [biSystemMenu, biHelp]
   Caption = 'API Manager 3.0.0'
   ClientHeight = 646
   ClientWidth = 609
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
-  Icon.Data = {
-    E70100002F2A2058504D202A2F0A7374617469632063686172202A6772617068
-    69635B5D203D207B0A22313620313620382031222C0A222E2063204E6F6E6522
-    2C0A222C20632023303030303830222C0A222D20632023303030303030222C0A
-    222A20632023464646464646222C0A226120632023433043304330222C0A2262
-    20632023303030304646222C0A226320632023464630303030222C0A22642063
-    2023383038303830222C0A222E2E2E2E2E2E2E2E2E2E2E2E2E2E2E2E222C0A22
-    2E2C2C2C2C2C2C2C2C2C2C2E2E2E2E2E222C0A222E2C2C2C2C2C2C2C2C2C2C2E
-    2E2E2E2E222C0A222E2D2A2A2A2A2A2A2A2A2D2E2E2E2E2E222C0A222E2D2A61
-    2A6162626262626262622E2E222C0A222E2D2A612A612A61612A2D2E2E622E2E
-    222C0A222E2D632A612A612A2A2A2D2E2E622E2E222C0A222E6363632A2A2C2C
-    612C2C616162612C222C0A22632D632D632D2C612C612C612C62612C222C0A22
-    2E2E632E2E2E2D2A2A2A2A622A622A62222C0A222E2E632E2E2E2D2A6464642A
-    6262622D222C0A222E2E6363636363636364642A64622A2D222C0A222E2E2E2E
-    2E2E2D2A2A2A2A2A2A2A2A2D222C0A222E2E2E2E2E2E2D2A2A2A2A2A2A2A2A2D
-    222C0A222E2E2E2E2E2E2D2A2A2A2A2A2A2A2A2D222C0A222E2E2E2E2E2E2D2D
-    2D2D2D2D2D2D2D2D227D0A
-  }
   KeyPreview = True
   OnCreate = FormCreate
   OnKeyUp = windowConstOpenEvent
@@ -76,10 +56,6 @@ object mainForm: TmainForm
           Height = 436
           Top = 184
           Width = 601
-          HorzScrollBar.Page = 580
-          VertScrollBar.Page = 431
-          VertScrollBar.Range = 1000
-          VertScrollBar.Visible = True
           Align = alClient
           TabOrder = 0
           OnClick = windowPropertySheetClick
@@ -680,7 +656,6 @@ object mainForm: TmainForm
                 FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                 FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
               }
-              Transparent = False
             end
             object mouseHandleEdt: TEdit
               Left = 96
@@ -899,7 +874,7 @@ object mainForm: TmainForm
           object Label10: TLabel
             Left = 8
             Height = 14
-            Top = 40
+            Top = 36
             Width = 43
             Caption = 'Priorität:'
             ParentColor = False
@@ -913,7 +888,7 @@ object mainForm: TmainForm
             ParentColor = False
           end
           object displayProcesses: TButton
-            Left = 191
+            Left = 220
             Height = 22
             Hint = 'Sucht alle Prozesse'
             Top = 4
@@ -923,20 +898,20 @@ object mainForm: TmainForm
             TabOrder = 0
           end
           object Button26: TButton
-            Left = 168
+            Left = 12
             Height = 25
             Hint = 'Beendet den gewählten Prozess'
-            Top = 55
+            Top = 62
             Width = 89
             Caption = 'Prozess beenden'
             OnClick = Button26Click
             TabOrder = 1
           end
           object ComboBox2: TComboBox
-            Left = 8
+            Left = 64
             Height = 21
             Hint = 'Setzt die Priorität des gewählten Prozesses'
-            Top = 56
+            Top = 33
             Width = 145
             AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
             ItemHeight = 13
@@ -956,7 +931,7 @@ object mainForm: TmainForm
             Height = 21
             Hint = 'ProcessID des gewählten Prozesses'
             Top = 5
-            Width = 121
+            Width = 145
             TabOrder = 3
           end
         end
