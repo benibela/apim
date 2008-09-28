@@ -14,6 +14,10 @@
       <Title Value="API Manager"/>
       <UseXPManifest Value="True"/>
     </General>
+    <i18n>
+      <EnableI18N Value="True"/>
+      <OutDir Value="i18n"/>
+    </i18n>
     <VersionInfo>
       <ProjectVersion Value=""/>
     </VersionInfo>
@@ -35,7 +39,7 @@
         <MinVersion Major="1" Valid="True"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="10">
+    <Units Count="14">
       <Unit0>
         <Filename Value="Project1.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -54,6 +58,7 @@
         <ComponentName Value="windowstyleform"/>
         <HasResources Value="True"/>
         <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <ResourceFilename Value="wstyles.lrs"/>
         <UnitName Value="wstyles"/>
       </Unit2>
@@ -63,47 +68,80 @@
         <UnitName Value="passwort"/>
       </Unit3>
       <Unit4>
-        <Filename Value="help.pas"/>
-        <ComponentName Value="helpform"/>
-        <HasResources Value="True"/>
-        <IsPartOfProject Value="True"/>
-        <ResourceFilename Value="help.lrs"/>
-        <UnitName Value="help"/>
-      </Unit4>
-      <Unit5>
-        <Filename Value="temp.pas"/>
-        <ComponentName Value="BenMessages"/>
-        <HasResources Value="True"/>
-        <IsPartOfProject Value="True"/>
-        <ResourceFilename Value="temp.lrs"/>
-        <UnitName Value="temp"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="windowfuncs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="windowfuncs"/>
-      </Unit6>
-      <Unit7>
+      </Unit4>
+      <Unit5>
         <Filename Value="applicationconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="applicationConfig"/>
-      </Unit7>
-      <Unit8>
+      </Unit5>
+      <Unit6>
         <Filename Value="winconstwindow.pas"/>
         <ComponentName Value="windowConstForm"/>
         <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <ResourceFilename Value="winconstwindow.lrs"/>
         <UnitName Value="winconstwindow"/>
-      </Unit8>
-      <Unit9>
+      </Unit6>
+      <Unit7>
         <Filename Value="windowcontrolfuncs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="windowcontrolfuncs"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="windowpropertysheet.pas"/>
+        <ComponentName Value="WindowPropertySheetFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="windowpropertysheet.lrs"/>
+        <UnitName Value="windowPropertySheet"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="windowList.pas"/>
+        <ComponentName Value="WindowListFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="windowList.lrs"/>
+        <UnitName Value="windowList"/>
       </Unit9>
+      <Unit10>
+        <Filename Value="searchtool.pas"/>
+        <ComponentName Value="searchToolFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="searchtool.lrs"/>
+        <UnitName Value="searchTool"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="processlist.pas"/>
+        <ComponentName Value="processListFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="processlist.lrs"/>
+        <UnitName Value="processList"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="systemoptions.pas"/>
+        <ComponentName Value="systemOptionsFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="systemoptions.lrs"/>
+        <UnitName Value="systemOptions"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="options.pas"/>
+        <ComponentName Value="optionFrm"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="options.lrs"/>
+        <UnitName Value="options"/>
+      </Unit13>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="5"/>
+    <Version Value="8"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="apim.exe"/>
@@ -119,7 +157,6 @@
         <OverflowChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
-      <Generate Value="Faster"/>
     </CodeGeneration>
     <Linking>
       <Options>

@@ -37,6 +37,8 @@ function GetWindowClassNameS(handle:HWND):string; //Entspricht GetClassName, nur
 function GetShowWindow(handle:hwnd):integer;//Liefert SW_MAXIMIZE bei maximierten, SW_MINIMIZE bei minimierten und SW_NORMAL bei normalen Fenstern zurück.
 function GetFileNameFromHandle(Handle: hwnd):string;//Von Leo, liefert den Dateinamen eines WIndows zurück
 
+function getRealParent(handle:hwnd):hwnd; //this is mainly getancestor(wnd,ga_parent), but works on W95
+
 function GetWindowPosStr(handle: hwnd): string;//Liefert formatierten String (l,t)-(r,b)
 procedure toggleWindowMarkStatus(handle: hwnd);
 
@@ -53,11 +55,12 @@ function MakeWndOpaque(wnd:HWND):boolean;//Macht ein Fenster undurchlässig
 
 function MakeWndColorKeyOn(Wnd: HWND; color:COLORREF): Boolean;
 function MakeWndColorKeyOff(Wnd: HWND): Boolean;
+
 *)
 
 function GetCPUSpeed: Double;
 implementation
-uses unit1,sysutils;
+uses sysutils;
 function LoadFuncFromDLL(dll,func:pchar):pointer;
 var
   hUser32: HMODULE;
@@ -300,6 +303,16 @@ begin
 	ContinueLoop := Process32Next(aSnapShotHandle, aProcessEntry32);
 end;
 CloseHandle(aSnapShotHandle);
+end;
+
+function getRealParent(handle: hwnd): hwnd;
+type TGetAncestor=function(HWnd: HWND; Flag: longint): HWND; StdCall;
+var ga:TGetAncestor;
+begin
+  ga:=TGetAncestor(getProcAddress(GetModuleHandle('user32.dll'),'GetAncestor'));
+  if not assigned(ga) then exit(GetParent(handle));
+  result:=ga(handle,GA_PARENT);
+  if result=0 then result:=GetParent(handle); //try this (wrong(owner), but better wrong result than none)
 end;
 
 function GetWindowPosStr(handle: hwnd): string;

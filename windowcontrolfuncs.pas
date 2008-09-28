@@ -1,3 +1,21 @@
+{
+    Copyright (C) 2001-2008 Benito van der Zander, www.benibela.de
+
+    This file is part of API Manager.
+
+    API Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    API Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with API Manager.  If not, see <http://www.gnu.org/licenses/>.
+}
 unit windowcontrolfuncs;
 
 {$mode objfpc}{$H+}
@@ -5,10 +23,12 @@ unit windowcontrolfuncs;
 interface
 
 uses
-  Classes, SysUtils, CheckLst,windows,Controls;
+  Classes, SysUtils, CheckLst,windows,Controls,ComCtrls,forms;
   
 type TMemoryBlock = array of byte;
      TMemoryBlocks = array of TMemoryBlock;
+
+type TPageInfo=(piUnknown,piFree, piReserved, piNoAccess, piReadOnly, piReadWrite, piWriteCopy, piExecute, piExecuteRead, piExecuteReadWrite, piExecuteWriteCopy);
 
 procedure setCommonText(control: tcontrol;caption:string);
 procedure setCommonText(control: tcontrol;number:dword);
@@ -28,17 +48,50 @@ procedure changeCustomStyle(window:THandle; name: string; enabled: boolean);
 type EGenericCallException= class(Exception);
 function genericCall(dll, proc: string; stackParameters: TMemoryBlocks; alignment:longint=4): longint;
 
+function getWindowClassNameToDisplay(wnd:hwnd):string;
+function GetFileNameFromHandleToDisplay(wnd:hwnd):string;
+function WindowPropertyEnumProc(wnd:HWND;  name:LPTSTR;  hData:HANDLE;  listView: TListView):boolean;stdcall;
+
+
 
 //------------------System Properties----------------------------
 var
+  systemPropertiesFinished: boolean=false;
   systemPropertiesArray: array of record
     name,value:string;
   end;
 
 procedure calculateSysProperties();
 
+//----------------------Callback-------------------------------
+type
+TCallbackComponent=class;
+TCallbackShowForm = procedure (sender:tobject; newFormID: longint; var callback: TCallbackComponent)of object;
+TCallbackShowHandle = procedure (sender:tobject; handle: THandle) of object;
+
+{ TCallbackComponent }
+
+TCallbackComponent = class(TComponent)
+private
+  friends: array[1..6] of TCallbackComponent;
+  procedure closeProperties(Sender: TObject; var CloseAction: TCloseAction);
+public
+  id:longint;
+  constructor create(AOwner: TComponent);
+  onShowForm: TCallbackShowForm;
+  onShowHandle: TCallbackShowHandle;
+  procedure showHandle(handle:THANDLE; where: longint);
+end;
+
+
+
+
 implementation
-uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig;
+
+uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig,bbutils,ptranslateutils;
+
+{$I windowcontrolfuncs.atr}
+
 procedure setCommonText(control: tcontrol;caption:string);
 begin
   if control = nil then exit;
@@ -60,8 +113,8 @@ end;
 //Erlaubt Pointer: ('p' @'abc' 'q') => 'p????q'#0 mit ???? = 32 Bit Pointer auf 'abc'#0
 //                                     (also gibt es zwei Blocks)
 //
-//Für Zahlen wird der kleinster LE Datentyp (signed/unsigned 1 Byte, 2 Byte, 4 Byte oder 8 Byte)
-//gewählt, in die der Wert passt
+//FÃ¼r Zahlen wird der kleinster LE Datentyp (signed/unsigned 1 Byte, 2 Byte, 4 Byte oder 8 Byte)
+//gewÃ¤hlt, in die der Wert passt
 //Beispiele: 255 => #255 (byte); 256 => #0#1 (LE word); -128 => #255 (shortint)
 //           -129 => #$7F#$FF (LE small int)
 //2147483647 => #$F9#$FF#$FF#$7F (LE dword)
@@ -70,7 +123,7 @@ end;
 //
 //Letzte Strings in Klammern werden nullterminier
 //Beispiele: ('hallo ','welt') => 'hallo welt'#0; (('hallo '),'welt') => 'hallo '#0'welt'#0
-//Die Metazeichen ''' für ein ' und #xx für ein Zeichen mit Nummer xx werden nicht unterstützt
+//Die Metazeichen ''' fÃ¼r ein ' und #xx fÃ¼r ein Zeichen mit Nummer xx werden nicht unterstÃ¼tzt
 //(da man einfach Zahlen nehmen kann)
 function createMemoryBlocks(s:string):TMemoryBlocks;
 var p: pchar;
@@ -177,11 +230,11 @@ begin
           else if num>=-2147483648 then currentBlockAddBuffer(@num,4)
           else currentBlockAddBuffer(@num,8);
       end;
-      else raise Exception.Create('Unexpected character '+p^+' at '+string(p));
+      else raise Exception.Create(format(tr['Unexpected character %s at %s'],[p^,string(p)]));
     end;
     inc(p);
   end;
-  if instr then raise Exception.Create('String nicht geschlossen');
+  if instr then raise Exception.Create(tr['String nicht geschlossen']);
   if lastData=ldStr then currentBlockAddByte(0);
   closeBlocks;
   result:=blocks;
@@ -637,7 +690,7 @@ begin
    if styles and SS_BLACKRECT = SS_BLACKRECT then listbox.Items.Add(TSS_BLACKRECT)else wsout.Add(TSS_BLACKRECT);
    if styles and SS_CENTER = SS_CENTER then listbox.Items.Add(TSS_CENTER)else wsout.Add(TSS_CENTER);
    if styles and SS_CENTERIMAGE = SS_CENTERIMAGE then listbox.Items.Add(TSS_CENTERIMAGE)else wsout.Add(TSS_CENTERIMAGE);
- {TODO: wieder einfügen
+ {TODO: wieder einfÃ¼gen
    if styles and SS_ENDELLIPSIS  = SS_ENDELLIPSIS  then listbox.Items.Add(TSS_ENDELLIPSIS )else wsout.Add(TSS_ENDELLIPSIS );
    if styles and SS_ENHMETAFILE = SS_ENHMETAFILE then listbox.Items.Add(TSS_ENHMETAFILE)else wsout.Add(TSS_ENHMETAFILE);
    if styles and SS_ETCHEDFRAME = SS_ETCHEDFRAME then listbox.Items.Add(TSS_ETCHEDFRAME)else wsout.Add(TSS_ETCHEDFRAME);
@@ -840,11 +893,37 @@ begin
   if (currentESP<globalESPSave) then
     raise exception.create('Zu viele Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')');
   if (currentESP>globalESPSave) then
-    raise exception.create('Zu wenig Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')'#13#10'Warnung: Stack vielleicht beschädigt');
+    raise exception.create('Zu wenig Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')'#13#10'Warnung: Stack vielleicht beschÃ¤digt');
   if (currentEBP<>globalEBPSave) then
-    raise exception.create('Ungültige Parameterzahl?'#13#10'(ebp mismatch: new '+Pointer2Str(currentEBP)+' vs old '+Pointer2Str(globalEBPSave)+')'#13#10#13#10'Warnung: Stack kann korrupt sein');
+    raise exception.create('UngÃ¼ltige Parameterzahl?'#13#10'(ebp mismatch: new '+Pointer2Str(currentEBP)+' vs old '+Pointer2Str(globalEBPSave)+')'#13#10#13#10'Warnung: Stack kann korrupt sein');
   
 end;
+
+function getWindowClassNameToDisplay(wnd:hwnd):string;
+begin
+  Result:=GetWindowClassNameS(wnd)+' ('+Cardinal2Str(GetClassLong(wnd,GCW_ATOM))+')';
+end;
+function GetFileNameFromHandleToDisplay(wnd:hwnd):string;
+var pid:dword;
+begin
+  GetWindowThreadProcessId(wnd,@pid);
+  Result:=GetFileNameFromHandle(wnd)+' ('+Cardinal2Str(pid)+')';
+end;
+
+function WindowPropertyEnumProc(wnd:HWND;  name:LPTSTR;  hData:HANDLE;  listView: TListView):boolean;stdcall;
+var nameStr: array[0..255] of char;
+begin
+  with listView.Items.add do begin
+    if dword(name) and $FFFF0000 =0 then
+      if GlobalGetAtomName(Atom(name),@nameStr[0],255) <> 0 then
+        name:=@nameStr[0];
+    caption:=string(name);
+    subitems.add(Cardinal2Str(hdata));
+    subitems.add(caption); //need old name when renaming
+  end;
+  result:=true;
+end;
+
 
 
 //==========================System Properties==================================
@@ -853,7 +932,7 @@ type TWNetEnumCachedPasswords= function (lp: lpStr; windowList: Word; b: Byte; P
 var
    WNetEnumCachedPasswords:TWNetEnumCachedPasswords=nil;
 
-//Sucht Passwörter
+//Sucht PasswÃ¶rter
 procedure LoadWNetEnumCachedPasswords;
 var lib:THandle;
 begin
@@ -879,11 +958,15 @@ var buf:array[0..300] of  char;
 temp,pwd_dec:string;
     ed:TEdit;
     memory:TMemoryStatus;
-
+    sysInfo: TSYSTEMINFO;
 begin
+if systemPropertiesFinished then exit;
   SetLength(systemPropertiesArray,0);
 
 setDisplayedSysProperty('Prozessorspeed (momentan)',floatToStr(GetCPUSpeed)+' MHz');
+GetSystemInfo(sysInfo);
+setDisplayedSysProperty('Prozessoranzahl',IntToStr(sysInfo.dwNumberOfProcessors));
+
 
 if not runonNT then begin
   if Pchar(pointer($FE061))^<>#0 then
@@ -898,6 +981,7 @@ memory.dwLength:=sizeof(memory);
 GlobalMemoryStatus(memory);
 setDisplayedSysProperty('Gesamter Ram: ',inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
 setDisplayedSysProperty('Freier Ram: ',inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
+setDisplayedSysProperty('SpeicherseitengrÃ¶ÃŸe',strFromSize(sysInfo.dwPageSize));
 
 GetWindowsDirectory(buf,256);
 setDisplayedSysProperty('Windowspfad',buf);
@@ -935,7 +1019,7 @@ if reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',false) then begi
     setDisplayedSysProperty('ComputerName',reg.ReadString('ComputerName'));
 end;
 
-//Passwörter (9x)
+//PasswÃ¶rter (9x)
 if not runonNT then begin
   LoadWNetEnumCachedPasswords;
   WNetEnumCachedPasswords(nil, 0, $FF, pchar(@AddPassword), 0);
@@ -945,19 +1029,58 @@ IF reg.OpenKey('\Control Panel\Desktop\',False) and Reg.ValueExists('ScreenSaveU
    and Reg.ValueExists('ScreenSave_Data') THEN
 BEGIN
   anaus:=reg.ReadInteger('ScreenSaveUsePassword'); // Passwortschutz aktiv ?
-  reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlüsseltes Passwort lesen
+  reg.ReadBinaryData( 'ScreenSave_Data',ptemp,1000);  // verschlÃ¼sseltes Passwort lesen
   IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
   BEGIN
     pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
-     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// Entschlüsseltes Passwort ausgeben
+     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// EntschlÃ¼sseltes Passwort ausgeben
   END
 end;
 
 
 reg.free;
+systemPropertiesFinished:=true;
 end;
 
 
+
+{ TCallbackComponent }
+
+procedure TCallbackComponent.closeProperties(Sender: TObject;
+  var CloseAction: TCloseAction);
+var i:longint;
+begin
+  //TODO: search tab switch/close error
+  for i:=low(friends) to high(friends) do
+    if assigned(friends[i]) and (friends[i].Owner=sender) then friends[i]:=nil;
+end;
+
+
+constructor TCallbackComponent.create(AOwner: TComponent);
+begin
+  inherited create(AOwner);
+  Name:='callbackcomponent';
+end;
+
+procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint);
+begin
+  if (where<low(friends)) or (where>high(friends)) then raise exception.Create('Invalid form id');
+  if friends[where]=nil then begin
+    if not assigned(onShowForm) then raise exception.create('Donn''t know how to create form');
+    onShowForm(self.owner,where,friends[where]);
+    if friends[where]=nil then raise exception.create('Couldn''t create form');
+    if not (friends[where].Owner is tform) then raise exception.create('Didn''t get form but '+friends[where].Owner.ClassName);
+    tform(friends[where].Owner).AddHandlerClose(@closeProperties);
+    if (id<low(friends)) or (id>high(friends)) then raise Exception.Create('Invalid ID for backselection');
+    if friends[where].friends[id]=nil then begin
+      friends[where].friends[id]:=self;//back selection
+      tform(Owner).AddHandlerClose(@friends[where].closeProperties);
+    end;
+  end;
+
+  if not assigned(friends[where].onShowHandle) then raise Exception.Create('Don''t know how to show handle');
+  friends[where].onShowHandle(self.owner,handle);
+end;
 
 end.
 

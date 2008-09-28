@@ -3,17 +3,17 @@ object windowstyleform: Twindowstyleform
   Height = 579
   Top = 107
   Width = 740
-  HorzScrollBar.Page = 739
-  VertScrollBar.Page = 578
   BorderStyle = bsSizeToolWin
   Caption = 'Styles:'
   ClientHeight = 579
   ClientWidth = 740
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
   OnShow = FormShow
+  ParentFont = False
   ShowHint = True
-  LCLVersion = '0.9.25'
+  LCLVersion = '0.9.27'
   object Splitter1: TSplitter
     Cursor = crVSplit
     Height = 5
@@ -39,7 +39,6 @@ object windowstyleform: Twindowstyleform
     Align = alBottom
     ClientHeight = 147
     ClientWidth = 740
-    ParentFont = True
     TabOrder = 0
     object classstyles: TCheckListBox
       Left = 1
@@ -51,9 +50,9 @@ object windowstyleform: Twindowstyleform
       Items.Strings = (
         'Keine Window aktiv'
       )
+      ItemHeight = 13
       OnClickCheck = classstylesClickCheck
       OnDrawItem = windowstylesDrawItem
-      ParentFont = True
       TabOrder = 0
       Data = {
         0100000000
@@ -71,6 +70,7 @@ object windowstyleform: Twindowstyleform
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
+      ParentFont = False
       TabOrder = 1
     end
   end
@@ -130,10 +130,10 @@ object windowstyleform: Twindowstyleform
       Items.Strings = (
         'Keine Window aktiv'
       )
+      ItemHeight = 13
       OnClickCheck = windowexstylesClickCheck
       OnDrawItem = windowstylesDrawItem
       OnItemClick = windowexstylesItemClick
-      ParentFont = True
       TabOrder = 0
       Data = {
         0100000000
@@ -147,6 +147,7 @@ object windowstyleform: Twindowstyleform
       Caption = 'Extended Window styles:'
       Font.Style = [fsBold]
       ParentColor = False
+      ParentFont = False
       TabOrder = 1
     end
   end
@@ -159,7 +160,6 @@ object windowstyleform: Twindowstyleform
     ClientHeight = 239
     ClientWidth = 740
     ParentColor = False
-    ParentFont = True
     TabOrder = 3
     object Splitter3: TSplitter
       Cursor = crVSplit
@@ -188,10 +188,10 @@ object windowstyleform: Twindowstyleform
         Items.Strings = (
           'Keine Window aktiv'
         )
+        ItemHeight = 13
         OnClickCheck = windowstylesClickCheck
         OnDrawItem = windowstylesDrawItem
         OnItemClick = windowstylesItemClick
-        ParentFont = True
         TabOrder = 0
         Data = {
           0100000000
@@ -205,6 +205,7 @@ object windowstyleform: Twindowstyleform
         Caption = 'Window styles:'
         Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         TabOrder = 1
       end
     end
@@ -228,9 +229,9 @@ object windowstyleform: Twindowstyleform
         Items.Strings = (
           'Keine Window aktiv'
         )
+        ItemHeight = 13
         OnClickCheck = windowstylesClickCheck
         OnDrawItem = windowstylesDrawItem
-        ParentFont = True
         TabOrder = 0
         Data = {
           0100000000
@@ -246,6 +247,7 @@ object windowstyleform: Twindowstyleform
         Caption = 'Window styles:'
         Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         TabOrder = 1
       end
     end

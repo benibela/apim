@@ -1,3 +1,21 @@
+{
+    Copyright (C) 2001-2008 Benito van der Zander, www.benibela.de
+
+    This file is part of API Manager.
+
+    API Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    API Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with API Manager.  If not, see <http://www.gnu.org/licenses/>.
+}
 unit wstyles;
 
 interface
@@ -238,6 +256,7 @@ type
     labeles: TPanel;
     Button2: TButton;
     CheckBox1: TCheckBox;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure windowexstylesItemClick(Sender: TObject; Index: integer);
@@ -259,8 +278,9 @@ var
   
 implementation
 
-uses applicationConfig;
+uses applicationConfig,ptranslateutils;
 
+{$i wstyles.atr}
 
 //function InstallHookNewStyle(Hwnd: Cardinal;_style:cardinal;exstyle:boolean): Boolean; stdcall;external 'hook.dll';
 
@@ -280,6 +300,12 @@ begin
 
  classStylesToCheckListBox(styles,classstyles,labelcs);
  //labelcs.Caption:='Window Class styles:   '+labelcs.Caption;
+end;
+
+procedure Twindowstyleform.FormCreate(Sender: TObject);
+begin
+  initUnitTranslation('wstyles',tr);
+  tr.translate(self);
 end;
 
 procedure Twindowstyleform.Button1Click(Sender: TObject);

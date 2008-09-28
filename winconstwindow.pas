@@ -1,3 +1,21 @@
+{
+    Copyright (C) 2001-2008 Benito van der Zander, www.benibela.de
+
+    This file is part of API Manager.
+
+    API Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    API Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with API Manager.  If not, see <http://www.gnu.org/licenses/>.
+}
 unit winconstwindow;
 
 {$mode objfpc}{$H+}
@@ -33,7 +51,9 @@ var
   windowConstForm: TwindowConstForm;
 
 implementation
-uses applicationConfig,FileUtil;
+uses applicationConfig,FileUtil,ptranslateutils;
+{$I winconstwindow.atr}
+
 { TwindowConstForm }
 
 procedure TwindowConstForm.FormCreate(Sender: TObject);
@@ -84,9 +104,8 @@ begin
   end;
   if winConsts.Count=0 then begin
     winConsts.free;
-    ListBox1.items.text:='Keine Windowskonstanten gefunden'#13#10+
-                         'Überprüfen Sie den Pfad: '+winConstPath;
-  end else ListBox1.Items.Text:='Suche in der FreePascal Windows Unit';
+    ListBox1.items.text:=tr['Keine Windowskonstanten gefunden'#13#10'Überprüfen Sie den Pfad: ']+winConstPath;
+  end else ListBox1.Items.Text:=tr['Suche in der FreePascal Windows Unit'];
   Edit1.text:=currentConst;
   edit1.SetFocus;
   edit1.SelStart:=length(edit1.text);
