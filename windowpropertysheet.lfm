@@ -1,0 +1,614 @@
+object WindowPropertySheetFrm: TWindowPropertySheetFrm
+  Left = 395
+  Height = 533
+  Top = 114
+  Width = 604
+  HorzScrollBar.Page = 586
+  VertScrollBar.Page = 532
+  VertScrollBar.Range = 532
+  VertScrollBar.Visible = True
+  AutoScroll = False
+  BorderStyle = bsSizeToolWin
+  Caption = 'Eigenschaften'
+  ClientHeight = 533
+  ClientWidth = 587
+  OnCreate = FormCreate
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object windowPropertyPanel: TPanel
+    Left = 4
+    Height = 522
+    Width = 583
+    Anchors = [akTop, akLeft, akRight]
+    BevelOuter = bvNone
+    ClientHeight = 522
+    ClientWidth = 583
+    TabOrder = 0
+    OnClick = windowPropertyPanelClick
+    object Label8: TLabel
+      Left = 10
+      Height = 14
+      Top = 62
+      Width = 25
+      Caption = 'Titel:'
+      ParentColor = False
+    end
+    object Label9: TLabel
+      Left = 445
+      Height = 14
+      Top = 12
+      Width = 53
+      Caption = 'ThreadID: '
+      ParentColor = False
+    end
+    object Label13: TLabel
+      Left = 308
+      Height = 14
+      Top = 12
+      Width = 56
+      Caption = 'ProcessID: '
+      ParentColor = False
+    end
+    object labclassname: TLabel
+      Left = 10
+      Height = 14
+      Hint = 'Zeigt den Classnamen des aktuellen Fensters an'
+      Top = 88
+      Width = 35
+      Caption = 'Klasse:'
+      ParentColor = False
+    end
+    object Label15: TLabel
+      Left = 10
+      Height = 14
+      Top = 37
+      Width = 37
+      Caption = 'Parent:'
+      ParentColor = False
+    end
+    object Label23: TLabel
+      Left = 10
+      Height = 14
+      Top = 12
+      Width = 91
+      Caption = 'Gewähltes Handle:'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 8
+      Height = 14
+      Top = 162
+      Width = 36
+      Caption = 'Status:'
+      ParentColor = False
+    end
+    object Label24: TLabel
+      Left = 10
+      Height = 14
+      Top = 137
+      Width = 42
+      Caption = 'Position:'
+      ParentColor = False
+    end
+    object colorKeyShape: TShape
+      AnchorSideTop.Control = colorkey_cb
+      AnchorSideTop.Side = asrCenter
+      Left = 346
+      Height = 22
+      Top = 388
+      Width = 65
+      OnMouseUp = colorKeyShapeMouseUp
+    end
+    object Label25: TLabel
+      Left = 10
+      Height = 14
+      Top = 303
+      Width = 76
+      Caption = 'Win-Properties:'
+      ParentColor = False
+    end
+    object Label22: TLabel
+      Left = 106
+      Height = 14
+      Top = 422
+      Width = 23
+      Caption = 'Typ:'
+      ParentColor = False
+    end
+    object labwparam: TLabel
+      Left = 58
+      Height = 14
+      Top = 468
+      Width = 45
+      Caption = 'WParam:'
+      ParentColor = False
+    end
+    object lablparam: TLabel
+      Left = 58
+      Height = 14
+      Top = 495
+      Width = 40
+      Caption = 'LParam:'
+      ParentColor = False
+    end
+    object Label33: TLabel
+      Left = 10
+      Height = 14
+      Top = 188
+      Width = 49
+      Caption = 'Userdata:'
+      ParentColor = False
+    end
+    object Label34: TLabel
+      AnchorSideTop.Control = Label33
+      AnchorSideTop.Side = asrCenter
+      Left = 258
+      Height = 14
+      Top = 188
+      Width = 57
+      Caption = 'WNDPROC:'
+      ParentColor = False
+    end
+    object windowExStyles_lb: TLabel
+      Left = 336
+      Height = 14
+      Top = 209
+      Width = 7
+      Caption = '0'
+      ParentColor = False
+    end
+    object Label35: TLabel
+      Left = 10
+      Height = 14
+      Top = 226
+      Width = 34
+      Caption = 'Styles:'
+      ParentColor = False
+    end
+    object windowStyles_lb: TLabel
+      Left = 106
+      Height = 14
+      Top = 209
+      Width = 7
+      Caption = '0'
+      ParentColor = False
+    end
+    object Label36: TLabel
+      AnchorSideTop.Control = Label15
+      AnchorSideTop.Side = asrCenter
+      Left = 453
+      Height = 14
+      Top = 37
+      Width = 37
+      Caption = 'Owner:'
+      ParentColor = False
+    end
+    object Label37: TLabel
+      AnchorSideTop.Control = Label24
+      AnchorSideTop.Side = asrCenter
+      Left = 284
+      Height = 14
+      Top = 137
+      Width = 34
+      Caption = 'Größe:'
+      ParentColor = False
+    end
+    object Label38: TLabel
+      AnchorSideTop.Control = Label24
+      AnchorSideTop.Side = asrCenter
+      Left = 176
+      Height = 14
+      Top = 137
+      Width = 5
+      Caption = '-'
+      ParentColor = False
+    end
+    object alphatrans_cb: TCheckBox
+      Tag = 1
+      Left = 10
+      Height = 19
+      Top = 390
+      Width = 89
+      Caption = 'Transparent:'
+      OnChange = propertyChanged
+      TabOrder = 12
+    end
+    object enabledCb: TCheckBox
+      Tag = 1
+      AnchorSideTop.Control = visibleCb
+      AnchorSideTop.Side = asrCenter
+      Left = 82
+      Height = 19
+      Hint = 'Zeigt an und stell ein, ob das gewählte Fenster enable ist'
+      Top = 110
+      Width = 64
+      Caption = 'enabled'
+      OnChange = propertyChanged
+      TabOrder = 0
+    end
+    object visibleCb: TCheckBox
+      Tag = 1
+      Left = 10
+      Height = 19
+      Hint = 'Zeigt an und stell ein, ob das gewählte Fenster sichtbar ist'
+      Top = 110
+      Width = 55
+      Caption = 'visible'
+      OnChange = propertyChanged
+      TabOrder = 1
+    end
+    object unicodeCb: TCheckBox
+      Tag = 1
+      AnchorSideTop.Control = visibleCb
+      AnchorSideTop.Side = asrCenter
+      Left = 162
+      Height = 19
+      Hint = 'Zeigt an , ob das gewählte Fenster ein unicode Fenster ist'
+      Top = 110
+      Width = 63
+      Caption = 'unicode'
+      Enabled = False
+      OnChange = propertyChanged
+      TabOrder = 2
+    end
+    object showStateCmb: TComboBox
+      Tag = 1
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 21
+      Hint = 'Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll.'
+      Top = 159
+      Width = 145
+      ItemHeight = 13
+      Items.Strings = (
+        'normal'
+        'minimiert'
+        'maximiert'
+      )
+      OnSelect = propertyChanged
+      Style = csDropDownList
+      TabOrder = 3
+    end
+    object messageSend_btn: TButton
+      Left = 10
+      Height = 25
+      Hint = 'Schick dem gewählten Fenster eine Nachricht'
+      Top = 434
+      Width = 90
+      Caption = 'Nachricht senden:'
+      OnClick = messageSend_btnClick
+      TabOrder = 4
+    end
+    object windowtextEdt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label8
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 23
+      Hint = 'Zeigt und ändern den Text des Fensters.'
+      Top = 58
+      Width = 436
+      Anchors = [akTop, akLeft, akRight]
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 5
+    end
+    object Button5: TButton
+      Left = 20
+      Height = 25
+      Top = 248
+      Width = 75
+      Caption = 'erweitert'
+      Enabled = False
+      OnClick = Button5Click
+      TabOrder = 6
+    end
+    object handleEdt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label23
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 23
+      Top = 8
+      Width = 118
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 7
+    end
+    object classNameEdt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = labclassname
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 23
+      Top = 84
+      Width = 472
+      Anchors = [akTop, akLeft, akRight]
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 8
+    end
+    object stayOnTopCb: TCheckBox
+      Tag = 1
+      AnchorSideTop.Control = visibleCb
+      AnchorSideTop.Side = asrCenter
+      Left = 234
+      Height = 19
+      Top = 110
+      Width = 130
+      Caption = 'immer im Vordergrund'
+      OnChange = propertyChanged
+      TabOrder = 9
+    end
+    object posLTEdt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label24
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 23
+      Hint = 'Zeigt die Position des Fensters an'
+      Top = 133
+      Width = 66
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 10
+      Text = '(0,0)'
+    end
+    object parentWndCmb: TComboBox
+      Tag = 1
+      AnchorSideTop.Control = Label15
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 21
+      Top = 34
+      Width = 336
+      Font.Color = clNavy
+      Font.Style = [fsUnderline]
+      ItemHeight = 13
+      OnDblClick = jumptoWndDblClick
+      OnKeyUp = updatePropertyKeyUp
+      ParentFont = False
+      TabOrder = 11
+    end
+    object alphatrans_sp: TSpinEdit
+      Tag = -1
+      AnchorSideTop.Control = alphatrans_cb
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 22
+      Top = 388
+      Width = 145
+      MaxValue = 255
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 13
+      Value = 128
+    end
+    object colorkey_cb: TCheckBox
+      AnchorSideTop.Control = alphatrans_cb
+      AnchorSideTop.Side = asrCenter
+      Left = 258
+      Height = 19
+      Top = 390
+      Width = 73
+      Caption = 'ColorKey:'
+      OnChange = propertyChanged
+      TabOrder = 14
+    end
+    object windowPropertyList: TListView
+      Tag = 1
+      Left = 104
+      Height = 75
+      Top = 303
+      Width = 472
+      Anchors = [akTop, akLeft, akRight]
+      Columns = <      
+        item
+          Caption = 'Name'
+          Width = 150
+        end      
+        item
+          Caption = 'Value'
+          Width = 100
+        end>
+      TabOrder = 15
+      ViewStyle = vsReport
+    end
+    object messagemes_cb: TComboBox
+      Left = 106
+      Height = 21
+      Top = 438
+      Width = 192
+      ItemHeight = 13
+      OnKeyUp = messagemes_cbKeyUp
+      TabOrder = 16
+    end
+    object messagewparam_edt: TEdit
+      AnchorSideTop.Control = labwparam
+      AnchorSideTop.Side = asrCenter
+      Left = 106
+      Height = 23
+      Top = 464
+      Width = 470
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 17
+    end
+    object messagelparam_edt: TEdit
+      AnchorSideTop.Control = lablparam
+      AnchorSideTop.Side = asrCenter
+      Left = 106
+      Height = 23
+      Top = 491
+      Width = 470
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 18
+    end
+    object userdata_edt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label33
+      AnchorSideTop.Side = asrCenter
+      Left = 104
+      Height = 23
+      Top = 184
+      Width = 146
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 19
+    end
+    object wndproc_edt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label34
+      AnchorSideTop.Side = asrCenter
+      Left = 322
+      Height = 23
+      Top = 184
+      Width = 145
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 20
+    end
+    object windowStyles: TCheckListBox
+      Tag = 1
+      Left = 104
+      Height = 64
+      Top = 228
+      Width = 218
+      ItemHeight = 13
+      OnItemClick = windowStylesItemClick
+      TabOrder = 21
+    end
+    object windowExStyles: TCheckListBox
+      Tag = 1
+      Left = 334
+      Height = 65
+      Top = 227
+      Width = 242
+      Anchors = [akTop, akLeft, akRight]
+      ItemHeight = 13
+      OnItemClick = windowStylesItemClick
+      TabOrder = 22
+    end
+    object ownerWnd_edt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label36
+      AnchorSideTop.Side = asrCenter
+      Left = 500
+      Height = 23
+      Top = 33
+      Width = 76
+      Anchors = [akTop, akLeft, akRight]
+      Color = clBtnFace
+      Font.Color = clNavy
+      Font.Style = [fsUnderline]
+      OnDblClick = jumptoWndDblClick
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 23
+      Text = '0'
+    end
+    object sizeEdt: TEdit
+      AnchorSideTop.Control = Label24
+      AnchorSideTop.Side = asrCenter
+      Left = 325
+      Height = 23
+      Top = 133
+      Width = 145
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 24
+      Text = '0x0'
+    end
+    object posRBEdt: TEdit
+      AnchorSideTop.Control = Label24
+      AnchorSideTop.Side = asrCenter
+      Left = 181
+      Height = 23
+      Hint = 'Zeigt die Position des Fensters an'
+      Top = 133
+      Width = 66
+      OnKeyUp = updatePropertyKeyUp
+      TabOrder = 25
+      Text = '(0,0)'
+    end
+    object blinkWindow: TButton
+      Left = 269
+      Height = 23
+      Top = 8
+      Width = 35
+      Caption = 'blink'
+      OnClick = blinkWindowClick
+      TabOrder = 26
+    end
+    object windowProcessIDedt: TEdit
+      Tag = 1
+      AnchorSideTop.Control = Label13
+      AnchorSideTop.Side = asrCenter
+      Left = 364
+      Height = 23
+      Top = 8
+      Width = 76
+      Color = clBtnFace
+      Font.Color = clNavy
+      Font.Style = [fsUnderline]
+      OnDblClick = windowProcessIDedtDblClick
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 27
+      Text = '0'
+    end
+    object windowThreadIdEdt: TEdit
+      AnchorSideTop.Control = Label9
+      AnchorSideTop.Side = asrCenter
+      Left = 500
+      Height = 23
+      Top = 8
+      Width = 76
+      Anchors = [akTop, akLeft, akRight]
+      Color = clBtnFace
+      Font.Color = clNavy
+      Font.Style = [fsUnderline]
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 28
+      Text = '0'
+    end
+    object Button1: TButton
+      Left = 225
+      Height = 23
+      Top = 8
+      Width = 43
+      Caption = 'children'
+      OnClick = Button1Click
+      TabOrder = 29
+    end
+    object Button2: TButton
+      Left = 542
+      Height = 23
+      Top = 58
+      Width = 34
+      Anchors = [akTop, akRight]
+      Caption = 'inject'
+      OnClick = Button2Click
+      TabOrder = 30
+    end
+  end
+  object windowPropertyListPopup: TPopupMenu
+    left = 224
+    top = 324
+    object windowAddProperty: TMenuItem
+      Caption = 'Hinzufügen'
+      OnClick = windowAddPropertyClick
+    end
+    object windowPropChange: TMenuItem
+      Caption = 'Ändern'
+    end
+    object windowPropRemoveItem: TMenuItem
+      Caption = 'Löschen'
+      OnClick = windowPropRemoveItemClick
+    end
+  end
+  object ColorDialog1: TColorDialog
+    left = 376
+    top = 388
+  end
+  object autorefreshtimer: TTimer
+    OnTimer = autorefreshtimerTimer
+    left = 253
+    top = 324
+  end
+end

@@ -67,20 +67,20 @@ procedure calculateSysProperties();
 type
 TCallbackComponent=class;
 TCallbackShowForm = procedure (sender:tobject; newFormID: longint; var callback: TCallbackComponent)of object;
-TCallbackShowHandle = procedure (sender:tobject; handle: THandle) of object;
+TCallbackShowHandle = procedure (sender:tobject; handle: THandle; func:longint) of object;
 
 { TCallbackComponent }
 
 TCallbackComponent = class(TComponent)
 private
   friends: array[1..6] of TCallbackComponent;
-  procedure closeProperties(Sender: TObject; var CloseAction: TCloseAction);
 public
   id:longint;
   constructor create(AOwner: TComponent);
   onShowForm: TCallbackShowForm;
   onShowHandle: TCallbackShowHandle;
-  procedure showHandle(handle:THANDLE; where: longint);
+  procedure showHandle(handle:THANDLE; where: longint; func:longint=0);
+  procedure Notification(AComponent: Tcomponent; Operation: TOperation);override;
 end;
 
 
@@ -1046,23 +1046,16 @@ end;
 
 { TCallbackComponent }
 
-procedure TCallbackComponent.closeProperties(Sender: TObject;
-  var CloseAction: TCloseAction);
-var i:longint;
-begin
-  //TODO: search tab switch/close error
-  for i:=low(friends) to high(friends) do
-    if assigned(friends[i]) and (friends[i].Owner=sender) then friends[i]:=nil;
-end;
 
 
+//#TODO -1:friends: link parent/children/grandchildren
 constructor TCallbackComponent.create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Name:='callbackcomponent';
 end;
 
-procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint);
+procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint; func:longint=0);
 begin
   if (where<low(friends)) or (where>high(friends)) then raise exception.Create('Invalid form id');
   if friends[where]=nil then begin
@@ -1070,16 +1063,28 @@ begin
     onShowForm(self.owner,where,friends[where]);
     if friends[where]=nil then raise exception.create('Couldn''t create form');
     if not (friends[where].Owner is tform) then raise exception.create('Didn''t get form but '+friends[where].Owner.ClassName);
-    tform(friends[where].Owner).AddHandlerClose(@closeProperties);
+    //tform(friends[where].Owner).AddHandlerClose(@closeProperties);
+    friends[where].FreeNotification(self);
     if (id<low(friends)) or (id>high(friends)) then raise Exception.Create('Invalid ID for backselection');
     if friends[where].friends[id]=nil then begin
       friends[where].friends[id]:=self;//back selection
-      tform(Owner).AddHandlerClose(@friends[where].closeProperties);
+      //tform(Owner).AddHandlerClose(@friends[where].closeProperties);
+      self.FreeNotification(friends[where]);
     end;
   end;
 
   if not assigned(friends[where].onShowHandle) then raise Exception.Create('Don''t know how to show handle');
-  friends[where].onShowHandle(self.owner,handle);
+  friends[where].onShowHandle(self.owner,handle,func);
+end;
+
+procedure TCallbackComponent.Notification(AComponent: Tcomponent;
+  Operation: TOperation);
+var i:longint;
+begin
+  inherited Notification(AComponent, Operation);
+  if Operation=opRemove then
+    for i:=low(friends) to high(friends) do
+      if assigned(friends[i]) and (friends[i]=AComponent) then friends[i]:=nil;
 end;
 
 end.

@@ -1,0 +1,292 @@
+object processListFrm: TprocessListFrm
+  Left = 408
+  Height = 356
+  Top = 298
+  Width = 529
+  Caption = 'Prozessliste'
+  ClientHeight = 356
+  ClientWidth = 529
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object Panel5: TPanel
+    Height = 236
+    Top = 120
+    Width = 529
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 236
+    ClientWidth = 529
+    Constraints.MinHeight = 112
+    TabOrder = 0
+    object Label10: TLabel
+      Left = 8
+      Height = 14
+      Top = 34
+      Width = 43
+      Caption = 'Priorität:'
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 8
+      Height = 14
+      Top = 8
+      Width = 53
+      Caption = 'ProcessID:'
+      ParentColor = False
+    end
+    object Label1: TLabel
+      Left = 240
+      Height = 14
+      Top = 8
+      Width = 46
+      Caption = 'Startzeit:'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 240
+      Height = 14
+      Top = 34
+      Width = 52
+      Caption = 'Kernelzeit:'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      Left = 379
+      Height = 14
+      Top = 35
+      Width = 44
+      Caption = 'Userzeit:'
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 241
+      Height = 14
+      Top = 60
+      Width = 27
+      Caption = 'RAM:'
+      ParentColor = False
+    end
+    object Label5: TLabel
+      Left = 378
+      Height = 14
+      Top = 61
+      Width = 58
+      Caption = 'RAM (max):'
+      ParentColor = False
+    end
+    object displayProcesses: TButton
+      Left = 168
+      Height = 21
+      Hint = 'Sucht alle Prozesse'
+      Top = 86
+      Width = 137
+      Caption = 'Prozessliste aktualisieren'
+      OnClick = displayProcessesClick
+      TabOrder = 0
+    end
+    object killProcessbtn: TButton
+      Left = 16
+      Height = 25
+      Hint = 'Beendet den gewählten Prozess'
+      Top = 57
+      Width = 92
+      Caption = 'Prozess beenden'
+      OnClick = killProcessbtnClick
+      TabOrder = 1
+    end
+    object ComboBox2: TComboBox
+      AnchorSideTop.Control = Label10
+      AnchorSideTop.Side = asrCenter
+      Left = 64
+      Height = 21
+      Hint = 'Setzt die Priorität des gewählten Prozesses'
+      Top = 31
+      Width = 145
+      ItemHeight = 13
+      Items.Strings = (
+        'niedrig'
+        'unter normal'
+        'normal'
+        'über normal'
+        'hoch'
+        'real zeit'
+      )
+      MaxLength = -1
+      OnChange = ComboBox2Change
+      OnSelect = ComboBox2Select
+      Style = csDropDownList
+      TabOrder = 2
+    end
+    object processidedit: TEdit
+      AnchorSideTop.Control = Label11
+      AnchorSideTop.Side = asrCenter
+      Left = 64
+      Height = 21
+      Hint = 'ProcessID des gewählten Prozesses'
+      Top = 5
+      Width = 145
+      OnChange = processideditChange
+      TabOrder = 3
+    end
+    object starttimeedt: TEdit
+      AnchorSideLeft.Side = asrBottom
+      Left = 297
+      Height = 21
+      Top = 5
+      Width = 221
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 4
+    end
+    object kerneltimeedt: TEdit
+      Left = 297
+      Height = 21
+      Top = 31
+      Width = 78
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 5
+    end
+    object usertimeedt: TEdit
+      Left = 440
+      Height = 21
+      Top = 31
+      Width = 78
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 6
+    end
+    object ramMinEdt: TEdit
+      Left = 297
+      Height = 21
+      Top = 57
+      Width = 78
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 7
+    end
+    object ramMaxEdt: TEdit
+      Left = 440
+      Height = 21
+      Top = 57
+      Width = 78
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 8
+    end
+    object Button1: TButton
+      Left = 112
+      Height = 25
+      Top = 57
+      Width = 115
+      Caption = 'Speicher anzeigen'
+      OnClick = Button1Click
+      TabOrder = 9
+    end
+    object memStat: TPanel
+      Height = 126
+      Top = 110
+      Width = 529
+      Align = alBottom
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      ClientHeight = 126
+      ClientWidth = 529
+      TabOrder = 10
+      object memScreen: TPaintBox
+        Left = 9
+        Height = 96
+        Top = 5
+        Width = 490
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ParentShowHint = False
+        ShowHint = True
+        OnMouseMove = memScreenMouseMove
+        OnPaint = memScreenPaint
+        OnResize = memScreenResize
+      end
+      object Label6: TLabel
+        Left = 127
+        Height = 14
+        Top = 106
+        Width = 124
+        Anchors = [akLeft, akBottom]
+        Caption = 'Adresse der ersten Seite:'
+        ParentColor = False
+      end
+      object memScroll: TScrollBar
+        Left = 504
+        Height = 96
+        Top = 5
+        Width = 17
+        Anchors = [akTop, akRight, akBottom]
+        Kind = sbVertical
+        TabOrder = 0
+        OnScroll = memScrollScroll
+      end
+      object Button2: TButton
+        Left = 9
+        Height = 23
+        Top = 101
+        Width = 111
+        Anchors = [akLeft, akBottom]
+        Caption = 'zum nächsten Block'
+        OnClick = Button2Click
+        TabOrder = 1
+      end
+      object memScrolledAddress: TEdit
+        AnchorSideLeft.Control = Label6
+        AnchorSideLeft.Side = asrBottom
+        Left = 256
+        Height = 23
+        Top = 101
+        Width = 80
+        Anchors = [akLeft, akBottom]
+        BorderSpacing.Left = 5
+        OnChange = memScrolledAddressChange
+        TabOrder = 2
+        Text = '0'
+      end
+    end
+    object listWindows: TButton
+      Left = 16
+      Height = 25
+      Top = 82
+      Width = 92
+      Caption = 'Fenster auflisten'
+      OnClick = listWindowsClick
+      TabOrder = 11
+    end
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Height = 5
+    Top = 115
+    Width = 529
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object PopupMenu1: TPopupMenu
+    left = 128
+    top = 38
+    object MenuItem2: TMenuItem
+      Caption = 'Fenster auflisten'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Prozeß beenden'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'aktualisieren'
+      OnClick = MenuItem3Click
+    end
+  end
+  object autorefreshtimer: TTimer
+    OnTimer = autorefreshtimerTimer
+    left = 264
+    top = 64
+  end
+end

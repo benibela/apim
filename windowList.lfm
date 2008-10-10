@@ -1,0 +1,168 @@
+object WindowListFrm: TWindowListFrm
+  Left = 288
+  Height = 300
+  Top = 251
+  Width = 783
+  BorderStyle = bsSizeToolWin
+  Caption = 'Fensterliste'
+  ClientHeight = 300
+  ClientWidth = 783
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object Panel2: TPanel
+    Height = 33
+    Width = 783
+    Align = alTop
+    ClientHeight = 33
+    ClientWidth = 783
+    TabOrder = 0
+    object Label30: TLabel
+      AnchorSideTop.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 15
+      Height = 14
+      Top = 9
+      Width = 33
+      Anchors = [akLeft]
+      Caption = 'Filter:'
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label31: TLabel
+      AnchorSideLeft.Control = Label30
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label30
+      AnchorSideTop.Side = asrCenter
+      Left = 53
+      Height = 14
+      Top = 9
+      Width = 37
+      BorderSpacing.Left = 5
+      Caption = 'Parent:'
+      ParentColor = False
+    end
+    object Label32: TLabel
+      AnchorSideLeft.Control = windowsListfilterDirectChilds
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = windowsListfilterDirectChilds
+      AnchorSideTop.Side = asrCenter
+      Left = 302
+      Height = 14
+      Top = 9
+      Width = 53
+      BorderSpacing.Around = 5
+      Caption = 'Programm:'
+      ParentColor = False
+    end
+    object Label12: TLabel
+      AnchorSideLeft.Control = windowListFilterProgram_edt
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = windowListFilterProgram_edt
+      AnchorSideTop.Side = asrCenter
+      Left = 430
+      Height = 14
+      Top = 9
+      Width = 39
+      BorderSpacing.Around = 5
+      Caption = 'Thread:'
+      ParentColor = False
+    end
+    object windowListFilterParent_edt: TEdit
+      AnchorSideLeft.Control = Label31
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label31
+      AnchorSideTop.Side = asrCenter
+      Left = 95
+      Height = 23
+      Top = 5
+      Width = 65
+      BorderSpacing.Around = 5
+      Font.Color = clBlue
+      Font.Style = [fsUnderline]
+      OnChange = windowListFilterParent_edtChange
+      OnDblClick = windowListFilterParent_edtDblClick
+      OnKeyUp = windowListFilterParent_edtKeyUp
+      ParentFont = False
+      TabOrder = 0
+      Text = '0'
+    end
+    object windowListFilterProgram_edt: TEdit
+      AnchorSideLeft.Control = Label32
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label32
+      AnchorSideTop.Side = asrCenter
+      Left = 360
+      Height = 23
+      Top = 5
+      Width = 65
+      BorderSpacing.Around = 5
+      Font.Color = clBlue
+      Font.Style = [fsUnderline]
+      OnDblClick = windowListFilterProgram_edtDblClick
+      OnKeyUp = windowListFilterParent_edtKeyUp
+      ParentFont = False
+      TabOrder = 1
+    end
+    object windowsListfilterDirectChilds: TCheckBox
+      AnchorSideLeft.Control = windowListFilterParentUp
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = windowListFilterParent_edt
+      AnchorSideTop.Side = asrCenter
+      Left = 186
+      Height = 19
+      Top = 7
+      Width = 111
+      BorderSpacing.Around = 5
+      Caption = 'nur direkte Kinder'
+      Enabled = False
+      OnChange = windowsListfilterDirectChildsChange
+      TabOrder = 2
+    end
+    object windowListFilterParentUp: TButton
+      AnchorSideLeft.Control = windowListFilterParent_edt
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = windowListFilterParent_edt
+      AnchorSideTop.Side = asrCenter
+      Left = 165
+      Height = 19
+      Top = 7
+      Width = 16
+      BorderSpacing.Around = 5
+      Caption = '5'
+      Font.Name = 'Webdings'
+      OnClick = windowListFilterParentUpClick
+      ParentFont = False
+      TabOrder = 3
+    end
+    object windowListFilterThread: TEdit
+      AnchorSideLeft.Control = Label12
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label12
+      AnchorSideTop.Side = asrCenter
+      Left = 474
+      Height = 23
+      Top = 5
+      Width = 63
+      BorderSpacing.Around = 5
+      OnKeyUp = windowListFilterParent_edtKeyUp
+      TabOrder = 4
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    left = 200
+    top = 198
+    object MenuItem1: TMenuItem
+      Caption = 'Nur Kindfenster'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Nur dieses Programm'
+      OnClick = MenuItem2Click
+    end
+  end
+end

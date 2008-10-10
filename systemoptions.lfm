@@ -1,0 +1,125 @@
+object systemOptionsFrm: TsystemOptionsFrm
+  Left = 344
+  Height = 513
+  Top = 159
+  Width = 551
+  Caption = 'Systemoptionen'
+  ClientHeight = 513
+  ClientWidth = 551
+  OnCreate = FormCreate
+  OnShow = FormShow
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object Label3: TLabel
+    Left = 7
+    Height = 14
+    Top = 10
+    Width = 108
+    Caption = 'Systemeigenschaften:'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 12
+    Height = 14
+    Top = 287
+    Width = 82
+    Caption = 'API-Ausführung:'
+    ParentColor = False
+  end
+  object Label5: TLabel
+    Left = 100
+    Height = 14
+    Top = 407
+    Width = 46
+    Caption = 'Ergebnis:'
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 19
+    Height = 14
+    Top = 310
+    Width = 15
+    Caption = 'dll:'
+    ParentColor = False
+  end
+  object Label14: TLabel
+    Left = 19
+    Height = 14
+    Top = 341
+    Width = 46
+    Caption = 'Funktion:'
+    ParentColor = False
+  end
+  object Label16: TLabel
+    Left = 19
+    Height = 14
+    Top = 374
+    Width = 55
+    Caption = 'Parameter:'
+    ParentColor = False
+  end
+  object callAPIResult_lbl: TLabel
+    Left = 151
+    Height = 14
+    Top = 407
+    Width = 1
+    ParentColor = False
+  end
+  object systemProperties: TListView
+    Left = 7
+    Height = 241
+    Top = 33
+    Width = 532
+    Anchors = [akTop, akLeft, akRight]
+    Columns = <    
+      item
+        Caption = 'Eigenschaft'
+        Width = 150
+      end    
+      item
+        Caption = 'Wert'
+        Width = 300
+      end>
+    TabOrder = 0
+    ViewStyle = vsReport
+  end
+  object callAPIDLL: TEdit
+    Left = 79
+    Height = 23
+    Top = 306
+    Width = 219
+    TabOrder = 1
+  end
+  object callAPIProc: TEdit
+    Left = 79
+    Height = 23
+    Top = 337
+    Width = 219
+    TabOrder = 2
+    Text = 'MessageBox'
+  end
+  object callAPIParameter: TEdit
+    Left = 79
+    Height = 23
+    Top = 370
+    Width = 458
+    Anchors = [akTop, akLeft, akRight]
+    TabOrder = 3
+    Text = '(0,@''Hallo'',@''Welt'',0)'
+  end
+  object callAPI: TButton
+    Left = 19
+    Height = 25
+    Top = 402
+    Width = 75
+    Caption = 'call'
+    OnClick = callAPIClick
+    TabOrder = 4
+  end
+  object Timer1: TTimer
+    Interval = 500
+    OnTimer = Timer1Timer
+    left = 329
+    top = 310
+  end
+end

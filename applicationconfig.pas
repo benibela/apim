@@ -24,7 +24,7 @@ unit applicationConfig;
 interface
 
 uses
-  Classes, SysUtils,windows, forms,graphics,windowcontrolfuncs;
+  Classes, SysUtils,windows, forms,graphics,windowcontrolfuncs,XMLCfg,XMLConf;
 
 
 const SEARCHTOOLFRM_ID=1;
@@ -34,32 +34,64 @@ const SEARCHTOOLFRM_ID=1;
       OPTIONSFRM_ID=5;
       PROPERTYSHEETFRM_ID=6;
 
-var hexa:boolean=false; //TODO: load/save options
-    winConstPath:string='winconst\';
+var hexa:boolean=false; //#TODO -1: different number outputs
+    winConstPath:string='winconst\'; //TODO: win const
+    maxSubFormPerPage,defaultRefreshTimeInterval: longint;
+
+    globalConfig: TXMLConfig;
+
+    pageInfoColors: array[tpageinfo] of tcolor;
+
     runonNT: boolean;
     niceVisible: boolean=true;//visible at start
-    maxSubFormPerPage: longint=3;
-    pageInfoColors: array[tpageinfo] of tcolor;
+
+//these convert functions use the user output format (int, pascal-hex,..)
+function isStrCardinal(s:string): boolean;
 function Str2Cardinal(s:string):cardinal;
+function Str2CardinalDef(s:string;def:cardinal):cardinal;
 function Cardinal2Str(nr:cardinal):string;
 function Pointer2Str(p: pointer):string;
 
 procedure niceSetVisible(vis: boolean; needMouseEvents: boolean);
 
 //procedure showHandle(sender: TForm; handle: THANDLE; where: longint);
+  procedure readConfig;
   procedure initAll;
+  procedure finitAll;
 implementation
 uses  windowfuncs,mainunit;
+
+function isStrCardinal(s: string): boolean;
+var i:longint;
+begin
+  s:=trim(s);
+  if s='' then exit(true);
+  if s[1]='$' then begin
+    for i:=1 to length(s) do
+      if not (s[i] in ['0'..'9','A'..'F','a'..'f']) then exit(false);
+  end else
+    for i:=1 to length(s) do
+      if not (s[i] in ['0'..'9']) then exit(false);
+  result:=true;
+end;
 
 //Konvertiert einen String zu einer Zahl und umgekehr:
 function Str2Cardinal(s:string):cardinal;
 begin
   s:=trim(s);
+  if s='' then exit(0);
   if hexa then
     Result:=StrToInt64(s)
    else
     Result:=StrToInt64(s);
 end;
+
+function Str2CardinalDef(s: string; def: cardinal): cardinal;
+begin
+  if not isStrCardinal(s) then exit(def)
+  else exit(Str2Cardinal(s));
+end;
+
 function Cardinal2Str(nr:cardinal):string;
 begin
   if hexa then
@@ -91,7 +123,7 @@ begin
 
   }
   if runonNT then begin
-    if vis then begin //TODO: optimize
+    if vis then begin //#TODO -1: optimize
       for i:=7 to 25 do
         for f:=0 to Screen.FormCount-1 do
           if (Screen.Forms[f].parent=nil) then begin
@@ -142,6 +174,15 @@ begin
 end;
                                                      }
 
+  procedure readConfig;
+  begin
+    //size/position/some default informations are stored by the forms itself.
+    hexa:= globalConfig.GetValue('look/numberKind','0')<>'1';
+    winConstPath:=globalConfig.GetValue('paths/winconst','winconst\');
+    maxSubFormPerPage:=globalConfig.GetValue('look/maxSubFormPerPage',3);
+    defaultRefreshTimeInterval:=globalConfig.GetValue('look/defaultRefreshTime',0);
+  end;
+
   procedure initAll;
   begin
     runonNT:=Win32Platform=VER_PLATFORM_WIN32_NT;
@@ -156,6 +197,15 @@ end;
     pageInfoColors[piExecuteRead]:=clAqua;
     pageInfoColors[piExecuteReadWrite]:=clFuchsia;
     pageInfoColors[piExecuteWriteCopy]:=clPurple;
+
+    globalConfig:=TXMLConfig.Create(Application);
+    globalConfig.Filename:=IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)))+'apim.config'; //#TODO -1:
+    readConfig;
+  end;
+
+  procedure finitAll;
+  begin
+
   end;
 
 initialization

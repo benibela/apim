@@ -1,0 +1,88 @@
+object WelcomeFrm: TWelcomeFrm
+  Left = 308
+  Height = 349
+  Top = 169
+  Width = 521
+  Caption = 'Startseite'
+  ClientHeight = 349
+  ClientWidth = 521
+  OnCreate = FormCreate
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object Label1: TLabel
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideRight.Side = asrCenter
+    AnchorSideBottom.Side = asrCenter
+    Left = 59
+    Height = 59
+    Top = 48
+    Width = 395
+    Anchors = [akTop]
+    Caption = 'API Manager 3.0.0'
+    Font.Height = -48
+    ParentColor = False
+    ParentFont = False
+  end
+  object Panel1: TPanel
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideRight.Side = asrCenter
+    Left = 178
+    Height = 173
+    Top = 112
+    Width = 160
+    Anchors = [akTop]
+    BevelOuter = bvNone
+    ChildSizing.TopBottomSpacing = 5
+    ChildSizing.VerticalSpacing = 5
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ClientHeight = 173
+    ClientWidth = 160
+    TabOrder = 0
+    object Button1: TButton
+      Tag = 1
+      Height = 23
+      Top = 5
+      Width = 160
+      Caption = 'Suchwerkzeug'
+      OnClick = Button1Click
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Tag = 2
+      Height = 23
+      Top = 33
+      Width = 160
+      Caption = 'Fensterliste'
+      OnClick = Button1Click
+      TabOrder = 1
+    end
+    object Button3: TButton
+      Tag = 3
+      Height = 23
+      Top = 61
+      Width = 160
+      Caption = 'Prozessliste'
+      OnClick = Button1Click
+      TabOrder = 2
+    end
+    object Button4: TButton
+      Tag = 4
+      Height = 23
+      Top = 89
+      Width = 160
+      Caption = 'Systeminformationen'
+      OnClick = Button1Click
+      TabOrder = 3
+    end
+    object Button5: TButton
+      Tag = 5
+      Height = 23
+      Top = 117
+      Width = 160
+      Caption = 'Einstellungen'
+      OnClick = Button1Click
+      TabOrder = 4
+    end
+  end
+end

@@ -32,8 +32,8 @@ function LoadFuncFromDLL(dll,func:pchar):pointer;
 function EnumWindowsToIntList(parent:HWND;subChilds:boolean):TIntArray; //Liefert die Handles sämtlicher Top-Level-Fenster in einem Array zurück
 function GetRealWindowFromPoint(p:TPoint; ignoreOurWindows:boolean=false):THANDLE; //Findet das Fenster an der Position p. Entspricht der Funktion von EDA 6.0f (funktionieren beide nicht richtig)
 function GetRealWindowsFromPoint(p:TPoint):TIntArray; //Findet alle Fenster an der Position p. Hat den Vorteil gegenüber GetRealWindowFromPoint, das es auf jeden Fall geht ;-)
-function GetWindowTextS(handle:HWND):string; //Entspricht GetWindowText, nur liefert es einen String zurück
-function GetWindowClassNameS(handle:HWND):string; //Entspricht GetClassName, nur liefert es einen String zurück
+function GetWindowTextS(handle:HWND):utf8string; //Entspricht GetWindowText, nur liefert es einen String zurück
+function GetWindowClassNameS(handle:HWND):utf8string; //Entspricht GetClassName, nur liefert es einen String zurück
 function GetShowWindow(handle:hwnd):integer;//Liefert SW_MAXIMIZE bei maximierten, SW_MINIMIZE bei minimierten und SW_NORMAL bei normalen Fenstern zurück.
 function GetFileNameFromHandle(Handle: hwnd):string;//Von Leo, liefert den Dateinamen eines WIndows zurück
 
@@ -255,18 +255,18 @@ end;
 
 
 
-function GetWindowTextS(handle:HWND):string;
+function GetWindowTextS(handle:HWND):utf8string;
 var text:array[0..255] of char;
 begin
   GetWindowText(handle,text,255);
-  result:=text;
+  result:=AnsiToUtf8(text);
 end;
 
-function GetWindowClassNameS(handle:HWND):string;
+function GetWindowClassNameS(handle:HWND):utf8string;
 var text:array[0..255] of char;
 begin
   GetClassName(handle,text,255);
-  result:=text;
+  result:=AnsiToUtf8(text);
 end;
 
 function GetShowWindow(handle:hwnd):integer;

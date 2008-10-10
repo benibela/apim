@@ -1,0 +1,110 @@
+object optionFrm: ToptionFrm
+  Left = 37
+  Height = 173
+  Top = 231
+  Width = 387
+  BorderStyle = bsSizeToolWin
+  Caption = 'Einstellungen'
+  ClientHeight = 173
+  ClientWidth = 387
+  OnCreate = FormCreate
+  ParentFont = False
+  LCLVersion = '0.9.27'
+  object Label21: TLabel
+    AnchorSideLeft.Control = defaultRefreshedt
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = defaultRefreshedt
+    AnchorSideTop.Side = asrCenter
+    Left = 367
+    Height = 14
+    Top = 52
+    Width = 14
+    BorderSpacing.Around = 5
+    Caption = 'ms'
+    ParentColor = False
+  end
+  object Label29: TLabel
+    Left = 24
+    Height = 14
+    Top = 81
+    Width = 102
+    Caption = 'Windowskonstanten:'
+    ParentColor = False
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 14
+    Top = 112
+    Width = 132
+    Caption = 'Gleichzeitige Seitenfenster:'
+    ParentColor = False
+  end
+  object autorefreshcheck: TCheckBox
+    Left = 25
+    Height = 19
+    Hint = 'Zeigt an, ob die Prozess und Fensterauchungen periodisch aktualisiert werden sollen'
+    Top = 50
+    Width = 174
+    Caption = 'Automatisch aktualisieren:  alle'
+    TabOrder = 0
+  end
+  object defaultRefreshedt: TEdit
+    Left = 193
+    Height = 21
+    Hint = 'Zeigt an wie oft die periodische Wiederholung der Prozess und Fenstersuche erfolgen soll'
+    Top = 49
+    Width = 169
+    Anchors = [akTop, akLeft, akRight]
+    TabOrder = 1
+    Text = '3000'
+  end
+  object checkhex: TCheckBox
+    Left = 25
+    Height = 19
+    Hint = 'Stellt ein, ob die Zahlen hexadezimal oder dezimal angezeigt werden sollen. Bei Hexadezimalen Zahlen müssen auch die meisten Eingaben hexadezimal erfolgen.'
+    Top = 13
+    Width = 170
+    Caption = 'Zahlen hexadezimal darstellen'
+    TabOrder = 2
+  end
+  object optwinconst_Edt: TEdit
+    Left = 193
+    Height = 23
+    Top = 77
+    Width = 186
+    Anchors = [akTop, akLeft, akRight]
+    TabOrder = 3
+    Text = 'winconst\'
+  end
+  object Button1: TButton
+    Left = 32
+    Height = 25
+    Top = 136
+    Width = 75
+    Caption = 'speichern'
+    OnClick = Button1Click
+    TabOrder = 4
+  end
+  object Button2: TButton
+    Left = 118
+    Height = 25
+    Top = 136
+    Width = 75
+    Caption = 'zurücksetzen'
+    OnClick = Button2Click
+    TabOrder = 5
+  end
+  object maxsubforms_edt: TEdit
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrCenter
+    Left = 193
+    Height = 23
+    Top = 108
+    Width = 186
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 5
+    TabOrder = 6
+    Text = '3'
+  end
+end
