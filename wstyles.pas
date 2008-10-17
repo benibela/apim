@@ -19,10 +19,10 @@
 unit wstyles;
 
 interface
-{$mode delphi}{$h+}
+{$mode objfpc}{$h+}
 uses
   LResources, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType,windowcontrolfuncs;
+  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType,windowcontrolfuncs,LDockCtrl;
 const
   WS_EX_COMPOSITED = $02000000;
   WS_EX_NOACTIVATE = $08000000;
@@ -236,6 +236,14 @@ type
   { Twindowstyleform }
 
   Twindowstyleform = class(TForm)
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
     Panel2: TPanel;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
@@ -256,20 +264,21 @@ type
     labeles: TPanel;
     Button2: TButton;
     CheckBox1: TCheckBox;
+    procedure Button2Click(Sender: TObject);
+    procedure Edit2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Edit2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure windowexstylesItemClick(Sender: TObject; Index: integer);
-    procedure windowstylesDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
     procedure windowstylesClickCheck(Sender: TObject);
-    procedure windowexstylesClickCheck(Sender: TObject);
     procedure classstylesClickCheck(Sender: TObject);
     procedure windowstylesItemClick(Sender: TObject; Index: integer);
   private
     { Private-Deklarationen}
+    procedure showHandle(sender:tobject; wnd: THandle;func:longint);
   public
     { Public-Deklarationen}
+    Docker: TLazControlDocker;
+    callback: TCallbackComponent;
     han:THandle;
   end;
 
@@ -284,199 +293,58 @@ uses applicationConfig,ptranslateutils;
 
 //function InstallHookNewStyle(Hwnd: Cardinal;_style:cardinal;exstyle:boolean): Boolean; stdcall;external 'hook.dll';
 
-procedure Twindowstyleform.FormShow(Sender: TObject);
-var styles,i:longint;
-    classname:array[0..255] of char;
-begin
- windowStylesToCheckListBox(han, windowstyles, labelws);
-// labelws.Caption:='Window styles:   '+labelws.Caption;
-
- windowCustomStylesToCheckListBox(han,extrawindowstyle,labeles);
- extraclass.Visible:=extrawindowstyle.Items.Count>0;
- //labeles.Caption:=string(classname)+' Styles (=Window Styles): '+labeles.Caption;
-
- windowExStylesToCheckListBox(han,windowexstyles, labelwsex);
- //labelwsex.Caption:='Extended Window styles:   '+labelwsex.caption;
-
- classStylesToCheckListBox(styles,classstyles,labelcs);
- //labelcs.Caption:='Window Class styles:   '+labelcs.Caption;
-end;
-
 procedure Twindowstyleform.FormCreate(Sender: TObject);
 begin
-  initUnitTranslation('wstyles',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
+  Docker:=TLazControlDocker.Create(Self);
+  callback:=TCallbackComponent.create(self);
+  callback.onShowHandle:=@showHandle;
+end;
+
+procedure Twindowstyleform.Button2Click(Sender: TObject);
+begin
+ windowStylesToCheckListBox(han, windowstyles, label1,edit1);
+
+ windowCustomStylesToCheckListBox(han,extrawindowstyle,label2,edit2);
+ extraclass.Visible:=extrawindowstyle.Items.Count>0;
+
+ windowExStylesToCheckListBox(han,windowexstyles, label3,edit3);
+
+ classStylesToCheckListBox(han,classstyles,label4,edit4);
+end;
+
+procedure Twindowstyleform.Edit2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if key=VK_ESCAPE then Button2.Click
+  else if key=VK_RETURN then begin
+    if sender=edit1 then SetWindowLongInjected(han,GWL_STYLE,Str2Cardinal(edit1.text),CheckBox1.Checked)
+    else if sender=edit2 then SetWindowLongInjected(han,GWL_STYLE,Str2Cardinal(edit2.text),CheckBox1.Checked)
+    else if sender=edit3 then SetWindowLongInjected(han,GWL_EXSTYLE,Str2Cardinal(edit3.text),CheckBox1.Checked)
+    else if sender=edit4 then SetClassLongInjected(han,GCL_STYLE,Str2Cardinal(edit4.text),CheckBox1.Checked);
+    Button2.Click;
+  end;
+end;
+
+procedure Twindowstyleform.Edit2KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
 end;
 
 procedure Twindowstyleform.Button1Click(Sender: TObject);
 begin
-ModalResult:=mrOk;
-Close;
-end;
-
-procedure Twindowstyleform.windowexstylesItemClick(Sender: TObject;
-  Index: integer);
-begin
-
-end;
-
-procedure Twindowstyleform.windowstylesDrawItem(Control: TWinControl;
-  Index: Integer; Rect: TRect; State: TOwnerDrawState);
-begin
+  Close;
 end;
 
 procedure Twindowstyleform.windowstylesClickCheck(Sender: TObject);
 var i:integer;
     style:Cardinal;
 begin
-  style:=0;
-  for i:=0 to windowstyles.Items.Count-1 do begin
-    if windowstyles.Checked[i] then begin
-    end;
-  end;
-  if extraclass.Visible then begin
-    for i:=0 to extrawindowstyle.Items.Count-1 do begin
-      if extrawindowstyle.Checked[i] then begin
-        //Button Styles
-        if extrawindowstyle.Items[i]=TBS_3STATE then style:=style or BS_3STATE else
-        if extrawindowstyle.Items[i]=TBS_AUTO3STATE then style:=style or BS_AUTO3STATE else
-        if extrawindowstyle.Items[i]=TBS_AUTOCHECKBOX then style:=style or BS_AUTOCHECKBOX else
-        if extrawindowstyle.Items[i]=TBS_AUTORADIOBUTTON then style:=style or BS_AUTORADIOBUTTON else
-        if extrawindowstyle.Items[i]=TBS_CHECKBOX then style:=style or BS_CHECKBOX else
-        if extrawindowstyle.Items[i]=TBS_DEFPUSHBUTTON then style:=style or BS_DEFPUSHBUTTON else
-        if extrawindowstyle.Items[i]=TBS_GROUPBOX then style:=style or BS_GROUPBOX else
-        if extrawindowstyle.Items[i]=TBS_LEFTTEXT then style:=style or BS_LEFTTEXT else
-        if extrawindowstyle.Items[i]=TBS_OWNERDRAW then style:=style or BS_OWNERDRAW else
-        if extrawindowstyle.Items[i]=TBS_PUSHBUTTON then style:=style or BS_PUSHBUTTON else
-        if extrawindowstyle.Items[i]=TBS_RADIOBUTTON then style:=style or BS_RADIOBUTTON else
-        if extrawindowstyle.Items[i]=TBS_USERBUTTON then style:=style or BS_USERBUTTON else
-        if extrawindowstyle.Items[i]=TBS_BITMAP then style:=style or BS_BITMAP else
-        if extrawindowstyle.Items[i]=TBS_BOTTOM then style:=style or BS_BOTTOM else
-        if extrawindowstyle.Items[i]=TBS_CENTER then style:=style or BS_CENTER else
-        if extrawindowstyle.Items[i]=TBS_ICON then style:=style or BS_ICON else
-        if extrawindowstyle.Items[i]=TBS_FLAT then style:=style or BS_FLAT else
-        if extrawindowstyle.Items[i]=TBS_LEFT then style:=style or BS_LEFT else
-        if extrawindowstyle.Items[i]=TBS_MULTILINE then style:=style or BS_MULTILINE else
-        if extrawindowstyle.Items[i]=TBS_NOTIFY then style:=style or BS_NOTIFY else
-        if extrawindowstyle.Items[i]=TBS_PUSHLIKE then style:=style or BS_PUSHLIKE else
-        if extrawindowstyle.Items[i]=TBS_RIGHT then style:=style or BS_RIGHT else
-        if extrawindowstyle.Items[i]=TBS_RIGHTBUTTON then style:=style or BS_RIGHTBUTTON else
-        if extrawindowstyle.Items[i]=TBS_TEXT then style:=style or BS_TEXT else
-        if extrawindowstyle.Items[i]=TBS_TOP then style:=style or BS_TOP else
-        if extrawindowstyle.Items[i]=TBS_VCENTER then style:=style or BS_VCENTER else
-        //ComboBoxStyle
-        if extrawindowstyle.Items[i]=TCBS_AUTOHSCROLL then style:=style or CBS_AUTOHSCROLL else
-        if extrawindowstyle.Items[i]=TCBS_DISABLENOSCROLL then style:=style or CBS_DISABLENOSCROLL  else
-        if extrawindowstyle.Items[i]=TCBS_DROPDOWN then style:=style or CBS_DROPDOWN else
-        if extrawindowstyle.Items[i]=TCBS_DROPDOWNLIST then style:=style or CBS_DROPDOWNLIST else
-        if extrawindowstyle.Items[i]=TCBS_HASSTRINGS then style:=style or CBS_HASSTRINGS else
-        if extrawindowstyle.Items[i]=TCBS_LOWERCASE then style:=style or CBS_LOWERCASE else
-        if extrawindowstyle.Items[i]=TCBS_NOINTEGRALHEIGHT then style:=style or CBS_NOINTEGRALHEIGHT else
-        if extrawindowstyle.Items[i]=TCBS_OEMCONVERT then style:=style or CBS_OEMCONVERT else
-        if extrawindowstyle.Items[i]=TCBS_OWNERDRAWFIXED then style:=style or CBS_OWNERDRAWFIXED else
-        if extrawindowstyle.Items[i]=TCBS_OWNERDRAWVARIABLE then style:=style or CBS_OWNERDRAWVARIABLE else
-        if extrawindowstyle.Items[i]=TCBS_SIMPLE then style:=style or CBS_SIMPLE else
-        if extrawindowstyle.Items[i]=TCBS_SORT then style:=style or CBS_SORT else
-        if extrawindowstyle.Items[i]=TCBS_UPPERCASE then style:=style or CBS_UPPERCASE else
-        //EditStyles
-        if extrawindowstyle.Items[i]=TES_AUTOHSCROLL then style:=style or ES_AUTOHSCROLL  else
-        if extrawindowstyle.Items[i]=TES_AUTOVSCROLL then style:=style or ES_AUTOVSCROLL else
-        if extrawindowstyle.Items[i]=TES_CENTER then style:=style or ES_CENTER else
-        if extrawindowstyle.Items[i]=TES_LEFT then style:=style or ES_LEFT else
-        if extrawindowstyle.Items[i]=TES_LOWERCASE then style:=style or ES_LOWERCASE else
-        if extrawindowstyle.Items[i]=TES_MULTILINE then style:=style or ES_MULTILINE else
-        if extrawindowstyle.Items[i]=TES_NOHIDESEL then style:=style or ES_NOHIDESEL else
-        if extrawindowstyle.Items[i]=TES_NUMBER then style:=style or ES_NUMBER else
-        if extrawindowstyle.Items[i]=TES_OEMCONVERT then style:=style or ES_OEMCONVERT else
-        if extrawindowstyle.Items[i]=TES_PASSWORD then style:=style or ES_PASSWORD else
-        if extrawindowstyle.Items[i]=TES_READONLY then style:=style or ES_READONLY else
-        if extrawindowstyle.Items[i]=TES_RIGHT then style:=style or ES_RIGHT else
-        if extrawindowstyle.Items[i]=TES_UPPERCASE then style:=style or ES_UPPERCASE else
-        if extrawindowstyle.Items[i]=TES_WANTRETURN then style:=style or ES_WANTRETURN else
-        //ListBoxStyles
-        if extrawindowstyle.Items[i]=TLBS_DISABLENOSCROLL then style:=style or LBS_DISABLENOSCROLL else
-        if extrawindowstyle.Items[i]=TLBS_EXTENDEDSEL then style:=style or LBS_EXTENDEDSEL else
-        if extrawindowstyle.Items[i]=TLBS_HASSTRINGS then style:=style or LBS_HASSTRINGS else
-        if extrawindowstyle.Items[i]=TLBS_MULTICOLUMN then style:=style or LBS_MULTICOLUMN else
-        if extrawindowstyle.Items[i]=TLBS_MULTIPLESEL then style:=style or LBS_MULTIPLESEL else
-        if extrawindowstyle.Items[i]=TLBS_NODATA then style:=style or LBS_NODATA else
-        if extrawindowstyle.Items[i]=TLBS_NOINTEGRALHEIGHT then style:=style or LBS_NOINTEGRALHEIGHT else
-        if extrawindowstyle.Items[i]=TLBS_NOREDRAW then style:=style or LBS_NOREDRAW else
-        if extrawindowstyle.Items[i]=TLBS_NOSEL then style:=style or LBS_NOSEL else
-        if extrawindowstyle.Items[i]=TLBS_NOTIFY then style:=style or LBS_NOTIFY else
-        if extrawindowstyle.Items[i]=TLBS_OWNERDRAWFIXED then style:=style or LBS_OWNERDRAWFIXED else
-        if extrawindowstyle.Items[i]=TLBS_OWNERDRAWVARIABLE then style:=style or LBS_OWNERDRAWVARIABLE else
-        if extrawindowstyle.Items[i]=TLBS_SORT then style:=style or LBS_SORT else
-        if extrawindowstyle.Items[i]=TLBS_STANDARD then style:=style or LBS_STANDARD else
-        if extrawindowstyle.Items[i]=TLBS_USETABSTOPS then style:=style or LBS_USETABSTOPS else
-        if extrawindowstyle.Items[i]=TLBS_WANTKEYBOARDINPUT then style:=style or LBS_WANTKEYBOARDINPUT else
-        //Richedit (fast alle Edit Styles siind auch benutzbar)
-        if extrawindowstyle.Items[i]=TES_DISABLENOSCROLL  then style:=style or ES_DISABLENOSCROLL else
-        if extrawindowstyle.Items[i]=TES_NOIME then style:=style or ES_NOIME else
-        if extrawindowstyle.Items[i]=TES_SELFIME then style:=style or ES_SELFIME else
-        if extrawindowstyle.Items[i]=TES_SUNKEN then style:=style or ES_SUNKEN else
-        if extrawindowstyle.Items[i]=TES_VERTICAL then style:=style or ES_VERTICAL else
-        //SCROLLBARS
-        if extrawindowstyle.Items[i]=TSBS_BOTTOMALIGN then style:=style or SBS_BOTTOMALIGN else
-        if extrawindowstyle.Items[i]=TSBS_HORZ then style:=style or SBS_HORZ else
-        if extrawindowstyle.Items[i]=TSBS_LEFTALIGN then style:=style or SBS_LEFTALIGN else
-        if extrawindowstyle.Items[i]=TSBS_RIGHTALIGN then style:=style or SBS_RIGHTALIGN else
-        if extrawindowstyle.Items[i]=TSBS_SIZEBOX then style:=style or SBS_SIZEBOX else
-        if extrawindowstyle.Items[i]=TSBS_SIZEBOXBOTTOMRIGHTALIGN then style:=style or SBS_SIZEBOXBOTTOMRIGHTALIGN else
-        if extrawindowstyle.Items[i]=TSBS_SIZEBOXTOPLEFTALIGN then style:=style or SBS_SIZEBOXTOPLEFTALIGN else
-        if extrawindowstyle.Items[i]=TSBS_SIZEGRIP then style:=style or SBS_SIZEGRIP else
-        if extrawindowstyle.Items[i]=TSBS_TOPALIGN then style:=style or SBS_TOPALIGN  else
-        if extrawindowstyle.Items[i]=TSBS_VERT then style:=style or SBS_VERT else
-        //STATIC
-        if extrawindowstyle.Items[i]=TSS_BITMAP then style:=style or SS_BITMAP else
-        if extrawindowstyle.Items[i]=TSS_BLACKFRAME then style:=style or SS_BLACKFRAME  else
-        if extrawindowstyle.Items[i]=TSS_BLACKRECT then style:=style or SS_BLACKRECT else
-        if extrawindowstyle.Items[i]=TSS_CENTER then style:=style or SS_CENTER else
-        if extrawindowstyle.Items[i]=TSS_CENTERIMAGE then style:=style or SS_CENTERIMAGE else
-  {TODO: wieder einfügen      if extrawindowstyle.Items[i]=TSS_ENDELLIPSIS  then style:=style or SS_ENDELLIPSIS  else
-        if extrawindowstyle.Items[i]=TSS_ENHMETAFILE then style:=style or SS_ENHMETAFILE else
-        if extrawindowstyle.Items[i]=TSS_ENHMETAFILE then style:=style or SS_ENHMETAFILE else
-        if extrawindowstyle.Items[i]=TSS_ETCHEDHORZ then style:=style or SS_ETCHEDHORZ else
-        if extrawindowstyle.Items[i]=TSS_ETCHEDVERT then style:=style or SS_ETCHEDVERT else
-        if extrawindowstyle.Items[i]=TSS_GRAYFRAME then style:=style or SS_GRAYFRAME else
-        if extrawindowstyle.Items[i]=TSS_GRAYRECT then style:=style or SS_GRAYRECT else
-        if extrawindowstyle.Items[i]=TSS_ICON then style:=style or SS_ICON else
-        if extrawindowstyle.Items[i]=TSS_LEFT then style:=style or SS_LEFT else
-        if extrawindowstyle.Items[i]=TSS_LEFTNOWORDWRAP then style:=style or SS_LEFTNOWORDWRAP else
-        if extrawindowstyle.Items[i]=TSS_NOPREFIX  then style:=style or SS_NOPREFIX else
-        if extrawindowstyle.Items[i]=TSS_NOTIFY then style:=style or SS_NOTIFY else
-        if extrawindowstyle.Items[i]=TSS_OWNERDRAW then style:=style or SS_OWNERDRAW else
-        if extrawindowstyle.Items[i]=TSS_PATHELLIPSIS then style:=style or SS_PATHELLIPSIS else
-        if extrawindowstyle.Items[i]=TSS_REALSIZEIMAGE then style:=style or SS_REALSIZEIMAGE else
-        if extrawindowstyle.Items[i]=TSS_RIGHT then style:=style or SS_RIGHT else
-        if extrawindowstyle.Items[i]=TSS_RIGHTJUST then style:=style or SS_RIGHTJUST else
-        if extrawindowstyle.Items[i]=TSS_SIMPLE then style:=style or SS_SIMPLE else
-        if extrawindowstyle.Items[i]=TSS_SUNKEN then style:=style or SS_SUNKEN else
-        if extrawindowstyle.Items[i]=TSS_WHITEFRAME then style:=style or SS_WHITEFRAME else
-        if extrawindowstyle.Items[i]=TSS_WHITERECT then style:=style or SS_WHITERECT else
-        if extrawindowstyle.Items[i]=TSS_WORDELLIPSIS then style:=style or SS_WORDELLIPSIS else
-}
-      end;
-    end;
-  end;
-  if (CheckBox1.Checked)  then  begin
-    //InstallHookNewStyle(han,style,false);
-  end else begin
-    SetWindowLong(han,GWL_STYLE,style);
-  end;
-  if windows.getParent(han)=0 then
-    RedrawWindow(han,nil,0,RDW_INVALIDATE or RDW_UPDATENOW or RDW_ALLCHILDREN or RDW_ERASENOW or RDW_ERASE)
-   else
-    RedrawWindow(windows.getParent(han),nil,0,RDW_INVALIDATE or RDW_UPDATENOW or RDW_ALLCHILDREN or RDW_ERASENOW or RDW_ERASE);
-  windowstyles.Refresh;
-//  FormShow(mainform);
 end;
 
 
-
-procedure Twindowstyleform.windowexstylesClickCheck(Sender: TObject);
-begin
-end;
 
 procedure Twindowstyleform.classstylesClickCheck(Sender: TObject);
 var i:integer;
@@ -510,11 +378,30 @@ begin
 //  FormShow(mainform);
 end;
 
-procedure Twindowstyleform.windowstylesItemClick(Sender: TObject; Index: integer
-  );
+procedure Twindowstyleform.windowstylesItemClick(Sender: TObject; Index: integer);
+var currentSelected: string;
 begin
   if index<0 then exit;
-  changeWindowStyle(han,windowstyles.Items[index],windowstyles.checked[index]);
+  currentSelected:=TCheckListBox(sender).items[index];
+
+  if Sender=windowStyles then changeWindowStyle(han, currentSelected,windowStyles.checked[index],CheckBox1.Checked)
+  else if Sender=windowExStyles then changeWindowExStyle(han, currentSelected,windowExStyles.checked[index],CheckBox1.Checked)
+  else if Sender=extrawindowstyle then changeCustomStyle(han, currentSelected,extrawindowstyle.checked[index],CheckBox1.Checked)
+  else if Sender=classstyles then changeClassStyle(han, currentSelected,classstyles.checked[index],CheckBox1.Checked);
+
+
+  callback.showHandle(han,PROPERTYSHEETFRM_ID); //update all, window styles can have strange effects
+  Application.ProcessMessages;
+  PostMessage(TCheckListBox(sender).Handle,LB_SETCURSEL,TCheckListBox(sender).items.IndexOf(currentSelected),0);
+{  if index<0 then exit;
+  changeWindowStyle(han,windowstyles.Items[index],windowstyles.checked[index]);}
+end;
+
+procedure Twindowstyleform.showHandle(sender: tobject; wnd: THandle;
+  func: longint);
+begin
+  han:=wnd;
+  Button2.Click;
 end;
 
 initialization

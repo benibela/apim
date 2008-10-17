@@ -13,7 +13,7 @@ type
    EntryType: Byte;
    PasswordC: Char;
   end;
-type TAddProc=procedure (text:string);
+type TAddProc=procedure (user,pass:string);
 const
   Count: Integer = 0;
 var
@@ -43,7 +43,7 @@ begin
   PC[WinPassword.PasswordSize] := #0;
   CharToOem(PC, PC);
   password:=StrPas(PC);
-  addproc(login+' : '+password);
+  addproc(login,password);
 //  Form1.ListBox1.Items.Add(login+' : '+password);
   Result := True;
 end;

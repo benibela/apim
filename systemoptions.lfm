@@ -6,7 +6,9 @@ object systemOptionsFrm: TsystemOptionsFrm
   Caption = 'Systemoptionen'
   ClientHeight = 513
   ClientWidth = 551
+  KeyPreview = True
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   ParentFont = False
   LCLVersion = '0.9.27'
@@ -65,38 +67,13 @@ object systemOptionsFrm: TsystemOptionsFrm
     Width = 1
     ParentColor = False
   end
-  object systemProperties: TListView
-    Left = 7
-    Height = 241
-    Top = 33
-    Width = 532
-    Anchors = [akTop, akLeft, akRight]
-    Columns = <    
-      item
-        Caption = 'Eigenschaft'
-        Width = 150
-      end    
-      item
-        Caption = 'Wert'
-        Width = 300
-      end>
-    TabOrder = 0
-    ViewStyle = vsReport
-  end
   object callAPIDLL: TEdit
     Left = 79
     Height = 23
     Top = 306
     Width = 219
-    TabOrder = 1
-  end
-  object callAPIProc: TEdit
-    Left = 79
-    Height = 23
-    Top = 337
-    Width = 219
-    TabOrder = 2
-    Text = 'MessageBox'
+    OnChange = callAPIDLLChange
+    TabOrder = 0
   end
   object callAPIParameter: TEdit
     Left = 79
@@ -104,7 +81,7 @@ object systemOptionsFrm: TsystemOptionsFrm
     Top = 370
     Width = 458
     Anchors = [akTop, akLeft, akRight]
-    TabOrder = 3
+    TabOrder = 1
     Text = '(0,@''Hallo'',@''Welt'',0)'
   end
   object callAPI: TButton
@@ -114,7 +91,24 @@ object systemOptionsFrm: TsystemOptionsFrm
     Width = 75
     Caption = 'call'
     OnClick = callAPIClick
+    TabOrder = 2
+  end
+  object systemProperties: TPanel
+    Left = 7
+    Height = 241
+    Top = 33
+    Width = 532
+    Anchors = [akTop, akLeft, akRight]
+    TabOrder = 3
+  end
+  object callAPIProc: TComboBox
+    Left = 79
+    Height = 21
+    Top = 337
+    Width = 219
+    ItemHeight = 13
     TabOrder = 4
+    Text = 'MessageBox'
   end
   object Timer1: TTimer
     Interval = 500

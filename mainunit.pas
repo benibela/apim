@@ -34,7 +34,8 @@ interface
 {$mode objfpc}{$h+}
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
-  menus,sysutils, StdCtrls,LDockCtrl, LDockTree, ExtCtrls,windowcontrolfuncs;
+  menus,sysutils, StdCtrls,LDockCtrl, LDockTree, ExtCtrls,windowcontrolfuncs,
+  ButtonPanel;
 
 type
 
@@ -96,43 +97,9 @@ var
 
 implementation
 
-uses applicationConfig, searchTool,windowList,processList,systemOptions,options,windowPropertySheet,welcome,ptranslateutils;
+uses applicationConfig, searchTool,windowList,processList,systemOptions,options,windowPropertySheet,welcome,ptranslateutils,apimshared,wstyles;
 
 {$I mainunit.atr}
-
-{
-TODO: procedure TmainForm.openWindowsConst;
-var p:tpoint;
-    current: twincontrol;
-begin
-  current:=TWinControl(GetProp(GetFocus,'WinControl'));//FindControl(GetFocus);
-  if current=nil then current:=FindOwnerControl(GetFocus);
-  if current=nil then exit;
-  if not ((current is tedit) or (current is TComboBox)) then exit;
-  p.x:=0;
-  p.y:=0;//current.Height;
-  p:=current.ClientToScreen(p);
-  windowConstForm.Left:=p.x;
-  windowConstForm.top:=p.y;
-    if current is tedit then windowConstForm.currentConst:=TEdit(current).Text
-    else if current is TComboBox then windowConstForm.currentConst:=TComboBox(current).Text;
-  windowConstForm.currentConst:=trim(windowConstForm.currentConst);
-  windowConstForm.ShowModal;
-  if windowConstForm.currentConst<>'' then
-    if current is tedit then begin
-      TEdit(current).Text:=windowConstForm.currentConst;
-      TEdit(current).SelStart:=length(TEdit(current).Text);
-    end else if current is TComboBox then begin
-      TComboBox(current).Text:=windowConstForm.currentConst;
-      TComboBox(current).SelStart:=length(TComboBox(current).Text);
-    end;
-end;
-
-  if (shift = [ssCtrl]) and (key=VK_SPACE) then begin
-    openWindowsConst;
-    key:=0;
-  end;
-           }
 
 { TmainForm }
 
@@ -141,7 +108,7 @@ var tempPanel: tpanel;
     infoForm: TWelcomeFrm;
     i:longint;
 begin
-  initUnitTranslation('mainunit',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
   DockingManager:=TLazDockingManager.Create(Self);
   DockingManager.Manager.TitleHeight:=0; //disable title, because we have our own buttons
@@ -172,6 +139,8 @@ begin
             globalConfig.GetValue('mainForm/top',top),
             globalConfig.GetValue('mainForm/width',width),
             globalConfig.GetValue('mainForm/height',height));
+
+  SetPropA(messageWindow,propertyMainWindow,handle);
 end;
 
 procedure TmainForm.destroyDockedForm(Sender: TObject);
@@ -287,6 +256,7 @@ begin
     SYSTEMOPTIONSFRM_ID: result:=TsystemOptionsFrm.Create(self);
     OPTIONSFRM_ID: result:=ToptionFrm.Create(self);
     PROPERTYSHEETFRM_ID: result:=TWindowPropertySheetFrm.Create(self);
+    WINDOWSTYLELISTFRM_ID: result:=Twindowstyleform.Create(self)
     else raise exception.create('invalid form id');
   end;
   addSubForm(result,insertTo,createpage);

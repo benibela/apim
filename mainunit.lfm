@@ -1,7 +1,7 @@
 object mainForm: TmainForm
-  Left = 258
+  Left = 153
   Height = 701
-  Top = 59
+  Top = 19
   Width = 621
   BorderIcons = [biSystemMenu, biHelp]
   Caption = 'API Manager 3.0.0'

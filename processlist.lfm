@@ -114,7 +114,6 @@ object processListFrm: TprocessListFrm
         'hoch'
         'real zeit'
       )
-      MaxLength = -1
       OnChange = ComboBox2Change
       OnSelect = ComboBox2Select
       Style = csDropDownList

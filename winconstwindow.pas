@@ -58,6 +58,7 @@ uses applicationConfig,FileUtil,ptranslateutils;
 
 procedure TwindowConstForm.FormCreate(Sender: TObject);
 begin
+  initUnitTranslation(CurrentUnitName,tr);
 end;
 
 procedure TwindowConstForm.FormDestroy(Sender: TObject);

@@ -253,7 +253,7 @@ end;
 procedure TprocessListFrm.FormCreate(Sender: TObject);
 var i,j,TableID,TableCount:longint;
 begin
-  initUnitTranslation('processlist',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
   //Processliste
   processTreeList:= TTreeListView.create(self);

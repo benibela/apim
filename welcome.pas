@@ -64,7 +64,7 @@ end;
 
 procedure TWelcomeFrm.FormCreate(Sender: TObject);
 begin
-  initUnitTranslation('welcome',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
 end;
 

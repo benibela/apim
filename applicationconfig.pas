@@ -33,9 +33,11 @@ const SEARCHTOOLFRM_ID=1;
       SYSTEMOPTIONSFRM_ID=4;
       OPTIONSFRM_ID=5;
       PROPERTYSHEETFRM_ID=6;
+      WINDOWSTYLELISTFRM_ID=7;
 
 var hexa:boolean=false; //#TODO -1: different number outputs
-    winConstPath:string='winconst\'; //TODO: win const
+    winConstPath:string='winconst\';
+    curlang:string='auto';
     maxSubFormPerPage,defaultRefreshTimeInterval: longint;
 
     globalConfig: TXMLConfig;
@@ -44,6 +46,7 @@ var hexa:boolean=false; //#TODO -1: different number outputs
 
     runonNT: boolean;
     niceVisible: boolean=true;//visible at start
+    messageWindow,globalHook: THandle;
 
 //these convert functions use the user output format (int, pascal-hex,..)
 function isStrCardinal(s:string): boolean;
@@ -56,10 +59,10 @@ procedure niceSetVisible(vis: boolean; needMouseEvents: boolean);
 
 //procedure showHandle(sender: TForm; handle: THANDLE; where: longint);
   procedure readConfig;
-  procedure initAll;
+  function initAll:boolean;
   procedure finitAll;
 implementation
-uses  windowfuncs,mainunit;
+uses  windowfuncs,mainunit,apimshared,ptranslateutils;
 
 function isStrCardinal(s: string): boolean;
 var i:longint;
@@ -181,10 +184,16 @@ end;
     winConstPath:=globalConfig.GetValue('paths/winconst','winconst\');
     maxSubFormPerPage:=globalConfig.GetValue('look/maxSubFormPerPage',3);
     defaultRefreshTimeInterval:=globalConfig.GetValue('look/defaultRefreshTime',0);
+    curlang:=globalConfig.GetValue('look/language','auto');
   end;
 
-  procedure initAll;
+  function initAll:boolean;
   begin
+    if FindWindow(messageWindowClass,nil)<>0 then begin
+      SetForegroundWindow(GetPropA(FindWindow(messageWindowClass,''),propertyMainWindow));
+      exit(false);
+    end;
+    result:=true;
     runonNT:=Win32Platform=VER_PLATFORM_WIN32_NT;
     pageInfoColors[piUnknown]:=clBlack;
     pageInfoColors[piFree]:=clBlack;
@@ -201,11 +210,16 @@ end;
     globalConfig:=TXMLConfig.Create(Application);
     globalConfig.Filename:=IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)))+'apim.config'; //#TODO -1:
     readConfig;
+
+
+    messageWindow:=createAPIMMessageWindow;
+    if curlang='auto' then initGlobalTranslation('i18n\','apim','','de')
+    else initGlobalTranslation('i18n\','apim',curlang,'de');
   end;
 
   procedure finitAll;
   begin
-
+    UnhookWindowsHookEx(globalHook);
   end;
 
 initialization

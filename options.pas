@@ -35,6 +35,8 @@ type
     Button2: TButton;
     autorefreshcheck: TCheckBox;
     checkhex: TCheckBox;
+    ComboBox1: TComboBox;
+    Label2: TLabel;
     maxsubforms_edt: TEdit;
     defaultRefreshedt: TEdit;
     Label1: TLabel;
@@ -64,10 +66,11 @@ uses ptranslateutils,applicationConfig;
 procedure ToptionFrm.FormCreate(Sender: TObject);
 begin
   Docker:=TLazControlDocker.Create(Self);
-  initUnitTranslation('options',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
 
   Button2.Click;
+  ComboBox1.text:=curlang;
 end;
 
 procedure ToptionFrm.Button2Click(Sender: TObject);
@@ -90,6 +93,7 @@ begin
     globalConfig.SetValue('look/defaultRefreshTime',defaultRefreshedt.text)
   else
     globalConfig.SetValue('look/defaultRefreshTime',0);
+  globalConfig.SetValue('look/language',ComboBox1.Text);
 
 
   globalConfig.Flush;

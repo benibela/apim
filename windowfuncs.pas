@@ -2,7 +2,7 @@ unit windowfuncs;
 
 interface
 {$mode delphi}{$h+}
-uses Windows,classes,forms,tlhelp32,messages{,sysutils,dialogs};
+uses Windows,classes,forms,tlhelp32,messages,fileutil{,sysutils,dialogs};
 const
    EM_SETBKGNDCOLOR=1091;
    EM_SHOWSCROLLBAR=WM_USER + 96;
@@ -259,7 +259,7 @@ function GetWindowTextS(handle:HWND):utf8string;
 var text:array[0..255] of char;
 begin
   GetWindowText(handle,text,255);
-  result:=AnsiToUtf8(text);
+  result:=SysToUtf8(text);
 end;
 
 function GetWindowClassNameS(handle:HWND):utf8string;

@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ComCtrls,LDockCtrl, ExtCtrls;
+  StdCtrls, ComCtrls,LDockCtrl, ExtCtrls,TreeListView,LCLType;
 
 type
 
@@ -34,7 +34,7 @@ type
     callAPI: TButton;
     callAPIDLL: TEdit;
     callAPIParameter: TEdit;
-    callAPIProc: TEdit;
+    callAPIProc: TComboBox;
     callAPIResult_lbl: TLabel;
     Label14: TLabel;
     Label16: TLabel;
@@ -42,16 +42,19 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    systemProperties: TListView;
+    systemProperties: TPanel;
     Timer1: TTimer;
     procedure callAPIClick(Sender: TObject);
+    procedure callAPIDLLChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
     { private declarations }
   public
+    systemTLV: TTreeListView;
     { public declarations }
     Docker: TLazControlDocker;
     //System/Sonstiges
@@ -62,7 +65,7 @@ var
   systemOptionsFrm: TsystemOptionsFrm;
 
 implementation
-uses bbutils,windowcontrolfuncs,applicationConfig,ptranslateutils;
+uses bbutils,windowcontrolfuncs,applicationConfig,ptranslateutils,PEStuff;
 
 {$I systemoptions.atr}
 
@@ -71,7 +74,7 @@ uses bbutils,windowcontrolfuncs,applicationConfig,ptranslateutils;
 procedure TsystemOptionsFrm.FormShow(Sender: TObject);
 begin
   threadedCall(@calculateSysProperties,nil);   //#TODO -1: find a way to update everything?
-  Timer1Timer(nil);                                      //todo: kategorien
+  Timer1Timer(nil);
   //#todo -1: autostart
 end;
 
@@ -92,28 +95,56 @@ end;
 
 procedure TsystemOptionsFrm.displaySysProperties();
 var i:longint;
+    curCat: TTreeListItem;
 begin
-  systemProperties.BeginUpdate;
-  systemProperties.items.Clear;
+  systemTLV.BeginUpdate;
+  systemTLV.items.Clear;
   for i:=0 to high(systemPropertiesArray) do
-    with systemProperties.Items.add,
-         systemPropertiesArray[i] do begin
-      Caption:=name;
-      subitems.Add(value);
-    end;
-  systemProperties.EndUpdate;
+    if systemPropertiesArray[i].value='[cat]' then
+      curCat:=systemTLV.Items.add(systemPropertiesArray[i].name)
+     else if curCat<>nil then
+       curCat.SubItems.Add(systemPropertiesArray[i].name).RecordItemsText[1]:=systemPropertiesArray[i].value;
+  systemTLV.EndUpdate;
 end;
 
 procedure TsystemOptionsFrm.callAPIClick(Sender: TObject);
 begin
+  //#todo -1: gui parameter edit
   callAPIResult_lbl.Caption:=Cardinal2Str(genericCall(callAPIDLL.Text,callAPIProc.Text,createMemoryBlocks(callAPIParameter.Text)));
+end;
+
+procedure TsystemOptionsFrm.callAPIDLLChange(Sender: TObject);
+begin
+  listExportNames(callAPIDLL.Text,callAPIProc.Items);
+  callAPIProc.Sorted:=true;
 end;
 
 procedure TsystemOptionsFrm.FormCreate(Sender: TObject);
 begin
   Docker:=TLazControlDocker.Create(Self);
-  initUnitTranslation('systemoptions.pas',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
+  systemTLV:=TTreeListView.Create(self);
+  systemTLV.Parent:=systemProperties;
+  systemTLV.Align:=alClient;
+  systemTLV.Columns.Clear;
+  with systemTLV.Columns.Add do begin
+    text:=tr['Eigenschaft'];
+    Width:=200;
+  end;
+  with systemTLV.Columns.add do begin
+    text:=tr['Wert'];
+    Width:=200;
+  end;
+end;
+
+procedure TsystemOptionsFrm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (shift = [ssCtrl]) and (key=VK_SPACE) then begin
+    openWindowsConst(true);
+    key:=0;
+  end;
 end;
 
 initialization

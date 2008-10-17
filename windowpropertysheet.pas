@@ -38,6 +38,9 @@ type
     Button1: TButton;
     Button2: TButton;
     Button5: TButton;
+    Label1: TLabel;
+    Label3: TLabel;
+    messageInject: TCheckBox;
     classNameEdt: TEdit;
     ColorDialog1: TColorDialog;
     colorKeyShape: TShape;
@@ -80,7 +83,7 @@ type
     visibleCb: TCheckBox;
     windowAddProperty: TMenuItem;
     windowExStyles: TCheckListBox;
-    windowExStyles_lb: TLabel;
+    windowExStyles_edt: TEdit;
     windowProcessIDedt: TEdit;
     windowPropChange: TMenuItem;
     windowPropertyList: TListView;
@@ -88,7 +91,7 @@ type
     windowPropertyPanel: TPanel;
     windowPropRemoveItem: TMenuItem;
     windowStyles: TCheckListBox;
-    windowStyles_lb: TLabel;
+    windowStyles_edt: TEdit;
     windowtextEdt: TEdit;
     windowThreadIdEdt: TEdit;
     wndproc_edt: TEdit;
@@ -101,6 +104,12 @@ type
     procedure colorKeyShapeMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure jumptoWndDblClick(Sender: TObject);
     procedure messagemes_cbKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -112,6 +121,9 @@ type
     procedure propertyChanged(Sender: TObject);
     procedure windowAddPropertyClick(Sender: TObject);
     procedure windowProcessIDedtDblClick(Sender: TObject);
+    procedure windowPropChangeClick(Sender: TObject);
+    procedure windowPropertyListChange(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
     procedure windowPropertyListDeletion(Sender: TObject; Item: TListItem);
     procedure windowPropertyPanelClick(Sender: TObject);
     procedure windowPropRemoveItemClick(Sender: TObject);
@@ -176,6 +188,23 @@ begin
   callback.showHandle(Str2Cardinal((sender as tedit).Text),PROCESSLISTFRM_ID);
 end;
 
+procedure TWindowPropertySheetFrm.windowPropChangeClick(Sender: TObject);
+begin
+end;
+
+procedure TWindowPropertySheetFrm.windowPropertyListChange(Sender: TObject;
+  Item: TListItem; Change: TItemChange);
+begin         //#todo -1: check if renaming works in later lazarus
+  if change<>ctText then exit;
+  if item=nil then exit;
+  if displayCalls>0 then exit; //change is called when internally changing *grr*
+  //ShowMessage(item.Caption);
+  //systemProperties.EditingDone;
+  RemoveProp(currentWindow, pchar(item.SubItems[2]));
+  SetProp(currentWindow, pchar(item.Caption), Str2Cardinal(item.SubItems[0]));
+  displayProperty(windowPropertyList);
+end;
+
 
 procedure TWindowPropertySheetFrm.updatePropertyKeyUp(Sender: TObject;
   var Key: Word; Shift: TShiftState);
@@ -228,7 +257,10 @@ begin
   if blockLP<>nil then
     if length(blockLP[0])>4 then lp:=cardinal(@blockLP[0,0])
     else move(blockLP[0,0],lp,length(blockLP[0]));
-  SendMessage(currentWindow,Str2Cardinal(msgStr),wp,lp);
+  if messageInject.Checked and ((length(blockLP[0])>4)or(length(blockWP[0])>4)) then
+    ShowMessage(tr['Injection mit größeren Block wird in dieser Version nicht unterstützt.']); //todo: injection with block
+  if messageInject.Checked then SendMessageInjected(currentWindow,Str2Cardinal(msgStr),wp,lp)
+  else SendMessage(currentWindow,Str2Cardinal(msgStr),wp,lp);
 
 end;
 
@@ -264,11 +296,38 @@ end;
 
 procedure TWindowPropertySheetFrm.FormCreate(Sender: TObject);
 begin
-  initUnitTranslation('windowPropertySheet',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
   Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
+end;
+
+procedure TWindowPropertySheetFrm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (shift = [ssCtrl]) and (key=VK_SPACE) then begin
+    openWindowsConst;
+    key:=0;
+  end;
+end;
+
+procedure TWindowPropertySheetFrm.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+end;
+
+procedure TWindowPropertySheetFrm.FormMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+
+end;
+
+procedure TWindowPropertySheetFrm.FormMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+
 end;
 
 procedure TWindowPropertySheetFrm.alphatrans_spKeyUp(Sender: TObject;
@@ -294,12 +353,12 @@ end;
 
 procedure TWindowPropertySheetFrm.Button2Click(Sender: TObject);
 begin
-
+  windowtextEdt.Text:=GetWindowTextInjected(currentWindow);
 end;
 
 procedure TWindowPropertySheetFrm.Button5Click(Sender: TObject);
 begin
-  //#TODO 7: injected gettext
+  callback.showHandle(currentWindow, WINDOWSTYLELISTFRM_ID);
 end;
 
 procedure TWindowPropertySheetFrm.windowPropRemoveItemClick(Sender: TObject);
@@ -414,8 +473,8 @@ begin
 
   end else if prop=userdata_edt then userdata_edt.Text:=Cardinal2Str(cardinal(GetWindowLong(currentWindow,GWL_USERDATA)))
   else if prop=wndproc_edt then wndproc_edt.Text:=Cardinal2Str(cardinal(GetWindowLong(currentWindow,GWL_WNDPROC)))
-  else if prop=windowStyles then windowStylesToCheckListBox(currentWindow,windowStyles,windowStyles_lb)
-  else if prop=windowExStyles then windowExStylesToCheckListBox(currentWindow,windowExStyles,windowExStyles_lb)
+  else if (prop=windowStyles) or (prop=windowStyles_edt) then windowStylesToCheckListBox(currentWindow,windowStyles,nil,windowStyles_edt)
+  else if (prop=windowExStyles) or (prop=windowExStyles_edt) then windowExStylesToCheckListBox(currentWindow,windowExStyles,nil,windowExStyles_edt)
   else if (prop=windowProcessIDedt) or (prop=windowThreadIdEdt) then begin
     tempHandle:=0;
     windowThreadIdEdt.Text:=Cardinal2Str(GetWindowThreadProcessId(currentWindow,@tempHandle));
@@ -442,7 +501,8 @@ begin
       if windowPropertyPanel.Controls[i].Tag=1 then
 //      if Controls[i].parentWnd=windowPropertyPanel then
         displayProperty(windowPropertyPanel.Controls[i]);
-
+    if callback.existsLinkTo(WINDOWSTYLELISTFRM_ID) then
+      callback.showHandle(currentWindow,WINDOWSTYLELISTFRM_ID);
   {  displayProperty(parentwndEdt);
     displayProperty(windowtextEdt);
     displayProperty(classNameEdt);
@@ -505,7 +565,16 @@ begin
       else SetWindowLong(currentWindow,GWL_EXSTYLE,GetWindowLong(currentWindow,GWL_EXSTYLE) and not WS_EX_LAYERED);
     {end else if flags and WS_EX_LAYERED = WS_EX_LAYERED then
         SetWindowLong(currentWindow,GWL_EXSTYLE,flags and not WS_EX_LAYERED);}
-  end else if prop=userdata_edt then SetWindowLong(currentWindow,GWL_USERDATA,Str2Cardinal(userdata_edt.Text));
+  end else if prop=userdata_edt then SetWindowLong(currentWindow,GWL_USERDATA,Str2Cardinal(userdata_edt.Text))
+  else if prop=windowStyles_edt then begin
+    SetWindowLong(currentWindow,GWL_STYLE,Str2Cardinal(windowStyles_edt.Text));
+    displayProperty(handleEdt);
+    exit;
+  end else if prop=windowExStyles_edt then begin
+    SetWindowLong(currentWindow,GWL_EXSTYLE,Str2Cardinal(windowExStyles_edt.Text));
+    displayProperty(handleEdt);
+    exit;
+  end;
 
 
 
@@ -514,15 +583,6 @@ begin
 end;
 
 
-//TODO:??
-  {if change<>ctText then exit;
-  if item=nil then exit;
-  if displayCalls>0 then exit; //change is called when internally changing *grr*
-  ShowMessage(item.Caption);
-  systemProperties.EditingDone;
-  RemoveProp(currentWindow, pchar(item.SubItems[2]));
-  SetProp(currentWindow, pchar(item.Caption), Str2Cardinal(item.SubItems[0]));
-  displayProperty(windowPropertyList);}
 initialization
   {$I windowpropertysheet.lrs}
 end.

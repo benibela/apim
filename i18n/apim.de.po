@@ -1,0 +1,1007 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: mainunit.tr_autogen_docking_system_konnte_nicht_initalisiert_werden
+msgid "Docking-System konnte nicht initalisiert werden"
+msgstr ""
+
+#: mainunit.tr_autogen_ins_hauptfenster_in_neuer_seite_einf__gen
+msgid "ins Hauptfenster in neuer Seite einfügen"
+msgstr ""
+
+#: processlist.tr_autogen_ausf__hrbar
+msgid "ausführbar"
+msgstr ""
+
+#: processlist.tr_autogen_ausf__hrbar__lesbar
+msgid "ausführbar, lesbar"
+msgstr ""
+
+#: processlist.tr_autogen_ausf__hrbar__les_beschreibar
+msgid "ausführbar, les/beschreibar"
+msgstr ""
+
+#: processlist.tr_autogen_ausf__hrbar__les_beschreibar__schreiben_erzeugt_kopie
+msgid "ausführbar, les/beschreibar, schreiben erzeugt Kopie"
+msgstr ""
+
+#: processlist.tr_autogen_echtzeit
+msgid "echtzeit"
+msgstr ""
+
+#: processlist.tr_autogen_frei
+msgid "frei"
+msgstr ""
+
+#: processlist.tr_autogen_hoch
+msgid "hoch"
+msgstr ""
+
+#: processlist.tr_autogen_kein_zugriff
+msgid "kein Zugriff"
+msgstr ""
+
+#: processlist.tr_autogen_les_beschreibbar
+msgid "les/beschreibbar"
+msgstr ""
+
+#: processlist.tr_autogen_les_beschreibbar__schreiben_erzeugt_kopie
+msgid "les/beschreibbar, schreiben erzeugt Kopie"
+msgstr ""
+
+#: processlist.tr_autogen_niedrig
+msgid "niedrig"
+msgstr ""
+
+#: processlist.tr_autogen_normal
+msgid "normal"
+msgstr ""
+
+#: processlist.tr_autogen_nur_lesbar
+msgid "nur lesbar"
+msgstr ""
+
+#: processlist.tr_autogen_nur_reserviert
+msgid "nur reserviert"
+msgstr ""
+
+#: processlist.tr_autogen_pfad
+msgid "Pfad"
+msgstr ""
+
+#: processlist.tr_autogen_priorit__t
+msgid "Priorität"
+msgstr ""
+
+#: processlist.tr_autogen_programm
+msgctxt "processlist.tr_autogen_programm"
+msgid "Programm"
+msgstr ""
+
+#: processlist.tr_autogen_threads
+msgid "Threads"
+msgstr ""
+
+#: processlist.tr_autogen_unbekannt
+msgid "unbekannt"
+msgstr ""
+
+#: processlist.tr_autogen_unter_normal
+msgid "unter normal"
+msgstr ""
+
+#: processlist.tr_autogen___ber_normal
+msgid "über normal"
+msgstr ""
+
+#: systemoptions.tr_autogen_eigenschaft
+msgid "Eigenschaft"
+msgstr ""
+
+#: systemoptions.tr_autogen_wert
+msgid "Wert"
+msgstr ""
+
+#: TMAINFORM.CAPTION
+msgctxt "TMAINFORM.CAPTION"
+msgid "API Manager 3.0.0"
+msgstr ""
+
+#: TMAINFORM.MENUITEM1.CAPTION
+msgctxt "TMAINFORM.MENUITEM1.CAPTION"
+msgid "Fensterliste"
+msgstr ""
+
+#: TMAINFORM.MENUITEM10.CAPTION
+msgctxt "TMAINFORM.MENUITEM10.CAPTION"
+msgid "einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM11.CAPTION
+msgctxt "TMAINFORM.MENUITEM11.CAPTION"
+msgid "in neuer Seite einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM12.CAPTION
+msgctxt "TMAINFORM.MENUITEM12.CAPTION"
+msgid "in neuer Seite einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM13.CAPTION
+msgctxt "TMAINFORM.MENUITEM13.CAPTION"
+msgid "in neuer Seite einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM14.CAPTION
+msgctxt "TMAINFORM.MENUITEM14.CAPTION"
+msgid "in neuer Seite einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM15.CAPTION
+msgctxt "TMAINFORM.MENUITEM15.CAPTION"
+msgid "in neuer Seite einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM16.CAPTION
+msgid "Allgemein"
+msgstr ""
+
+#: TMAINFORM.MENUITEM17.CAPTION
+msgid "Beenden"
+msgstr ""
+
+#: TMAINFORM.MENUITEM18.CAPTION
+msgid "Aktuelle Seite schließen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM2.CAPTION
+msgctxt "TMAINFORM.MENUITEM2.CAPTION"
+msgid "Suchwerkzeug"
+msgstr ""
+
+#: TMAINFORM.MENUITEM3.CAPTION
+msgctxt "TMAINFORM.MENUITEM3.CAPTION"
+msgid "Prozessliste"
+msgstr ""
+
+#: TMAINFORM.MENUITEM4.CAPTION
+msgctxt "TMAINFORM.MENUITEM4.CAPTION"
+msgid "Systeminformationen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM5.CAPTION
+msgctxt "TMAINFORM.MENUITEM5.CAPTION"
+msgid "Einstellungen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM6.CAPTION
+msgctxt "TMAINFORM.MENUITEM6.CAPTION"
+msgid "einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM7.CAPTION
+msgctxt "TMAINFORM.MENUITEM7.CAPTION"
+msgid "einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM8.CAPTION
+msgctxt "TMAINFORM.MENUITEM8.CAPTION"
+msgid "einfügen"
+msgstr ""
+
+#: TMAINFORM.MENUITEM9.CAPTION
+msgctxt "TMAINFORM.MENUITEM9.CAPTION"
+msgid "einfügen"
+msgstr ""
+
+#: TOPTIONFRM.AUTOREFRESHCHECK.CAPTION
+msgid "Automatisch aktualisieren:  alle"
+msgstr ""
+
+#: TOPTIONFRM.BUTTON1.CAPTION
+msgid "speichern"
+msgstr ""
+
+#: TOPTIONFRM.BUTTON2.CAPTION
+msgid "zurücksetzen"
+msgstr ""
+
+#: TOPTIONFRM.CAPTION
+msgctxt "TOPTIONFRM.CAPTION"
+msgid "Einstellungen"
+msgstr ""
+
+#: TOPTIONFRM.CHECKHEX.CAPTION
+msgid "Zahlen hexadezimal darstellen"
+msgstr ""
+
+#: TOPTIONFRM.CHECKHEX.HINT
+msgid "Stellt ein, ob die Zahlen hexadezimal oder dezimal angezeigt werden sollen. Bei Hexadezimalen Zahlen müssen auch die meisten Eingaben hexadezimal erfolgen."
+msgstr ""
+
+#: TOPTIONFRM.DEFAULTREFRESHEDT.HINT
+msgid "Zeigt an wie oft die periodische Wiederholung der Prozess und Fenstersuche erfolgen soll"
+msgstr ""
+
+#: TOPTIONFRM.DEFAULTREFRESHEDT.TEXT
+msgid "3000"
+msgstr ""
+
+#: TOPTIONFRM.LABEL1.CAPTION
+msgid "Gleichzeitige Seitenfenster:"
+msgstr ""
+
+#: TOPTIONFRM.LABEL2.CAPTION
+msgid "Sprache:"
+msgstr ""
+
+#: TOPTIONFRM.LABEL21.CAPTION
+msgid "ms"
+msgstr ""
+
+#: TOPTIONFRM.LABEL29.CAPTION
+msgid "Windowskonstanten:"
+msgstr ""
+
+#: TOPTIONFRM.MAXSUBFORMS_EDT.TEXT
+msgid "3"
+msgstr ""
+
+#: TOPTIONFRM.OPTWINCONST_EDT.TEXT
+msgid "winconst\\"
+msgstr ""
+
+#: TPROCESSLISTFRM.BUTTON1.CAPTION
+msgid "Speicher anzeigen"
+msgstr ""
+
+#: TPROCESSLISTFRM.BUTTON2.CAPTION
+msgid "zum nächsten Block"
+msgstr ""
+
+#: TPROCESSLISTFRM.CAPTION
+msgctxt "TPROCESSLISTFRM.CAPTION"
+msgid "Prozessliste"
+msgstr ""
+
+#: TPROCESSLISTFRM.COMBOBOX2.HINT
+msgid "Setzt die Priorität des gewählten Prozesses"
+msgstr ""
+
+#: TPROCESSLISTFRM.DISPLAYPROCESSES.CAPTION
+msgid "Prozessliste aktualisieren"
+msgstr ""
+
+#: TPROCESSLISTFRM.DISPLAYPROCESSES.HINT
+msgid "Sucht alle Prozesse"
+msgstr ""
+
+#: TPROCESSLISTFRM.KILLPROCESSBTN.CAPTION
+msgid "Prozess beenden"
+msgstr ""
+
+#: TPROCESSLISTFRM.KILLPROCESSBTN.HINT
+msgid "Beendet den gewählten Prozess"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL1.CAPTION
+msgid "Startzeit:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL10.CAPTION
+msgid "Priorität:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL11.CAPTION
+msgid "ProcessID:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL2.CAPTION
+msgid "Kernelzeit:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL3.CAPTION
+msgid "Userzeit:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL4.CAPTION
+msgid "RAM:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL5.CAPTION
+msgid "RAM (max):"
+msgstr ""
+
+#: TPROCESSLISTFRM.LABEL6.CAPTION
+msgid "Adresse der ersten Seite:"
+msgstr ""
+
+#: TPROCESSLISTFRM.LISTWINDOWS.CAPTION
+msgctxt "TPROCESSLISTFRM.LISTWINDOWS.CAPTION"
+msgid "Fenster auflisten"
+msgstr ""
+
+#: TPROCESSLISTFRM.MEMSCROLLEDADDRESS.TEXT
+msgctxt "TPROCESSLISTFRM.MEMSCROLLEDADDRESS.TEXT"
+msgid "0"
+msgstr ""
+
+#: TPROCESSLISTFRM.MENUITEM1.CAPTION
+msgid "Prozeß beenden"
+msgstr ""
+
+#: TPROCESSLISTFRM.MENUITEM2.CAPTION
+msgctxt "TPROCESSLISTFRM.MENUITEM2.CAPTION"
+msgid "Fenster auflisten"
+msgstr ""
+
+#: TPROCESSLISTFRM.MENUITEM3.CAPTION
+msgid "aktualisieren"
+msgstr ""
+
+#: TPROCESSLISTFRM.PROCESSIDEDIT.HINT
+msgid "ProcessID des gewählten Prozesses"
+msgstr ""
+
+#: TSEARCHTOOLFRM.CAPTION
+msgctxt "TSEARCHTOOLFRM.CAPTION"
+msgid "Suchwerkzeug"
+msgstr ""
+
+#: TSEARCHTOOLFRM.HIDEAPIVWHENSEARCHING.CAPTION
+msgid "APIV ausblenden"
+msgstr ""
+
+#: TSEARCHTOOLFRM.LABEL1.CAPTION
+msgctxt "TSEARCHTOOLFRM.LABEL1.CAPTION"
+msgid "Titel:"
+msgstr ""
+
+#: TSEARCHTOOLFRM.LABEL26.CAPTION
+msgid "\"Maus\"-Handle:"
+msgstr ""
+
+#: TSEARCHTOOLFRM.LABEL27.CAPTION
+msgctxt "TSEARCHTOOLFRM.LABEL27.CAPTION"
+msgid "Klasse:"
+msgstr ""
+
+#: TSEARCHTOOLFRM.LABEL28.CAPTION
+msgctxt "TSEARCHTOOLFRM.LABEL28.CAPTION"
+msgid "Programm:"
+msgstr ""
+
+#: TSEARCHTOOLFRM.LINKSOBEN.CAPTION
+msgctxt "TSEARCHTOOLFRM.LINKSOBEN.CAPTION"
+msgid "linksoben"
+msgstr ""
+
+#: TSEARCHTOOLFRM.MOUSEREFRESHALLLIVE.CAPTION
+msgid "Alles live aktualisieren"
+msgstr ""
+
+#: TSEARCHTOOLFRM.RECHTSUNTEN.CAPTION
+msgctxt "TSEARCHTOOLFRM.RECHTSUNTEN.CAPTION"
+msgid "linksoben"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.CALLAPI.CAPTION
+msgid "call"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.CALLAPIPARAMETER.TEXT
+msgid "(0,@'Hallo',@'Welt',0)"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.CALLAPIPROC.TEXT
+msgid "MessageBox"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.CAPTION
+msgid "Systemoptionen"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL14.CAPTION
+msgid "Funktion:"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL16.CAPTION
+msgid "Parameter:"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL3.CAPTION
+msgid "Systemeigenschaften:"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL4.CAPTION
+msgid "API-Ausführung:"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL5.CAPTION
+msgid "Ergebnis:"
+msgstr ""
+
+#: TSYSTEMOPTIONSFRM.LABEL6.CAPTION
+msgid "dll:"
+msgstr ""
+
+#: TWELCOMEFRM.BUTTON1.CAPTION
+msgctxt "TWELCOMEFRM.BUTTON1.CAPTION"
+msgid "Suchwerkzeug"
+msgstr ""
+
+#: TWELCOMEFRM.BUTTON2.CAPTION
+msgctxt "TWELCOMEFRM.BUTTON2.CAPTION"
+msgid "Fensterliste"
+msgstr ""
+
+#: TWELCOMEFRM.BUTTON3.CAPTION
+msgctxt "TWELCOMEFRM.BUTTON3.CAPTION"
+msgid "Prozessliste"
+msgstr ""
+
+#: TWELCOMEFRM.BUTTON4.CAPTION
+msgctxt "TWELCOMEFRM.BUTTON4.CAPTION"
+msgid "Systeminformationen"
+msgstr ""
+
+#: TWELCOMEFRM.BUTTON5.CAPTION
+msgctxt "TWELCOMEFRM.BUTTON5.CAPTION"
+msgid "Einstellungen"
+msgstr ""
+
+#: TWELCOMEFRM.CAPTION
+msgid "Startseite"
+msgstr ""
+
+#: TWELCOMEFRM.LABEL1.CAPTION
+msgctxt "TWELCOMEFRM.LABEL1.CAPTION"
+msgid "API Manager 3.0.0"
+msgstr ""
+
+#: TWINDOWCONSTFORM.CAPTION
+msgid "windowConstForm"
+msgstr ""
+
+#: TWINDOWLISTFRM.CAPTION
+msgctxt "TWINDOWLISTFRM.CAPTION"
+msgid "Fensterliste"
+msgstr ""
+
+#: TWINDOWLISTFRM.LABEL12.CAPTION
+msgid "Thread:"
+msgstr ""
+
+#: TWINDOWLISTFRM.LABEL30.CAPTION
+msgid "Filter:"
+msgstr ""
+
+#: TWINDOWLISTFRM.LABEL31.CAPTION
+msgctxt "TWINDOWLISTFRM.LABEL31.CAPTION"
+msgid "Parent:"
+msgstr ""
+
+#: TWINDOWLISTFRM.LABEL32.CAPTION
+msgctxt "TWINDOWLISTFRM.LABEL32.CAPTION"
+msgid "Programm:"
+msgstr ""
+
+#: TWINDOWLISTFRM.MENUITEM1.CAPTION
+msgid "Nur Kindfenster"
+msgstr ""
+
+#: TWINDOWLISTFRM.MENUITEM2.CAPTION
+msgid "Nur dieses Programm"
+msgstr ""
+
+#: TWINDOWLISTFRM.WINDOWLISTFILTERPARENTUP.CAPTION
+msgid "5"
+msgstr ""
+
+#: TWINDOWLISTFRM.WINDOWLISTFILTERPARENT_EDT.TEXT
+msgctxt "TWINDOWLISTFRM.WINDOWLISTFILTERPARENT_EDT.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWLISTFRM.WINDOWSLISTFILTERDIRECTCHILDS.CAPTION
+msgid "nur direkte Kinder"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.ALPHATRANS_CB.CAPTION
+msgid "Transparent:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.BLINKWINDOW.CAPTION
+msgid "blink"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.BUTTON1.CAPTION
+msgid "children"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.BUTTON2.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.BUTTON2.CAPTION"
+msgid "injected"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.BUTTON5.CAPTION
+msgid "erweitert"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.CAPTION
+msgid "Eigenschaften"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.COLORKEY_CB.CAPTION
+msgid "ColorKey:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.ENABLEDCB.CAPTION
+msgid "enabled"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.ENABLEDCB.HINT
+msgid "Zeigt an und stell ein, ob das gewählte Fenster enable ist"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.CAPTION"
+msgid "Klasse:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.HINT
+msgid "Zeigt den Classnamen des aktuellen Fensters an"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL1.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL1.CAPTION"
+msgid "Window styles:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL13.CAPTION
+msgid "ProcessID: "
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL15.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL15.CAPTION"
+msgid "Parent:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL2.CAPTION
+msgid "Status:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL22.CAPTION
+msgid "Typ:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL23.CAPTION
+msgid "Gewähltes Handle:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL24.CAPTION
+msgid "Position:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL25.CAPTION
+msgid "Win-Properties:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL3.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL3.CAPTION"
+msgid "Extended Window styles:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL33.CAPTION
+msgid "Userdata:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL34.CAPTION
+msgid "WNDPROC:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL35.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL35.CAPTION"
+msgid "Styles:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL36.CAPTION
+msgid "Owner:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL37.CAPTION
+msgid "Größe:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL38.CAPTION
+msgid "-"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL8.CAPTION
+msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL8.CAPTION"
+msgid "Titel:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABEL9.CAPTION
+msgid "ThreadID: "
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABLPARAM.CAPTION
+msgid "LParam:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.LABWPARAM.CAPTION
+msgid "WParam:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.MESSAGEINJECT.CAPTION
+msgid "send injected"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.MESSAGESEND_BTN.CAPTION
+msgid "Nachricht senden:"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.MESSAGESEND_BTN.HINT
+msgid "Schick dem gewählten Fenster eine Nachricht"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.OWNERWND_EDT.TEXT
+msgctxt "TWINDOWPROPERTYSHEETFRM.OWNERWND_EDT.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.POSLTEDT.HINT
+msgctxt "TWINDOWPROPERTYSHEETFRM.POSLTEDT.HINT"
+msgid "Zeigt die Position des Fensters an"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.POSLTEDT.TEXT
+msgctxt "TWINDOWPROPERTYSHEETFRM.POSLTEDT.TEXT"
+msgid "(0,0)"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.POSRBEDT.HINT
+msgctxt "TWINDOWPROPERTYSHEETFRM.POSRBEDT.HINT"
+msgid "Zeigt die Position des Fensters an"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.POSRBEDT.TEXT
+msgctxt "TWINDOWPROPERTYSHEETFRM.POSRBEDT.TEXT"
+msgid "(0,0)"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.SHOWSTATECMB.HINT
+msgid "Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll."
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.SIZEEDT.TEXT
+msgid "0x0"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.STAYONTOPCB.CAPTION
+msgid "immer im Vordergrund"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.UNICODECB.CAPTION
+msgid "unicode"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.UNICODECB.HINT
+msgid "Zeigt an , ob das gewählte Fenster ein unicode Fenster ist"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.VISIBLECB.CAPTION
+msgid "visible"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.VISIBLECB.HINT
+msgid "Zeigt an und stell ein, ob das gewählte Fenster sichtbar ist"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWADDPROPERTY.CAPTION
+msgid "Hinzufügen"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWPROCESSIDEDT.TEXT
+msgctxt "TWINDOWPROPERTYSHEETFRM.WINDOWPROCESSIDEDT.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPCHANGE.CAPTION
+msgid "Ändern"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPERTYLIST.COLUMNS.CAPTION
+msgid "Value"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPREMOVEITEM.CAPTION
+msgid "Löschen"
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWTEXTEDT.HINT
+msgid "Zeigt und ändern den Text des Fensters."
+msgstr ""
+
+#: TWINDOWPROPERTYSHEETFRM.WINDOWTHREADIDEDT.TEXT
+msgctxt "TWINDOWPROPERTYSHEETFRM.WINDOWTHREADIDEDT.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.BUTTON1.CAPTION
+msgid "OK"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.BUTTON2.CAPTION
+msgid "refresh"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.CAPTION
+msgctxt "TWINDOWSTYLEFORM.CAPTION"
+msgid "Styles:"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.CHECKBOX1.CAPTION
+msgctxt "TWINDOWSTYLEFORM.CHECKBOX1.CAPTION"
+msgid "inject"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.CLASSSTYLES.HINT
+msgid "Zeigt die Classstyles an. Aktive Classstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EDIT1.TEXT
+msgctxt "TWINDOWSTYLEFORM.EDIT1.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EDIT2.TEXT
+msgctxt "TWINDOWSTYLEFORM.EDIT2.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EDIT3.TEXT
+msgctxt "TWINDOWSTYLEFORM.EDIT3.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EDIT4.TEXT
+msgctxt "TWINDOWSTYLEFORM.EDIT4.TEXT"
+msgid "0"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EXTRACLASS.CAPTION
+msgid "extraclass"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.EXTRAWINDOWSTYLE.HINT
+msgctxt "TWINDOWSTYLEFORM.EXTRAWINDOWSTYLE.HINT"
+msgid "Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
+msgstr ""
+
+#: TWINDOWSTYLEFORM.LABEL1.CAPTION
+msgctxt "TWINDOWSTYLEFORM.LABEL1.CAPTION"
+msgid "Window styles:"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.LABEL2.CAPTION
+msgctxt "TWINDOWSTYLEFORM.LABEL2.CAPTION"
+msgid "Window styles:"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.LABEL3.CAPTION
+msgctxt "TWINDOWSTYLEFORM.LABEL3.CAPTION"
+msgid "Extended Window styles:"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.LABEL4.CAPTION
+msgid "Class styles"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.PANEL1.CAPTION
+msgid "Panel1"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.PANEL4.CAPTION
+msgid "Panel4"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.PANEL5.CAPTION
+msgid "Panel5"
+msgstr ""
+
+#: TWINDOWSTYLEFORM.WINDOWEXSTYLES.HINT
+msgid "Zeigt die Windowexstyles an. Aktive Windowexstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
+msgstr ""
+
+#: TWINDOWSTYLEFORM.WINDOWSTYLES.HINT
+msgctxt "TWINDOWSTYLEFORM.WINDOWSTYLES.HINT"
+msgid "Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
+msgstr ""
+
+#: winconstwindow.tr_autogen_suche_in_der_freepascal_windows_unit
+msgid "Suche in der FreePascal Windows Unit"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_arbeitsgruppe
+msgid "Arbeitsgruppe"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_benutzer
+msgid "Benutzer"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_betriebsystem
+msgid "Betriebsystem"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_bildschirmschoner
+msgid "Bildschirmschoner"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_bios_datum
+msgid "BIOS Datum"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_bios_name
+msgid "BIOS Name"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_bios_seriennummer
+msgid "BIOS Seriennummer"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_computername
+msgid "ComputerName"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_datei_nicht_gefunden__
+msgid "Datei nicht gefunden: "
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_extended_window_styles____
+msgid "Extended Window styles:   "
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_freier_ram
+msgid "Freier Ram"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_gesamter_ram
+msgid "Gesamter Ram"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_hardware
+msgid "Hardware"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_injectdll_ung__ltig
+msgid "Injectdll ungültig"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_organisation
+msgid "Organisation"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_passw__rter
+msgid "Passwörter"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_pfade
+msgid "Pfade"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_produktkey
+msgid "Produktkey"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_prozessoranzahl
+msgid "Prozessoranzahl"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_prozessorspeed__momentan_
+msgid "Prozessorspeed (momentan)"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_seriennummer
+msgid "Seriennummer"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_software
+msgid "Software"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_string_nicht_geschlossen
+msgid "String nicht geschlossen"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_systempfad
+msgid "Systempfad"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_temppfad
+msgid "Temppfad"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_time_out
+msgid "time out"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_unexpected_character__s_at__s
+msgid "Unexpected character %s at %s"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_ung__ltige_parameterzahl_
+msgid "Ungültige Parameterzahl?"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_version
+msgid "Version"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_windowspfad
+msgid "Windowspfad"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_window_class_styles__
+msgid "Window Class styles: "
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_window_styles____
+msgid "Window styles:   "
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_zu_viele_parameter
+msgid "Zu viele Parameter"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_zu_wenig_parameter
+msgid "Zu wenig Parameter"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen__styles___window_styles___
+msgid " Styles (=Window Styles): "
+msgstr ""
+
+#: windowlist.tr_autogen_gr____e
+msgid "Größe"
+msgstr ""
+
+#: windowlist.tr_autogen_handle
+msgid "Handle"
+msgstr ""
+
+#: windowlist.tr_autogen_klasse
+msgid "Klasse"
+msgstr ""
+
+#: windowlist.tr_autogen_programm
+msgctxt "windowlist.tr_autogen_programm"
+msgid "Programm"
+msgstr ""
+
+#: windowlist.tr_autogen_status
+msgid "Status"
+msgstr ""
+
+#: windowlist.tr_autogen_titel
+msgid "Titel"
+msgstr ""
+
+#: windowpropertysheet.tr_autogen_injection_mit_gr____eren_block_wird_in_dieser_version_nicht_unterst__tzt_
+msgid "Injection mit größeren Block wird in dieser Version nicht unterstützt."
+msgstr ""
+
+#: windowpropertysheet.tr_autogen_keine_eigenschaft_ausgew__hlt
+msgid "Keine Eigenschaft ausgewählt"
+msgstr ""
+
+#: windowpropertysheet.tr_autogen_name_der_neuen_eigenschaft__
+msgid "Name der neuen Eigenschaft: "
+msgstr ""
+
+#: windowpropertysheet.tr_autogen_neuer_wert_der_eigenschaft__
+msgid "Neuer Wert der Eigenschaft: "
+msgstr ""
+

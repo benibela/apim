@@ -166,9 +166,10 @@ begin
   miniscreendbl:=graphics.TBitmap.Create;
   callback:=TCallbackComponent.create(self);
   miniScreen.OnPaint:=@PaintBox1Paint;
-  initUnitTranslation('searchtool',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
 
+  hideAPIVwhenSearching.Checked:=globalConfig.GetValue('searchTool/hideAPIV',hideAPIVwhenSearching.Checked);
   linksoben.Left:=globalConfig.GetValue('searchTool/miniScreen/x1',linksoben.Left);
   linksoben.top:=globalConfig.GetValue('searchTool/miniScreen/y1',linksoben.top);
   rechtsunten.Left:=globalConfig.GetValue('searchTool/miniScreen/x2',rechtsunten.Left);
@@ -184,6 +185,7 @@ begin
   globalConfig.SetValue('searchTool/miniScreen/y1',linksoben.top);
   globalConfig.SetValue('searchTool/miniScreen/x2',rechtsunten.Left);
   globalConfig.SetValue('searchTool/miniScreen/y2',rechtsunten.top);
+  globalConfig.SetValue('searchTool/hideAPIV',hideAPIVwhenSearching.Checked);
 end;
 
 procedure TsearchToolFrm.FormPaint(Sender: TObject);

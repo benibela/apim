@@ -23,7 +23,7 @@ unit windowcontrolfuncs;
 interface
 
 uses
-  Classes, SysUtils, CheckLst,windows,Controls,ComCtrls,forms;
+  Classes, SysUtils, CheckLst,windows,Controls,ComCtrls,forms,Dialogs;
   
 type TMemoryBlock = array of byte;
      TMemoryBlocks = array of TMemoryBlock;
@@ -35,14 +35,15 @@ procedure setCommonText(control: tcontrol;number:dword);
 
 function createMemoryBlocks(s:string):TMemoryBlocks;
 
-procedure windowStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
-procedure windowExStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
-procedure classStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
-procedure windowCustomStylesToCheckListBox(window:THandle;listbox:TCheckListBox;numeric:tcontrol);
+procedure windowStylesToCheckListBox(window:THandle;listbox:TCheckListBox;title,numeric:tcontrol);
+procedure windowExStylesToCheckListBox(window:THandle;listbox:TCheckListBox;title,numeric:tcontrol);
+procedure classStylesToCheckListBox(window:THandle;listbox:TCheckListBox;title,numeric:tcontrol);
+procedure windowCustomStylesToCheckListBox(window:THandle;listbox:TCheckListBox;title,numeric:tcontrol);
 
-procedure changeWindowStyle(window:THandle; name: string; enabled: boolean);
-procedure changeWindowExStyle(window:THandle; name: string; enabled: boolean);
-procedure changeCustomStyle(window:THandle; name: string; enabled: boolean);
+procedure changeWindowStyle(window:THandle; name: string; enabled: boolean; useInjection: boolean=false);
+procedure changeWindowExStyle(window:THandle; name: string; enabled: boolean; useInjection: boolean=false);
+procedure changeCustomStyle(window:THandle; name: string; enabled: boolean; useInjection: boolean=false);
+procedure changeClassStyle(window:THandle; name: string; enabled: boolean; useInjection: boolean=false);
 
 
 type EGenericCallException= class(Exception);
@@ -73,22 +74,28 @@ TCallbackShowHandle = procedure (sender:tobject; handle: THandle; func:longint) 
 
 TCallbackComponent = class(TComponent)
 private
-  friends: array[1..6] of TCallbackComponent;
+  friends: array[1..10] of TCallbackComponent;
 public
   id:longint;
   constructor create(AOwner: TComponent);
   onShowForm: TCallbackShowForm;
   onShowHandle: TCallbackShowHandle;
   procedure showHandle(handle:THANDLE; where: longint; func:longint=0);
+  function existsLinkTo(dest: longint):boolean;
   procedure Notification(AComponent: Tcomponent; Operation: TOperation);override;
 end;
 
 
-
+procedure openWindowsConst(empty:boolean=false);
+function createAPIMMessageWindow: thandle;
+function GetWindowTextInjected(wnd:Thandle): UTF8String;
+procedure SetWindowLongInjected(wnd:Thandle; index: longint; newStyle:dword; reallyInject: boolean=true);
+procedure SetClassLongInjected(wnd:Thandle; index: longint; newStyle:dword; reallyInject: boolean=true);
+procedure SendMessageInjected(wnd:Thandle; msg: longint;wparam,lparam:dword);
 
 implementation
 
-uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig,bbutils,ptranslateutils;
+uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig,bbutils,ptranslateutils,winconstwindow,apimshared;
 
 {$I windowcontrolfuncs.atr}
 
@@ -450,13 +457,14 @@ const
   TSS_WORDELLIPSIS:String = 'SS_WORDELLIPSIS';
 
 
-procedure windowStylesToCheckListBox(window:THandle; listbox: TCheckListBox;numeric:tcontrol);
+procedure windowStylesToCheckListBox(window:THandle; listbox: TCheckListBox;title,numeric:tcontrol);
 var wsout:tstringlist;
     i:longint;
     styles:long;
 begin
  styles:=GetWindowLong(window,GWL_STYLE);
- setCommonText(numeric,'Window styles:   '+Cardinal2Str(cardinal(styles)));
+ setCommonText(title,tr['Window styles:   ']);
+ setCommonText(numeric,Cardinal2Str(cardinal(styles)));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and WS_BORDER = WS_BORDER then listbox.Items.Add(TWS_BORDER) else wsout.add(TWS_BORDER);
@@ -494,12 +502,13 @@ begin
  listbox.Perform(LB_SETHORIZONTALEXTENT,listbox.Canvas.TextWidth(TWS_OVERLAPPEDWINDOW)+30,0);
 end;
 
-procedure windowExStylesToCheckListBox(window:THANDLE; listbox: TCheckListBox;numeric:tcontrol);
+procedure windowExStylesToCheckListBox(window:THANDLE; listbox: TCheckListBox;title,numeric:tcontrol);
 var wsout:tstringlist;
     i,styles:longint;
 begin
  styles:=GetWindowLong(window,GWL_EXSTYLE);
- setCommonText(numeric,'Extended Window styles:   '+Cardinal2Str(styles));
+ setCommonText(title,tr['Extended Window styles:   ']);
+ setCommonText(numeric,Cardinal2Str(cardinal(styles)));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and  WS_EX_ACCEPTFILES=WS_EX_ACCEPTFILES  then listbox.Items.Add(TWS_EX_ACCEPTFILES) else wsout.Add(TWS_EX_ACCEPTFILES);
@@ -537,12 +546,14 @@ end;
 
 
 
-procedure classStylesToCheckListBox(window:THandle;listbox: TCheckListBox;numeric:tcontrol);
+procedure classStylesToCheckListBox(window:THandle;listbox: TCheckListBox;title,numeric:tcontrol);
 var wsout:tstringlist;
-    i,styles:longint;
+    i:longint;
+    styles:cardinal;
 begin
  styles:=GetClassLong(window,GCL_STYLE);
- setCommonText(numeric,'Window Class styles:   '+Cardinal2Str(styles));
+ setCommonText(title,tr['Window Class styles: ']);
+ setCommonText(numeric,Cardinal2Str(styles));
  wsout:=tstringlist.create;
  listbox.Clear;
  if styles and CS_BYTEALIGNCLIENT =CS_BYTEALIGNCLIENT then listbox.Items.Add(TCS_BYTEALIGNCLIENT) else wsout.Add(TCS_BYTEALIGNCLIENT) ;
@@ -565,7 +576,7 @@ begin
 end;
 
 procedure windowCustomStylesToCheckListBox(window:THandle;
-  listbox: TCheckListBox; numeric:tcontrol);
+  listbox: TCheckListBox; title,numeric:tcontrol);
 var wsout:tstringlist;
     i,styles:longint;
     classname:string;
@@ -575,7 +586,8 @@ begin
  SetLength(classname,GetClassName(window,@classname[1],255));
  wsout:=tstringlist.create;
  listbox.Clear;
- setCommonText(numeric,classname+' Styles (=Window Styles): '+Cardinal2Str(styles));
+ setCommonText(title,classname+tr[' Styles (=Window Styles): ']);
+ setCommonText(numeric,Cardinal2Str(styles));
  classname:=UpperCase(string(classname));
  if classname='BUTTON' then begin
    if styles and BS_3STATE = BS_3STATE then listbox.Items.Add(TBS_3STATE)else wsout.Add(TBS_3STATE);
@@ -690,7 +702,7 @@ begin
    if styles and SS_BLACKRECT = SS_BLACKRECT then listbox.Items.Add(TSS_BLACKRECT)else wsout.Add(TSS_BLACKRECT);
    if styles and SS_CENTER = SS_CENTER then listbox.Items.Add(TSS_CENTER)else wsout.Add(TSS_CENTER);
    if styles and SS_CENTERIMAGE = SS_CENTERIMAGE then listbox.Items.Add(TSS_CENTERIMAGE)else wsout.Add(TSS_CENTERIMAGE);
- {TODO: wieder einfügen
+ {#TODO -1: wieder einfügen
    if styles and SS_ENDELLIPSIS  = SS_ENDELLIPSIS  then listbox.Items.Add(TSS_ENDELLIPSIS )else wsout.Add(TSS_ENDELLIPSIS );
    if styles and SS_ENHMETAFILE = SS_ENHMETAFILE then listbox.Items.Add(TSS_ENHMETAFILE)else wsout.Add(TSS_ENHMETAFILE);
    if styles and SS_ETCHEDFRAME = SS_ETCHEDFRAME then listbox.Items.Add(TSS_ETCHEDFRAME)else wsout.Add(TSS_ETCHEDFRAME);
@@ -723,7 +735,7 @@ begin
  wsout.Free;
 end;
 
-procedure changeWindowStyle(window: THandle; name: string; enabled: boolean);
+procedure changeWindowStyle(window: THandle; name: string; enabled: boolean; useInjection: boolean=false);
 var styles,style:longword;
 begin
   name:=UpperCase(name);
@@ -759,13 +771,14 @@ begin
   if enabled then style:=styles or style
   else style:=styles and not style;
   if styles = style then exit;
-  SetWindowLong(window,GWL_STYLE,style);
+  if useInjection then  SetWindowLongInjected(window,GWL_STYLE,style)
+  else SetWindowLong(window,GWL_STYLE,style);
   RedrawWindow(window,nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN);
   if GetParent(window)<>0 then
     RedrawWindow(getparent(window),nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN)
 end;
 
-procedure changeWindowExStyle(window: THandle; name: string; enabled: boolean);
+procedure changeWindowExStyle(window: THandle; name: string; enabled: boolean; useInjection: boolean=false);
 var styles,newstyle:longint;
 begin
   name:=UpperCase(name);
@@ -801,21 +814,173 @@ begin
   if enabled then newstyle:=styles or newstyle
   else newstyle:=styles and not newstyle;
   if styles = newstyle then exit;
-  SetWindowLong(window,GWL_EXSTYLE,newstyle);
+  if useInjection then SetWindowLongInjected(window,GWL_EXSTYLE,newstyle)
+  else SetWindowLongInjected(window,GWL_EXSTYLE,newstyle);
   RedrawWindow(window,nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN);
   if GetParent(window)<>0 then
     RedrawWindow(getparent(window),nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN)
 end;
 
-procedure changeCustomStyle(window: THandle; name: string; enabled: boolean);
+procedure changeCustomStyle(window: THandle; name: string; enabled: boolean; useInjection: boolean=false);
 var styles,newstyle:longint;
 begin
+  name:=UpperCase(name);
+
+  if name=TBS_3STATE then newstyle:=BS_3STATE else
+  if name=TBS_AUTO3STATE then newstyle:=BS_AUTO3STATE else
+  if name=TBS_AUTOCHECKBOX then newstyle:=BS_AUTOCHECKBOX else
+  if name=TBS_AUTORADIOBUTTON then newstyle:=BS_AUTORADIOBUTTON else
+  if name=TBS_CHECKBOX then newstyle:=BS_CHECKBOX else
+  if name=TBS_DEFPUSHBUTTON then newstyle:=BS_DEFPUSHBUTTON else
+  if name=TBS_GROUPBOX then newstyle:=BS_GROUPBOX else
+  if name=TBS_LEFTTEXT then newstyle:=BS_LEFTTEXT else
+  if name=TBS_OWNERDRAW then newstyle:=BS_OWNERDRAW else
+  if name=TBS_PUSHBUTTON then newstyle:=BS_PUSHBUTTON else
+  if name=TBS_RADIOBUTTON then newstyle:=BS_RADIOBUTTON else
+  if name=TBS_USERBUTTON then newstyle:=BS_USERBUTTON else
+  if name=TBS_BITMAP then newstyle:=BS_BITMAP else
+  if name=TBS_BOTTOM then newstyle:=BS_BOTTOM else
+  if name=TBS_CENTER then newstyle:=BS_CENTER else
+  if name=TBS_ICON then newstyle:=BS_ICON else
+  if name=TBS_FLAT then newstyle:=BS_FLAT else
+  if name=TBS_LEFT then newstyle:=BS_LEFT else
+  if name=TBS_MULTILINE then newstyle:=BS_MULTILINE else
+  if name=TBS_NOTIFY then newstyle:=BS_NOTIFY else
+  if name=TBS_PUSHLIKE then newstyle:=BS_PUSHLIKE else
+  if name=TBS_RIGHT then newstyle:=BS_RIGHT else
+  if name=TBS_RIGHTBUTTON then newstyle:=BS_RIGHTBUTTON else
+  if name=TBS_TEXT then newstyle:=BS_TEXT else
+  if name=TBS_TOP then newstyle:=BS_TOP else
+  if name=TBS_VCENTER then newstyle:=BS_VCENTER else
+  //ComboBoxStyle
+  if name=TCBS_AUTOHSCROLL then newstyle:=CBS_AUTOHSCROLL else
+  if name=TCBS_DISABLENOSCROLL then newstyle:=CBS_DISABLENOSCROLL  else
+  if name=TCBS_DROPDOWN then newstyle:=CBS_DROPDOWN else
+  if name=TCBS_DROPDOWNLIST then newstyle:=CBS_DROPDOWNLIST else
+  if name=TCBS_HASSTRINGS then newstyle:=CBS_HASSTRINGS else
+  if name=TCBS_LOWERCASE then newstyle:=CBS_LOWERCASE else
+  if name=TCBS_NOINTEGRALHEIGHT then newstyle:=CBS_NOINTEGRALHEIGHT else
+  if name=TCBS_OEMCONVERT then newstyle:=CBS_OEMCONVERT else
+  if name=TCBS_OWNERDRAWFIXED then newstyle:=CBS_OWNERDRAWFIXED else
+  if name=TCBS_OWNERDRAWVARIABLE then newstyle:=CBS_OWNERDRAWVARIABLE else
+  if name=TCBS_SIMPLE then newstyle:=CBS_SIMPLE else
+  if name=TCBS_SORT then newstyle:=CBS_SORT else
+  if name=TCBS_UPPERCASE then newstyle:=CBS_UPPERCASE else
+  //EditStyles
+  if name=TES_AUTOHSCROLL then newstyle:=ES_AUTOHSCROLL  else
+  if name=TES_AUTOVSCROLL then newstyle:=ES_AUTOVSCROLL else
+  if name=TES_CENTER then newstyle:=ES_CENTER else
+  if name=TES_LEFT then newstyle:=ES_LEFT else
+  if name=TES_LOWERCASE then newstyle:=ES_LOWERCASE else
+  if name=TES_MULTILINE then newstyle:=ES_MULTILINE else
+  if name=TES_NOHIDESEL then newstyle:=ES_NOHIDESEL else
+  if name=TES_NUMBER then newstyle:=ES_NUMBER else
+  if name=TES_OEMCONVERT then newstyle:=ES_OEMCONVERT else
+  if name=TES_PASSWORD then newstyle:=ES_PASSWORD else
+  if name=TES_READONLY then newstyle:=ES_READONLY else
+  if name=TES_RIGHT then newstyle:=ES_RIGHT else
+  if name=TES_UPPERCASE then newstyle:=ES_UPPERCASE else
+  if name=TES_WANTRETURN then newstyle:=ES_WANTRETURN else
+  //ListBoxStyles
+  if name=TLBS_DISABLENOSCROLL then newstyle:=LBS_DISABLENOSCROLL else
+  if name=TLBS_EXTENDEDSEL then newstyle:=LBS_EXTENDEDSEL else
+  if name=TLBS_HASSTRINGS then newstyle:=LBS_HASSTRINGS else
+  if name=TLBS_MULTICOLUMN then newstyle:=LBS_MULTICOLUMN else
+  if name=TLBS_MULTIPLESEL then newstyle:=LBS_MULTIPLESEL else
+  if name=TLBS_NODATA then newstyle:=LBS_NODATA else
+  if name=TLBS_NOINTEGRALHEIGHT then newstyle:=LBS_NOINTEGRALHEIGHT else
+  if name=TLBS_NOREDRAW then newstyle:=LBS_NOREDRAW else
+  if name=TLBS_NOSEL then newstyle:=LBS_NOSEL else
+  if name=TLBS_NOTIFY then newstyle:=LBS_NOTIFY else
+  if name=TLBS_OWNERDRAWFIXED then newstyle:=LBS_OWNERDRAWFIXED else
+  if name=TLBS_OWNERDRAWVARIABLE then newstyle:=LBS_OWNERDRAWVARIABLE else
+  if name=TLBS_SORT then newstyle:=LBS_SORT else
+  if name=TLBS_STANDARD then newstyle:=LBS_STANDARD else
+  if name=TLBS_USETABSTOPS then newstyle:=LBS_USETABSTOPS else
+  if name=TLBS_WANTKEYBOARDINPUT then newstyle:=LBS_WANTKEYBOARDINPUT else
+  //Richedit (fast alle Edit Styles siind auch benutzbar)
+  if name=TES_DISABLENOSCROLL  then newstyle:=ES_DISABLENOSCROLL else
+  if name=TES_NOIME then newstyle:=ES_NOIME else
+  if name=TES_SELFIME then newstyle:=ES_SELFIME else
+  if name=TES_SUNKEN then newstyle:=ES_SUNKEN else
+  if name=TES_VERTICAL then newstyle:=ES_VERTICAL else
+  //SCROLLBARS
+  if name=TSBS_BOTTOMALIGN then newstyle:=SBS_BOTTOMALIGN else
+  if name=TSBS_HORZ then newstyle:=SBS_HORZ else
+  if name=TSBS_LEFTALIGN then newstyle:=SBS_LEFTALIGN else
+  if name=TSBS_RIGHTALIGN then newstyle:=SBS_RIGHTALIGN else
+  if name=TSBS_SIZEBOX then newstyle:=SBS_SIZEBOX else
+  if name=TSBS_SIZEBOXBOTTOMRIGHTALIGN then newstyle:=SBS_SIZEBOXBOTTOMRIGHTALIGN else
+  if name=TSBS_SIZEBOXTOPLEFTALIGN then newstyle:=SBS_SIZEBOXTOPLEFTALIGN else
+  if name=TSBS_SIZEGRIP then newstyle:=SBS_SIZEGRIP else
+  if name=TSBS_TOPALIGN then newstyle:=SBS_TOPALIGN  else
+  if name=TSBS_VERT then newstyle:=SBS_VERT else
+  //STATIC
+  if name=TSS_BITMAP then newstyle:=SS_BITMAP else
+  if name=TSS_BLACKFRAME then newstyle:=SS_BLACKFRAME  else
+  if name=TSS_BLACKRECT then newstyle:=SS_BLACKRECT else
+  if name=TSS_CENTER then newstyle:=SS_CENTER else
+  if name=TSS_CENTERIMAGE then newstyle:=SS_CENTERIMAGE else
+  //f name=TSS_ENDELLIPSIS  then newstyle:=SS_ENDELLIPSIS  else
+  if name=TSS_ENHMETAFILE then newstyle:=SS_ENHMETAFILE else
+  if name=TSS_ENHMETAFILE then newstyle:=SS_ENHMETAFILE else
+  if name=TSS_ETCHEDHORZ then newstyle:=SS_ETCHEDHORZ else
+  if name=TSS_ETCHEDVERT then newstyle:=SS_ETCHEDVERT else
+  if name=TSS_GRAYFRAME then newstyle:=SS_GRAYFRAME else
+  if name=TSS_GRAYRECT then newstyle:=SS_GRAYRECT else
+  if name=TSS_ICON then newstyle:=SS_ICON else
+  if name=TSS_LEFT then newstyle:=SS_LEFT else
+  if name=TSS_LEFTNOWORDWRAP then newstyle:=SS_LEFTNOWORDWRAP else
+  if name=TSS_NOPREFIX  then newstyle:=SS_NOPREFIX else
+  if name=TSS_NOTIFY then newstyle:=SS_NOTIFY else
+  if name=TSS_OWNERDRAW then newstyle:=SS_OWNERDRAW else
+  //if name=TSS_PATHELLIPSIS then newstyle:=SS_PATHELLIPSIS else
+  if name=TSS_REALSIZEIMAGE then newstyle:=SS_REALSIZEIMAGE else
+  if name=TSS_RIGHT then newstyle:=SS_RIGHT else
+  if name=TSS_RIGHTJUST then newstyle:=SS_RIGHTJUST else
+  if name=TSS_SIMPLE then newstyle:=SS_SIMPLE else
+  if name=TSS_SUNKEN then newstyle:=SS_SUNKEN else
+  if name=TSS_WHITEFRAME then newstyle:=SS_WHITEFRAME else
+  if name=TSS_WHITERECT then newstyle:=SS_WHITERECT //else
+  //if name=TSS_WORDELLIPSIS then newstyle:=SS_WORDELLIPSIS
+  ;
 
   styles:=GetWindowLong(window,GWL_STYLE);
   if enabled then newstyle:=styles or newstyle
   else newstyle:=styles and not newstyle;
   if styles = newstyle then exit;
-  SetWindowLong(window,GWL_STYLE,newstyle);
+  if useInjection then SetWindowLongInjected(window,GWL_STYLE,newstyle)
+  else SetWindowLong(window,GWL_STYLE,newstyle);
+  RedrawWindow(window,nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN);
+  if GetParent(window)<>0 then
+    RedrawWindow(getparent(window),nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN)
+end;
+
+procedure changeClassStyle(window: THandle; name: string; enabled: boolean;
+  useInjection: boolean);
+var styles,newstyle:longint;
+begin
+  name:=UpperCase(name);
+
+  if name=TCS_BYTEALIGNCLIENT then newstyle:= CS_BYTEALIGNCLIENT else
+  if name=TCS_BYTEALIGNWINDOW then newstyle:= CS_BYTEALIGNWINDOW else
+  if name=TCS_CLASSDC then newstyle:= CS_CLASSDC else
+  if name=TCS_DBLCLKS then newstyle:= CS_DBLCLKS else
+  if name=TCS_DROPSHADOW then newstyle:= CS_DROPSHADOW else
+  if name=TCS_GLOBALCLASS  then newstyle:= CS_GLOBALCLASS else
+  if name=TCS_HREDRAW then newstyle:= CS_HREDRAW else
+  if name=TCS_NOCLOSE then newstyle:= CS_NOCLOSE else
+  if name=TCS_OWNDC then newstyle:= CS_OWNDC  else
+  if name=TCS_PARENTDC then newstyle:= CS_PARENTDC else
+  if name=TCS_SAVEBITS then newstyle:= CS_SAVEBITS else
+  if name=TCS_VREDRAW then newstyle:= CS_VREDRAW;
+
+  styles:=GetClassLong(window,GCL_STYLE);
+  if enabled then newstyle:=styles or newstyle
+  else newstyle:=styles and not newstyle;
+  if styles = newstyle then exit;
+  if useInjection then SetClassLongInjected(window,GCL_STYLE,newstyle)
+  else SetClassLong(window,GCL_STYLE,newstyle);
   RedrawWindow(window,nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN);
   if GetParent(window)<>0 then
     RedrawWindow(getparent(window),nil,0,RDW_ERASE or RDW_INVALIDATE or RDW_ALLCHILDREN)
@@ -891,11 +1056,11 @@ begin
     mov result, eax
   end;
   if (currentESP<globalESPSave) then
-    raise exception.create('Zu viele Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')');
+    raise exception.create(tr['Zu viele Parameter']+#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')');
   if (currentESP>globalESPSave) then
-    raise exception.create('Zu wenig Parameter'#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')'#13#10'Warnung: Stack vielleicht beschädigt');
+    raise exception.create(tr['Zu wenig Parameter']+#13#10'(esp mismatch: new '+Pointer2Str(currentESP)+' vs old '+Pointer2Str(globalESPSave)+')'#13#10'Warnung: Stack vielleicht beschädigt');
   if (currentEBP<>globalEBPSave) then
-    raise exception.create('Ungültige Parameterzahl?'#13#10'(ebp mismatch: new '+Pointer2Str(currentEBP)+' vs old '+Pointer2Str(globalEBPSave)+')'#13#10#13#10'Warnung: Stack kann korrupt sein');
+    raise exception.create(tr['Ungültige Parameterzahl?']+#13#10'(ebp mismatch: new '+Pointer2Str(currentEBP)+' vs old '+Pointer2Str(globalEBPSave)+')'#13#10#13#10'Warnung: Stack kann korrupt sein');
   
 end;
 
@@ -960,39 +1125,45 @@ temp,pwd_dec:string;
     memory:TMemoryStatus;
     sysInfo: TSYSTEMINFO;
 begin
+  initUnitTranslation(CurrentUnitName,tr);
 if systemPropertiesFinished then exit;
   SetLength(systemPropertiesArray,0);
 
-setDisplayedSysProperty('Prozessorspeed (momentan)',floatToStr(GetCPUSpeed)+' MHz');
+setDisplayedSysProperty(tr['Hardware'],'[cat]');
+
+setDisplayedSysProperty(tr['Prozessorspeed (momentan)'],floatToStr(GetCPUSpeed)+' MHz');
 GetSystemInfo(sysInfo);
-setDisplayedSysProperty('Prozessoranzahl',IntToStr(sysInfo.dwNumberOfProcessors));
+setDisplayedSysProperty(tr['Prozessoranzahl'],IntToStr(sysInfo.dwNumberOfProcessors));
 
 
 if not runonNT then begin
   if Pchar(pointer($FE061))^<>#0 then
-    setDisplayedSysProperty('BIOS Name',String(Pchar(pointer($FE061)))); // BIOS Name
+    setDisplayedSysProperty(tr['BIOS Name'],String(Pchar(pointer($FE061)))); // BIOS Name
   if Pchar(pointer($FFFF5))^<>#0 then
-    setDisplayedSysProperty('BIOS Datum',String(Pchar(pointer($FFFF5)))); // BIOS Datum
+    setDisplayedSysProperty(tr['BIOS Datum'],String(Pchar(pointer($FFFF5)))); // BIOS Datum
   if Pchar(pointer($FEC71))^<>#0 then
-    setDisplayedSysProperty('BIOS Seriennummer',String(Pchar(Pointer($FEC71)))); // Seriennummer
+    setDisplayedSysProperty(tr['BIOS Seriennummer'],String(Pchar(Pointer($FEC71)))); // Seriennummer
 end;
 
 memory.dwLength:=sizeof(memory);
 GlobalMemoryStatus(memory);
-setDisplayedSysProperty('Gesamter Ram: ',inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
-setDisplayedSysProperty('Freier Ram: ',inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
-setDisplayedSysProperty('Speicherseitengröße',strFromSize(sysInfo.dwPageSize));
+setDisplayedSysProperty(tr['Gesamter Ram'],inttostr(memory.dwTotalPhys div 1024 div 1024) +' MiB');
+setDisplayedSysProperty(tr['Freier Ram'],inttostr(memory.dwAvailPhys div 1024 div 1024) +' MiB');
+setDisplayedSysProperty(tr['Speicherseitengröße'],strFromSize(sysInfo.dwPageSize));
+
+setDisplayedSysProperty(tr['Pfade'],'[cat]');
 
 GetWindowsDirectory(buf,256);
-setDisplayedSysProperty('Windowspfad',buf);
+setDisplayedSysProperty(tr['Windowspfad'],buf);
 
 GetTempPath(256,buf);
-setDisplayedSysProperty('Temppfad',buf);
+setDisplayedSysProperty(tr['Temppfad'],buf);
 
 GetSystemDirectory( buf,256);
-setDisplayedSysProperty('Systempfad:',buf);
+setDisplayedSysProperty(tr['Systempfad'],buf);
 
 
+setDisplayedSysProperty(tr['Software'],'[cat]');
 reg:=TRegistry.create(KEY_READ);
 reg.RootKey:=HKEY_LOCAL_MACHINE;
 if reg.OpenKey('\Software\Microsoft\Windows NT\CurrentVersion',false) then begin //Nur Win NT
@@ -1000,28 +1171,30 @@ if reg.OpenKey('\Software\Microsoft\Windows NT\CurrentVersion',false) then begin
     setDisplayedSysProperty('Service Pack',reg.ReadString('CSDVersion'));
 end else if reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion',false) then begin  //Nur Win9x
   if reg.ValueExists('ProductKey') then
-    setDisplayedSysProperty('Produktkey',reg.ReadString('ProductKey'));
+    setDisplayedSysProperty(tr['Produktkey'],reg.ReadString('ProductKey'));
   if reg.ValueExists('VersionNumber') then
-    setDisplayedSysProperty('Version:',reg.ReadString('VersionNumber'));
+    setDisplayedSysProperty(tr['Version'],reg.ReadString('VersionNumber'));
 end;
 if reg.ValueExists('ProductName') then
-  setDisplayedSysProperty('Betriebsystem',reg.ReadString('ProductName'));
+  setDisplayedSysProperty(tr['Betriebsystem'],reg.ReadString('ProductName'));
 if reg.ValueExists('ProductId') then
-  setDisplayedSysProperty('Seriennummer',reg.ReadString('ProductId'));
+  setDisplayedSysProperty(tr['Seriennummer'],reg.ReadString('ProductId'));
 if reg.ValueExists('RegisteredOwner') then
-  setDisplayedSysProperty('Benutzer',reg.ReadString('RegisteredOwner'));
+  setDisplayedSysProperty(tr['Benutzer'],reg.ReadString('RegisteredOwner'));
 if reg.ValueExists('RegisteredOrganization') then
-  setDisplayedSysProperty('Organisation',reg.ReadString('RegisteredOrganization'));
+  setDisplayedSysProperty(tr['Organisation'],reg.ReadString('RegisteredOrganization'));
 if reg.OpenKey('\System\CurrentControlSet\Services\VxD\VNETSUP',false) then begin
   if reg.ValueExists('Workgroup') then
-    setDisplayedSysProperty('Arbeitsgruppe',reg.ReadString('Workgroup'));
+    setDisplayedSysProperty(tr['Arbeitsgruppe'],reg.ReadString('Workgroup'));
   if reg.ValueExists('ComputerName') then
-    setDisplayedSysProperty('ComputerName',reg.ReadString('ComputerName'));
+    setDisplayedSysProperty(tr['ComputerName'],reg.ReadString('ComputerName'));
 end;
 
 //Passwörter (9x)
 if not runonNT then begin
+  setDisplayedSysProperty(tr['Passwörter'],'[cat]');
   LoadWNetEnumCachedPasswords;
+  addproc:=@setDisplayedSysProperty;
   WNetEnumCachedPasswords(nil, 0, $FF, pchar(@AddPassword), 0);
 end;
 reg.Rootkey:=HKEY_CURRENT_USER;
@@ -1033,7 +1206,7 @@ BEGIN
   IF (temp<>'')and(anaus<>0) THEN  // Wenn Passwort existiert dann ...
   BEGIN
     pwd_dec:=ScrDecode(temp); // Aufruf der Decoder-Funktion
-     setDisplayedSysProperty('Bildschirmschoner',pwd_dec);// Entschlüsseltes Passwort ausgeben
+     setDisplayedSysProperty(tr['Bildschirmschoner'],pwd_dec);// Entschlüsseltes Passwort ausgeben
   END
 end;
 
@@ -1053,6 +1226,7 @@ constructor TCallbackComponent.create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Name:='callbackcomponent';
+  initUnitTranslation(CurrentUnitName,tr);
 end;
 
 procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint; func:longint=0);
@@ -1077,6 +1251,11 @@ begin
   friends[where].onShowHandle(self.owner,handle,func);
 end;
 
+function TCallbackComponent.existsLinkTo(dest: longint): boolean;
+begin
+  result:=assigned(friends[dest]);
+end;
+
 procedure TCallbackComponent.Notification(AComponent: Tcomponent;
   Operation: TOperation);
 var i:longint;
@@ -1086,6 +1265,129 @@ begin
     for i:=low(friends) to high(friends) do
       if assigned(friends[i]) and (friends[i]=AComponent) then friends[i]:=nil;
 end;
+
+procedure openWindowsConst(empty:boolean=false);
+var p:tpoint;
+    current: twincontrol;
+begin
+  current:=TWinControl(GetProp(GetFocus,'WinControl'));//FindControl(GetFocus);
+  if current=nil then current:=FindOwnerControl(GetFocus);
+  if current=nil then exit;
+  if not ((current is tedit) or (current is TComboBox)) then exit;
+  p.x:=0;
+  p.y:=0;//current.Height;
+  p:=current.ClientToScreen(p);
+  windowConstForm.Left:=p.x;
+  windowConstForm.top:=p.y;
+  if empty then windowConstForm.currentConst:=''
+  else if current is tedit then windowConstForm.currentConst:=TEdit(current).Text
+  else if current is TComboBox then windowConstForm.currentConst:=TComboBox(current).Text;
+  windowConstForm.currentConst:=trim(windowConstForm.currentConst);
+  windowConstForm.ShowModal;
+  if windowConstForm.currentConst<>'' then
+    if current is tedit then begin
+      TEdit(current).Text:=windowConstForm.currentConst;
+      TEdit(current).SelStart:=length(TEdit(current).Text);
+    end else if current is TComboBox then begin
+      TComboBox(current).Text:=windowConstForm.currentConst;
+      TComboBox(current).SelStart:=length(TComboBox(current).Text);
+    end;
+end;
+
+function MessageWindowWindowProc(  hwnd:HWND ;  uMsg:UINT ;  wParam: WPARAM ;  lParam :LPARAM):lresult;stdcall;
+begin
+{  case uMsg of
+    WM_APIM_SHOWME: begin
+      Application.BringToFront;
+      if Application.MainForm<>nil then begin
+        Application.MainForm.BringToFront;
+        ShowWindow(Application.MainForm.Handle,SW_SHOW);
+      end;
+    end;
+  end;}
+  result:=DefWindowProc(hwnd,uMsg,wParam,LParam);
+end;
+
+function createAPIMMessageWindow: thandle;
+var c: TWNDCLASS;
+begin
+  FillChar(c,sizeof(c),0);
+  c.lpfnWndProc:=@MessageWindowWindowProc;
+  c.hInstance:=HINSTANCE;
+  c.lpszClassName:=messageWindowClass;
+  RegisterClass(c);
+
+  result:=CreateWindow(messageWindowClass,'',0,0,0,0,0,0,0,HINSTANCE,nil);
+
+end;
+
+function performInjectedAction(wnd:Thandle; action: longint):boolean;
+var loopCount:longint;
+    hookDLL: thandle;
+    proc: TProcedure;
+begin
+  if GetPropA(messageWindow,propertyHookId)=0 then begin
+    hookDLL:=LoadLibrary('apiminject.dll');
+    if hookDLL=0 then raise exception.Create(tr['Datei nicht gefunden: ']+'apimInject.dll');
+    proc:=TProcedure(GetProcAddress(hookDLL,'startHook'));
+    if proc = nil then
+      raise exception.create(tr['Injectdll ungültig']);
+    proc();
+    globalHook:=GetPropA(messageWindow,propertyHookId);
+  end;
+  SetPropA(messageWindow,propertyAim,wnd);
+  SetPropA(messageWindow,propertyAction,action);
+  SendMessage(wnd,actionNeededMessage,0,0);
+  loopCount:=0;
+  while (GetPropA(messageWindow,propertyAction)<>0) and (loopCount<30) do begin
+    sleep(100);
+    inc(loopCount);
+  end;
+  SetPropA(messageWindow,propertyAction,0);
+  if loopCount=30 then begin
+    result:=false;
+    showmessage(tr['time out']);
+  end else result:=true;
+end;
+
+function GetWindowTextInjected(wnd:Thandle): UTF8String;
+begin
+  if performInjectedAction(wnd,action_gettext) then
+    result:=GetWindowTextS(messageWindow);
+end;
+
+procedure SetWindowLongInjected(wnd: Thandle; index: longint; newStyle: dword; reallyInject: boolean=true);
+begin
+  if not reallyInject then begin
+    setwindowlong(wnd,index,newStyle);
+    exit;
+  end;
+  SetProp(messageWindow,propertyParam1,dword(index));
+  SetProp(messageWindow,propertyParam2,newStyle);
+  performInjectedAction(wnd,action_setwindowlong);
+end;
+
+
+procedure SetClassLongInjected(wnd: Thandle; index: longint; newStyle: dword; reallyInject: boolean);
+begin
+  if not reallyInject then begin
+    SetClassLong(wnd,index,newStyle);
+    exit;
+  end;
+  SetProp(messageWindow,propertyParam1,dword(index));
+  SetProp(messageWindow,propertyParam2,newStyle);
+  performInjectedAction(wnd,action_setclasslong);
+end;
+
+procedure SendMessageInjected(wnd: Thandle; msg: longint; wparam, lparam: dword
+  );
+begin
+  SetProp(messageWindow,propertyMsg,dword(msg));
+  SetProp(messageWindow,propertyParam1,wparam);
+  SetProp(messageWindow,propertyParam2,lparam);
+  performInjectedAction(wnd,action_sendmessage);
+end;
+
 
 end.
 

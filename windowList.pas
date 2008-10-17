@@ -86,7 +86,7 @@ const WL_PROGRAM_COLUMN=5;
 
 procedure TWindowListFrm.FormCreate(Sender: TObject);
 begin
-  initUnitTranslation('windowlist',tr);
+  initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
   Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
