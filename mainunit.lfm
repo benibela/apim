@@ -23,6 +23,7 @@ object mainForm: TmainForm
       Caption = 'Allgemein'
       object MenuItem18: TMenuItem
         Caption = 'Aktuelle Seite schließen'
+        Visible = False
         OnClick = closeCurrentTabClose
       end
       object MenuItem17: TMenuItem
@@ -40,6 +41,7 @@ object mainForm: TmainForm
       object MenuItem11: TMenuItem
         Tag = 1
         Caption = 'in neuer Seite einfügen'
+        ShortCut = 16454
         OnClick = insertToNewPageClick
       end
     end
@@ -53,6 +55,7 @@ object mainForm: TmainForm
       object MenuItem12: TMenuItem
         Tag = 2
         Caption = 'in neuer Seite einfügen'
+        ShortCut = 16471
         OnClick = insertToNewPageClick
       end
     end
@@ -66,6 +69,7 @@ object mainForm: TmainForm
       object MenuItem13: TMenuItem
         Tag = 3
         Caption = 'in neuer Seite einfügen'
+        ShortCut = 16464
         OnClick = insertToNewPageClick
       end
     end
@@ -79,6 +83,7 @@ object mainForm: TmainForm
       object MenuItem14: TMenuItem
         Tag = 4
         Caption = 'in neuer Seite einfügen'
+        ShortCut = 16467
         OnClick = insertToNewPageClick
       end
     end
@@ -92,6 +97,7 @@ object mainForm: TmainForm
       object MenuItem15: TMenuItem
         Tag = 5
         Caption = 'in neuer Seite einfügen'
+        ShortCut = 16463
         OnClick = insertToNewPageClick
       end
     end

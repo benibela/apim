@@ -280,7 +280,7 @@ begin
 end;
 
 
-//Diese Funktionist von Leo, alle Credits gehen zu ihm!!!!!!!!!!!!!!!
+//Diese Funktionist von Leo
 //Leo: www.leoworld.de; leo@leoworld.de
 function GetFileNameFromHandle(Handle: hwnd):string;
 var
@@ -297,7 +297,7 @@ while Integer(ContinueLoop) <> 0 do
 begin
 	if aProcessEntry32.th32ProcessID = PID then
 	begin
-		result:=aProcessEntry32.szExeFile;
+		result:=SysToUTF8(aProcessEntry32.szExeFile);
 		break;
 	end;
 	ContinueLoop := Process32Next(aSnapShotHandle, aProcessEntry32);

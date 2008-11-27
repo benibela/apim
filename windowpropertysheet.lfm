@@ -13,7 +13,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
   ClientHeight = 556
   ClientWidth = 587
   KeyPreview = True
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
   OnMouseDown = FormMouseDown
@@ -272,7 +274,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
         'minimiert'
         'maximiert'
       )
-      MaxLength = -1
       OnSelect = propertyChanged
       Style = csDropDownList
       TabOrder = 3
@@ -369,7 +370,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Font.Color = clNavy
       Font.Style = [fsUnderline]
       ItemHeight = 13
-      MaxLength = -1
       OnDblClick = jumptoWndDblClick
       OnKeyUp = updatePropertyKeyUp
       ParentFont = False
@@ -426,7 +426,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Top = 438
       Width = 192
       ItemHeight = 13
-      MaxLength = -1
       OnKeyUp = messagemes_cbKeyUp
       TabOrder = 16
     end
@@ -479,7 +478,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Height = 64
       Top = 231
       Width = 218
-      ItemHeight = 13
       OnItemClick = windowStylesItemClick
       TabOrder = 21
     end
@@ -490,7 +488,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Top = 230
       Width = 242
       Anchors = [akTop, akLeft, akRight]
-      ItemHeight = 13
       OnItemClick = windowStylesItemClick
       TabOrder = 22
     end

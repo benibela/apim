@@ -36,7 +36,7 @@ const SEARCHTOOLFRM_ID=1;
       WINDOWSTYLELISTFRM_ID=7;
 
 var hexa:boolean=false; //#TODO -1: different number outputs
-    winConstPath:string='winconst\';
+    winConstPath:string='windows\';
     curlang:string='auto';
     maxSubFormPerPage,defaultRefreshTimeInterval: longint;
 
@@ -181,7 +181,7 @@ end;
   begin
     //size/position/some default informations are stored by the forms itself.
     hexa:= globalConfig.GetValue('look/numberKind','0')<>'1';
-    winConstPath:=globalConfig.GetValue('paths/winconst','winconst\');
+    winConstPath:=globalConfig.GetValue('paths/winconst','windows\');
     maxSubFormPerPage:=globalConfig.GetValue('look/maxSubFormPerPage',3);
     defaultRefreshTimeInterval:=globalConfig.GetValue('look/defaultRefreshTime',0);
     curlang:=globalConfig.GetValue('look/language','auto');

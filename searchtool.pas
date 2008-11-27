@@ -40,18 +40,19 @@ type
     linksoben: TPanel;
     mouseHandleEdt: TEdit;
     mouseRefreshAllLive: TCheckBox;
-    mouseToolImage: TImage;
     mouseWindowClassEdt: TEdit;
     mouseWindowProgramEdt: TEdit;
     mouseWindowTextEdt: TEdit;
     miniScreen: TPanel;
     miniScreenPaintbox: TPaintBox;
     rechtsunten: TPanel;
+    mouseToolImage:TImage;
     procedure closeProperties(Sender: TObject; var CloseAction: TCloseAction);
     procedure findTimerTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormPaint(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure linksobenMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure linksobenMouseMove(Sender: TObject; Shift: TShiftState; X,
@@ -163,13 +164,13 @@ end;
 procedure TsearchToolFrm.FormCreate(Sender: TObject);
 begin
   Docker:=TLazControlDocker.Create(Self);
-  miniscreendbl:=graphics.TBitmap.Create;
   callback:=TCallbackComponent.create(self);
-  miniScreen.OnPaint:=@PaintBox1Paint;
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
+  miniscreendbl:=graphics.TBitmap.Create;
+  miniScreen.OnPaint:=@PaintBox1Paint;
 
-  hideAPIVwhenSearching.Checked:=globalConfig.GetValue('searchTool/hideAPIV',hideAPIVwhenSearching.Checked);
+  hideAPIVwhenSearching.Checked:=uppercase(globalConfig.GetValue('searchTool/hideAPIV','TRUE'))='TRUE';
   linksoben.Left:=globalConfig.GetValue('searchTool/miniScreen/x1',linksoben.Left);
   linksoben.top:=globalConfig.GetValue('searchTool/miniScreen/y1',linksoben.top);
   rechtsunten.Left:=globalConfig.GetValue('searchTool/miniScreen/x2',rechtsunten.Left);
@@ -190,6 +191,11 @@ end;
 
 procedure TsearchToolFrm.FormPaint(Sender: TObject);
 begin
+end;
+
+procedure TsearchToolFrm.FormShow(Sender: TObject);
+begin
+
 end;
 
 procedure TsearchToolFrm.linksobenMouseDown(Sender: TObject;
@@ -259,6 +265,7 @@ end;
 
 procedure TsearchToolFrm.PaintBox1Paint(Sender: TObject);
 begin
+
 end;
 
 procedure TsearchToolFrm.drawMiniScreen;
@@ -271,6 +278,8 @@ var h:THandle;
     can: tcanvas;
 
 begin
+  if miniScreen=nil then exit;
+  if miniscreendbl=nil then exit;
   if miniScreen.Width=0 then exit;
   if miniScreen.Height=0 then exit;
   if miniScreen.Canvas=nil then exit;
@@ -302,7 +311,7 @@ begin
     else can.Brush.Color:=clBtnFace;
     can.Rectangle(pos.Left,pos.top,pos.Right,pos.Bottom);
   end;
-  miniScreenPaintbox.Canvas.Draw(0,0,miniscreendbl);
+  if runonNT then miniScreenPaintbox.Canvas.Draw(0,0,miniscreendbl); //this makes problems on win98 if dedocked
   miniScreen.Canvas.Draw(1,1,miniscreendbl);
 end;
 

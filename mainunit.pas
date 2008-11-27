@@ -97,7 +97,7 @@ var
 
 implementation
 
-uses applicationConfig, searchTool,windowList,processList,systemOptions,options,windowPropertySheet,welcome,ptranslateutils,apimshared,wstyles;
+uses applicationConfig, searchTool,windowList,processList,systemOptions,bbutils, options,windowPropertySheet,welcome,ptranslateutils,apimshared,wstyles;
 
 {$I mainunit.atr}
 
@@ -194,7 +194,7 @@ end;
 
 procedure TmainForm.closeCurrentTabClose(Sender: TObject);
 begin
-
+  //TODO:close current page
 end;
 
 procedure TmainForm.MenuItem7Click(Sender: TObject);

@@ -106,7 +106,7 @@ object searchToolFrm: TsearchToolFrm
     Width = 248
     Color = clBtnFace
     ReadOnly = True
-    TabOrder = 0
+    TabOrder = 2
   end
   object mouseWindowTextEdt: TEdit
     AnchorSideTop.Control = Label1
@@ -117,7 +117,7 @@ object searchToolFrm: TsearchToolFrm
     Width = 248
     Color = clBtnFace
     ReadOnly = True
-    TabOrder = 1
+    TabOrder = 3
   end
   object mouseWindowClassEdt: TEdit
     AnchorSideTop.Control = Label27
@@ -128,7 +128,7 @@ object searchToolFrm: TsearchToolFrm
     Width = 248
     Color = clBtnFace
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 4
   end
   object mouseWindowProgramEdt: TEdit
     AnchorSideTop.Control = Label28
@@ -139,7 +139,7 @@ object searchToolFrm: TsearchToolFrm
     Width = 248
     Color = clBtnFace
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 5
   end
   object mouseRefreshAllLive: TCheckBox
     Left = 34
@@ -147,7 +147,7 @@ object searchToolFrm: TsearchToolFrm
     Top = 3
     Width = 130
     Caption = 'Alles live aktualisieren'
-    TabOrder = 4
+    TabOrder = 0
   end
   object hideAPIVwhenSearching: TCheckBox
     Left = 176
@@ -157,7 +157,7 @@ object searchToolFrm: TsearchToolFrm
     Caption = 'APIV ausblenden'
     Checked = True
     State = cbChecked
-    TabOrder = 7
+    TabOrder = 1
   end
   object miniScreen: TPanel
     Left = 355
@@ -166,7 +166,6 @@ object searchToolFrm: TsearchToolFrm
     Width = 205
     ClientHeight = 139
     ClientWidth = 205
-    FullRepaint = False
     TabOrder = 8
     object miniScreenPaintbox: TPaintBox
       Left = 1
@@ -187,7 +186,7 @@ object searchToolFrm: TsearchToolFrm
     Caption = 'linksoben'
     Color = clBlack
     ParentColor = False
-    TabOrder = 6
+    TabOrder = 7
     OnMouseMove = linksobenMouseMove
   end
   object rechtsunten: TPanel
@@ -200,7 +199,7 @@ object searchToolFrm: TsearchToolFrm
     Caption = 'linksoben'
     Color = clBlack
     ParentColor = False
-    TabOrder = 5
+    TabOrder = 6
     OnMouseMove = linksobenMouseMove
   end
   object findTimer: TTimer

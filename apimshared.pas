@@ -4,8 +4,6 @@ unit apimshared;
 
 interface
 
-uses
-  Classes, SysUtils,windows;
 const  messageWindowClass ='APIMmessageWINDOWclass';
        propertyMainWindow ='mainWindow';
        propertyHookId ='hookId';
@@ -23,6 +21,7 @@ const  messageWindowClass ='APIMmessageWINDOWclass';
 var actionNeededMessage: dword;
 
 implementation
+uses windows;
 initialization
   actionNeededMessage:= RegisterWindowMessage('BENIBELAapimACTIONNEEDEDmessage');
 end.

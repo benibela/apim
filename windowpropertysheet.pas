@@ -103,7 +103,9 @@ type
     procedure Button5Click(Sender: TObject);
     procedure colorKeyShapeMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
@@ -198,9 +200,10 @@ begin         //#todo -1: check if renaming works in later lazarus
   if change<>ctText then exit;
   if item=nil then exit;
   if displayCalls>0 then exit; //change is called when internally changing *grr*
+
   //ShowMessage(item.Caption);
   //systemProperties.EditingDone;
-  RemoveProp(currentWindow, pchar(item.SubItems[2]));
+  RemoveProp(currentWindow, pchar(item.SubItems[1]));
   SetProp(currentWindow, pchar(item.Caption), Str2Cardinal(item.SubItems[0]));
   displayProperty(windowPropertyList);
 end;
@@ -294,6 +297,11 @@ begin
   changeProperty(colorKeyShape);
 end;
 
+procedure TWindowPropertySheetFrm.FormClose(Sender: TObject;
+  var CloseAction: TCloseAction);
+begin
+end;
+
 procedure TWindowPropertySheetFrm.FormCreate(Sender: TObject);
 begin
   initUnitTranslation(CurrentUnitName,tr);
@@ -301,6 +309,10 @@ begin
   Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
+end;
+
+procedure TWindowPropertySheetFrm.FormDestroy(Sender: TObject);
+begin
 end;
 
 procedure TWindowPropertySheetFrm.FormKeyDown(Sender: TObject; var Key: Word;

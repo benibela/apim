@@ -80,31 +80,34 @@ begin
     winConsts:=TStringList.Create;
 
     try
-      tempSL:=TStringList.Create;
       path:=winConstPath;
       if not FilenameIsAbsolute(winConstPath) then path:=IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)))+path;
       path:=IncludeTrailingPathDelimiter(path);
-      FindFirst(path+'*.*',faAnyFile,searchRec);
-      repeat
-        if searchRec.Name='' then continue;
-        if searchRec.Name[1]='.' then continue;
+      if DirectoryExistsUTF8(ExcludeTrailingPathDelimiter(path)) then begin
+        tempSL:=TStringList.Create;
+        FindFirst(path+'*.*',faAnyFile,searchRec);
+        repeat
+          if searchRec.Name='' then continue;
+          if searchRec.Name[1]='.' then continue;
 
-        tempSL.LoadFromFile(path+searchRec.Name);
-        for i:=0 to tempSL.count-1 do begin
-          s:=trim(tempSL[i]);
-          if s='' then continue; //skip empty
-          if ((s[1]='{') and (s[length(s)]='}')) or
-             ((s[1]='/') and (s[2] = '/')) then continue; //skip comment only
-          winConsts.Add(s);
-        end;
-      until FindNext(searchRec)<>0;
-      FindClose(searchRec);
-      tempSL.Free;
+          tempSL.LoadFromFile(path+searchRec.Name);
+          for i:=0 to tempSL.count-1 do begin
+            s:=trim(tempSL[i]);
+            if s='' then continue; //skip empty
+            if ((s[1]='{') and (s[length(s)]='}')) or
+               ((s[1]='/') and (s[2] = '/')) then continue; //skip comment only
+            winConsts.Add(s);
+          end;
+        until FindNext(searchRec)<>0;
+        FindClose(searchRec);
+        tempSL.Free;
+      end;
     except
     end;
   end;
   if winConsts.Count=0 then begin
     winConsts.free;
+    winConsts:=nil;
     ListBox1.items.text:=tr['Keine Windowskonstanten gefunden'#13#10'Überprüfen Sie den Pfad: ']+winConstPath;
   end else ListBox1.Items.Text:=tr['Suche in der FreePascal Windows Unit'];
   Edit1.text:=currentConst;

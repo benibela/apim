@@ -1337,7 +1337,8 @@ begin
   end;
   SetPropA(messageWindow,propertyAim,wnd);
   SetPropA(messageWindow,propertyAction,action);
-  SendMessage(wnd,actionNeededMessage,0,0);
+  PostMessage(wnd,actionNeededMessage,0,0);
+  Application.ProcessMessages; //if the message is send to me
   loopCount:=0;
   while (GetPropA(messageWindow,propertyAction)<>0) and (loopCount<30) do begin
     sleep(100);

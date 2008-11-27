@@ -3,7 +3,7 @@ library Project1;
 {$mode objfpc}{$H+}
 
 uses
-  Classes,apimshared,sysutils,windows
+  apimshared,windows
   { you can add units after this };
 
 var curHookID: thandle=0;
@@ -40,7 +40,7 @@ begin
       Sendmessage(aim,longint(GetProp(apimMessageWnd,propertyMsg)),GetProp(apimMessageWnd,propertyParam1),GetProp(apimMessageWnd,propertyParam2));
   end;
 end;
-
+                       {
 function CallWndRetProc(nCode:longint; wParam:WPARAM;lParam:LPARAM):lresult;stdcall;
 var temp: dword;
 begin
@@ -59,6 +59,29 @@ begin
   getInfo;
   if apimMessageWnd=0 then exit;
   curHookID:=SetWindowsHookEx(WH_CALLWNDPROCRET,@CallWndRetProc,HINSTANCE,0);
+  SetProp(apimMessageWnd,propertyHookId,curHookID);
+end;                                           }
+
+
+function GetMessageProc(nCode:longint; wParam:WPARAM;lParam:LPARAM):lresult;stdcall;
+var temp: dword;
+begin
+  if curHookID=0 then getInfo;
+  if curHookID=0 then exit(0);
+  if PMSG(lparam)^.message=actionNeededMessage then begin
+    GetWindowThreadProcessId(GetProp(apimMessageWnd,propertyAim),@temp);
+    if GetCurrentProcessId=temp then
+      performAction;
+  end;
+  result:=CallNextHookEx(curHookID,ncode,wparam,lparam);
+end;
+
+
+procedure startHook;
+begin
+  getInfo;
+  if apimMessageWnd=0 then exit;
+  curHookID:=SetWindowsHookEx(WH_GETMESSAGE,@GetMessageProc,HINSTANCE,0);
   SetProp(apimMessageWnd,propertyHookId,curHookID);
 end;
 
