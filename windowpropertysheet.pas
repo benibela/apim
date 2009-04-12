@@ -40,6 +40,7 @@ type
     Button5: TButton;
     Label1: TLabel;
     Label3: TLabel;
+    messageresult: TLabel;
     messageInject: TCheckBox;
     classNameEdt: TEdit;
     ColorDialog1: TColorDialog;
@@ -238,7 +239,7 @@ begin
 end;
 
 procedure TWindowPropertySheetFrm.messageSend_btnClick(Sender: TObject);
-var wp,lp: cardinal;
+var wp,lp,res: cardinal;
     blockWP,blockLP: TMemoryBlocks;
     msgStr: string;
 begin
@@ -263,8 +264,8 @@ begin
   if messageInject.Checked and ((length(blockLP[0])>4)or(length(blockWP[0])>4)) then
     ShowMessage(tr['Injection mit größeren Block wird in dieser Version nicht unterstützt.']); //todo: injection with block
   if messageInject.Checked then SendMessageInjected(currentWindow,Str2Cardinal(msgStr),wp,lp)
-  else SendMessage(currentWindow,Str2Cardinal(msgStr),wp,lp);
-
+  else res:=SendMessage(currentWindow,Str2Cardinal(msgStr),wp,lp);
+  messageresult.Caption:=tr['Result: ']+Cardinal2Str(res);
 end;
 
 procedure TWindowPropertySheetFrm.blinkWindowClick(Sender: TObject);
