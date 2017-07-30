@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ComCtrls,LDockCtrl, ExtCtrls,TreeListView,LCLType;
+  StdCtrls, ComCtrls,ExtCtrls,TreeListView,LCLType;
 
 type
 
@@ -55,8 +55,6 @@ type
     { private declarations }
   public
     systemTLV: TTreeListView;
-    { public declarations }
-    Docker: TLazControlDocker;
     //System/Sonstiges
     procedure displaySysProperties();
   end;
@@ -121,7 +119,6 @@ end;
 
 procedure TsystemOptionsFrm.FormCreate(Sender: TObject);
 begin
-  Docker:=TLazControlDocker.Create(Self);
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
   systemTLV:=TTreeListView.Create(self);

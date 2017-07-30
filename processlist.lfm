@@ -9,9 +9,9 @@ object processListFrm: TprocessListFrm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ParentFont = False
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   object Panel5: TPanel
+    Left = 0
     Height = 236
     Top = 120
     Width = 529
@@ -23,57 +23,57 @@ object processListFrm: TprocessListFrm
     TabOrder = 0
     object Label10: TLabel
       Left = 8
-      Height = 14
+      Height = 15
       Top = 34
-      Width = 43
+      Width = 56
       Caption = 'Priorität:'
       ParentColor = False
     end
     object Label11: TLabel
       Left = 8
-      Height = 14
+      Height = 15
       Top = 8
-      Width = 53
+      Width = 68
       Caption = 'ProcessID:'
       ParentColor = False
     end
     object Label1: TLabel
       Left = 240
-      Height = 14
+      Height = 15
       Top = 8
-      Width = 46
+      Width = 59
       Caption = 'Startzeit:'
       ParentColor = False
     end
     object Label2: TLabel
       Left = 240
-      Height = 14
+      Height = 15
       Top = 34
-      Width = 52
+      Width = 69
       Caption = 'Kernelzeit:'
       ParentColor = False
     end
     object Label3: TLabel
       Left = 379
-      Height = 14
+      Height = 15
       Top = 35
-      Width = 44
+      Width = 58
       Caption = 'Userzeit:'
       ParentColor = False
     end
     object Label4: TLabel
       Left = 241
-      Height = 14
+      Height = 15
       Top = 60
-      Width = 27
+      Width = 32
       Caption = 'RAM:'
       ParentColor = False
     end
     object Label5: TLabel
       Left = 378
-      Height = 14
+      Height = 15
       Top = 61
-      Width = 58
+      Width = 75
       Caption = 'RAM (max):'
       ParentColor = False
     end
@@ -101,11 +101,11 @@ object processListFrm: TprocessListFrm
       AnchorSideTop.Control = Label10
       AnchorSideTop.Side = asrCenter
       Left = 64
-      Height = 21
+      Height = 25
       Hint = 'Setzt die Priorität des gewählten Prozesses'
-      Top = 31
+      Top = 29
       Width = 145
-      ItemHeight = 13
+      ItemHeight = 0
       Items.Strings = (
         'niedrig'
         'unter normal'
@@ -123,9 +123,9 @@ object processListFrm: TprocessListFrm
       AnchorSideTop.Control = Label11
       AnchorSideTop.Side = asrCenter
       Left = 64
-      Height = 21
+      Height = 25
       Hint = 'ProcessID des gewählten Prozesses'
-      Top = 5
+      Top = 3
       Width = 145
       OnChange = processideditChange
       TabOrder = 3
@@ -133,7 +133,7 @@ object processListFrm: TprocessListFrm
     object starttimeedt: TEdit
       AnchorSideLeft.Side = asrBottom
       Left = 297
-      Height = 21
+      Height = 25
       Top = 5
       Width = 221
       Color = clBtnFace
@@ -142,7 +142,7 @@ object processListFrm: TprocessListFrm
     end
     object kerneltimeedt: TEdit
       Left = 297
-      Height = 21
+      Height = 25
       Top = 31
       Width = 78
       Color = clBtnFace
@@ -151,7 +151,7 @@ object processListFrm: TprocessListFrm
     end
     object usertimeedt: TEdit
       Left = 440
-      Height = 21
+      Height = 25
       Top = 31
       Width = 78
       Color = clBtnFace
@@ -160,7 +160,7 @@ object processListFrm: TprocessListFrm
     end
     object ramMinEdt: TEdit
       Left = 297
-      Height = 21
+      Height = 25
       Top = 57
       Width = 78
       Color = clBtnFace
@@ -169,7 +169,7 @@ object processListFrm: TprocessListFrm
     end
     object ramMaxEdt: TEdit
       Left = 440
-      Height = 21
+      Height = 25
       Top = 57
       Width = 78
       Color = clBtnFace
@@ -186,6 +186,7 @@ object processListFrm: TprocessListFrm
       TabOrder = 9
     end
     object memStat: TPanel
+      Left = 0
       Height = 126
       Top = 110
       Width = 529
@@ -208,20 +209,21 @@ object processListFrm: TprocessListFrm
       end
       object Label6: TLabel
         Left = 127
-        Height = 14
-        Top = 106
-        Width = 124
+        Height = 15
+        Top = 105
+        Width = 163
         Anchors = [akLeft, akBottom]
         Caption = 'Adresse der ersten Seite:'
         ParentColor = False
       end
       object memScroll: TScrollBar
-        Left = 504
+        Left = 506
         Height = 96
         Top = 5
-        Width = 17
+        Width = 15
         Anchors = [akTop, akRight, akBottom]
         Kind = sbVertical
+        PageSize = 0
         TabOrder = 0
         OnScroll = memScrollScroll
       end
@@ -238,9 +240,9 @@ object processListFrm: TprocessListFrm
       object memScrolledAddress: TEdit
         AnchorSideLeft.Control = Label6
         AnchorSideLeft.Side = asrBottom
-        Left = 256
-        Height = 23
-        Top = 101
+        Left = 295
+        Height = 25
+        Top = 99
         Width = 80
         Anchors = [akLeft, akBottom]
         BorderSpacing.Left = 5
@@ -261,6 +263,7 @@ object processListFrm: TprocessListFrm
   end
   object Splitter1: TSplitter
     Cursor = crVSplit
+    Left = 0
     Height = 5
     Top = 115
     Width = 529
@@ -268,8 +271,8 @@ object processListFrm: TprocessListFrm
     ResizeAnchor = akBottom
   end
   object PopupMenu1: TPopupMenu
-    left = 128
-    top = 38
+    Left = 128
+    Top = 38
     object MenuItem2: TMenuItem
       Caption = 'Fenster auflisten'
       OnClick = MenuItem2Click
@@ -285,7 +288,7 @@ object processListFrm: TprocessListFrm
   end
   object autorefreshtimer: TTimer
     OnTimer = autorefreshtimerTimer
-    left = 264
-    top = 64
+    Left = 264
+    Top = 64
   end
 end

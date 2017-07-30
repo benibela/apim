@@ -12,13 +12,12 @@ object mainForm: TmainForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ParentFont = False
   ShowHint = True
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   Visible = True
   object MainMenu1: TMainMenu
-    left = 224
-    top = 200
+    Left = 224
+    Top = 200
     object MenuItem16: TMenuItem
       Caption = 'Allgemein'
       object MenuItem18: TMenuItem

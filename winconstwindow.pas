@@ -51,7 +51,7 @@ var
   windowConstForm: TwindowConstForm;
 
 implementation
-uses applicationConfig,FileUtil,ptranslateutils;
+uses applicationConfig,FileUtil,ptranslateutils,LazFileUtils;
 {$I winconstwindow.atr}
 
 { TwindowConstForm }

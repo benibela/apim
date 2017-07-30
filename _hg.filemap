@@ -1,2 +1,4 @@
 include programs/system/APIV
+include components/pascal/system/apihooking/PEStuff.pas
 rename programs/system/APIV .
+rename components/pascal/system/apihooking/PEStuff.pas PEStuff.pas

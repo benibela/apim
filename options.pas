@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls,LDockCtrl;
+  StdCtrls;
 
 type
 
@@ -49,7 +49,6 @@ type
   private
     { private declarations }
   public
-    Docker: TLazControlDocker;
     { public declarations }
   end; 
 
@@ -65,7 +64,6 @@ uses ptranslateutils,applicationConfig;
 
 procedure ToptionFrm.FormCreate(Sender: TObject);
 begin
-  Docker:=TLazControlDocker.Create(Self);
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
 

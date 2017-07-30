@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls,TreeListView,StdCtrls,LDockCtrl,windowcontrolfuncs, Menus;
+  ExtCtrls,TreeListView,StdCtrls,windowcontrolfuncs, Menus;
 
 type
 
@@ -91,13 +91,12 @@ type
     procedure processTreeListSelect(sender: TObject; item: TTreeListItem);
   private
     { private declarations }
-    procedure showHandle(sender:tobject; wnd: THandle;func:longint);
     processTreeList: TTreeListView;
+    procedure showHandle(sender:tobject; wnd: THandle;func:longint);
   public
     { public declarations }
     //Processliste
     callback: TCallbackComponent;
-    Docker: TLazControlDocker;
     pageInfos: array of TPageInfo;
     pageSize,memScreenLineLength: longint;
   end;
@@ -110,7 +109,7 @@ var
 
 implementation
 
-uses applicationConfig, windows,TLHelp32,proc9,bbutils,math,ptranslateutils,Translations;
+uses applicationConfig, windows,TLHelp32,proc9,bbutils,math,ptranslateutils,Translations,LazUTF8;
 
 {$I processlist.atr}
 
@@ -190,7 +189,7 @@ BEGIN
   repeat
     //get id/name
     parentItem:=processTreeList.Items.FindItemWithRecordText(Cardinal2Str(pe32.th32ParentProcessID),1);
-    item:=processTreeList.Items.Add(parentItem,ExtractFileName(string(SysToUTF8(pe32.szExeFile))));
+    item:=processTreeList.Items.Add(parentItem,ExtractFileName(string(WinCPToUTF8(pe32.szExeFile))));
     item.recordItems.Add(Cardinal2Str(pe32.th32ProcessID));
     //item.recordItems.AddWithText(string(pe32.szExeFile));
 
@@ -222,7 +221,7 @@ BEGIN
       end else fullPath:=pe32.szExeFile; //better than nothing
       CloseHandle(curProcess);
     end else fullPath:=pe32.szExeFile;//full path on 9x
-    fullPathUTF8:=SysToUTF8(fullPath);
+    fullPathUTF8:=WinCPToUTF8(fullPath);
     ITEm.RecordItems.Add(fullPathUTF8);
 
     //get icon
@@ -298,7 +297,7 @@ begin
   processTreeList.Images:=processIconCache;
   processTreeList.PopupMenu:=PopupMenu1;
 
-  Docker:=TLazControlDocker.Create(Self);
+
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
   Panel5.Height:=Panel5.Constraints.MinHeight;

@@ -5,6 +5,10 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Docking-System konnte nicht initalisiert werden"
 msgstr "couldn't initialize docking system"
 
+#: mainunit.tr_autogen_ins_hauptfenster_einf__gen
+msgid "ins Hauptfenster einfügen"
+msgstr ""
+
 #: mainunit.tr_autogen_ins_hauptfenster_in_neuer_seite_einf__gen
 msgid "ins Hauptfenster in neuer Seite einfügen"
 msgstr "insert on main window in a new page"
@@ -102,723 +106,738 @@ msgstr "property"
 msgid "Wert"
 msgstr "value"
 
-#: TMAINFORM.CAPTION
+#: tmainform.caption
 msgctxt "TMAINFORM.CAPTION"
 msgid "API Manager 3.0.0"
 msgstr ""
 
-#: TMAINFORM.MENUITEM1.CAPTION
+#: tmainform.menuitem1.caption
 msgctxt "TMAINFORM.MENUITEM1.CAPTION"
 msgid "Fensterliste"
 msgstr "list of windows"
 
-#: TMAINFORM.MENUITEM10.CAPTION
+#: tmainform.menuitem10.caption
 msgctxt "TMAINFORM.MENUITEM10.CAPTION"
 msgid "einfügen"
 msgstr "insert"
 
-#: TMAINFORM.MENUITEM11.CAPTION
+#: tmainform.menuitem11.caption
 msgctxt "TMAINFORM.MENUITEM11.CAPTION"
 msgid "in neuer Seite einfügen"
 msgstr "insert in new page"
 
-#: TMAINFORM.MENUITEM12.CAPTION
+#: tmainform.menuitem12.caption
 msgctxt "TMAINFORM.MENUITEM12.CAPTION"
 msgid "in neuer Seite einfügen"
 msgstr "insert in new page"
 
-#: TMAINFORM.MENUITEM13.CAPTION
+#: tmainform.menuitem13.caption
 msgctxt "TMAINFORM.MENUITEM13.CAPTION"
 msgid "in neuer Seite einfügen"
 msgstr "insert in new page"
 
-#: TMAINFORM.MENUITEM14.CAPTION
+#: tmainform.menuitem14.caption
 msgctxt "TMAINFORM.MENUITEM14.CAPTION"
 msgid "in neuer Seite einfügen"
 msgstr "insert in new page"
 
-#: TMAINFORM.MENUITEM15.CAPTION
+#: tmainform.menuitem15.caption
 msgctxt "TMAINFORM.MENUITEM15.CAPTION"
 msgid "in neuer Seite einfügen"
 msgstr "insert in new page"
 
-#: TMAINFORM.MENUITEM16.CAPTION
+#: tmainform.menuitem16.caption
 msgid "Allgemein"
 msgstr "file"
 
-#: TMAINFORM.MENUITEM17.CAPTION
+#: tmainform.menuitem17.caption
 msgid "Beenden"
 msgstr "close"
 
-#: TMAINFORM.MENUITEM18.CAPTION
+#: tmainform.menuitem18.caption
 msgid "Aktuelle Seite schließen"
 msgstr "close current page"
 
-#: TMAINFORM.MENUITEM2.CAPTION
+#: tmainform.menuitem2.caption
 msgctxt "TMAINFORM.MENUITEM2.CAPTION"
 msgid "Suchwerkzeug"
 msgstr "search tool"
 
-#: TMAINFORM.MENUITEM3.CAPTION
+#: tmainform.menuitem3.caption
 msgctxt "TMAINFORM.MENUITEM3.CAPTION"
 msgid "Prozessliste"
 msgstr "list of processes"
 
-#: TMAINFORM.MENUITEM4.CAPTION
+#: tmainform.menuitem4.caption
 msgctxt "TMAINFORM.MENUITEM4.CAPTION"
 msgid "Systeminformationen"
 msgstr "system information"
 
-#: TMAINFORM.MENUITEM5.CAPTION
+#: tmainform.menuitem5.caption
 msgctxt "TMAINFORM.MENUITEM5.CAPTION"
 msgid "Einstellungen"
 msgstr "settings"
 
-#: TMAINFORM.MENUITEM6.CAPTION
+#: tmainform.menuitem6.caption
 msgctxt "TMAINFORM.MENUITEM6.CAPTION"
 msgid "einfügen"
 msgstr "insert"
 
-#: TMAINFORM.MENUITEM7.CAPTION
+#: tmainform.menuitem7.caption
 msgctxt "TMAINFORM.MENUITEM7.CAPTION"
 msgid "einfügen"
 msgstr "insert"
 
-#: TMAINFORM.MENUITEM8.CAPTION
+#: tmainform.menuitem8.caption
 msgctxt "TMAINFORM.MENUITEM8.CAPTION"
 msgid "einfügen"
 msgstr "insert"
 
-#: TMAINFORM.MENUITEM9.CAPTION
+#: tmainform.menuitem9.caption
 msgctxt "TMAINFORM.MENUITEM9.CAPTION"
 msgid "einfügen"
 msgstr "insert"
 
-#: TOPTIONFRM.AUTOREFRESHCHECK.CAPTION
+#: toptionfrm.autorefreshcheck.caption
 msgid "Automatisch aktualisieren:  alle"
 msgstr "refresh automatically every"
 
-#: TOPTIONFRM.BUTTON1.CAPTION
+#: toptionfrm.button1.caption
 msgid "speichern"
 msgstr "save"
 
-#: TOPTIONFRM.BUTTON2.CAPTION
+#: toptionfrm.button2.caption
 msgid "zurücksetzen"
 msgstr "reset"
 
-#: TOPTIONFRM.CAPTION
+#: toptionfrm.caption
 msgctxt "TOPTIONFRM.CAPTION"
 msgid "Einstellungen"
 msgstr "settings"
 
-#: TOPTIONFRM.CHECKHEX.CAPTION
+#: toptionfrm.checkhex.caption
 msgid "Zahlen hexadezimal darstellen"
 msgstr "hexadecimal numbers"
 
-#: TOPTIONFRM.CHECKHEX.HINT
+#: toptionfrm.checkhex.hint
 msgid "Stellt ein, ob die Zahlen hexadezimal oder dezimal angezeigt werden sollen. Bei Hexadezimalen Zahlen müssen auch die meisten Eingaben hexadezimal erfolgen."
 msgstr "Set the numbers' base"
 
-#: TOPTIONFRM.DEFAULTREFRESHEDT.HINT
+#: toptionfrm.defaultrefreshedt.hint
 msgid "Zeigt an wie oft die periodische Wiederholung der Prozess und Fenstersuche erfolgen soll"
 msgstr "Determines how often the shown information should be refreshed automatically"
 
-#: TOPTIONFRM.DEFAULTREFRESHEDT.TEXT
+#: toptionfrm.defaultrefreshedt.text
 msgid "3000"
 msgstr "3000"
 
-#: TOPTIONFRM.LABEL1.CAPTION
+#: toptionfrm.label1.caption
 msgid "Gleichzeitige Seitenfenster:"
 msgstr "Maximum count of page windows:"
 
-#: TOPTIONFRM.LABEL2.CAPTION
+#: toptionfrm.label2.caption
 msgid "Sprache:"
 msgstr "language"
 
-#: TOPTIONFRM.LABEL21.CAPTION
+#: toptionfrm.label21.caption
 msgid "ms"
 msgstr ""
 
-#: TOPTIONFRM.LABEL29.CAPTION
+#: toptionfrm.label29.caption
 msgid "Windowskonstanten:"
 msgstr "windows constants"
 
-#: TOPTIONFRM.MAXSUBFORMS_EDT.TEXT
+#: toptionfrm.maxsubforms_edt.text
 msgid "3"
 msgstr ""
 
-#: TOPTIONFRM.OPTWINCONST_EDT.TEXT
+#: toptionfrm.optwinconst_edt.text
 msgid "winconst\\"
 msgstr ""
 
-#: TPROCESSLISTFRM.BUTTON1.CAPTION
+#: tprocesslistfrm.button1.caption
 msgid "Speicher anzeigen"
 msgstr "Show memory"
 
-#: TPROCESSLISTFRM.BUTTON2.CAPTION
+#: tprocesslistfrm.button2.caption
 msgid "zum nächsten Block"
 msgstr "to the next block"
 
-#: TPROCESSLISTFRM.CAPTION
+#: tprocesslistfrm.caption
 msgctxt "TPROCESSLISTFRM.CAPTION"
 msgid "Prozessliste"
 msgstr "list of processes"
 
-#: TPROCESSLISTFRM.COMBOBOX2.HINT
+#: tprocesslistfrm.combobox2.hint
 msgid "Setzt die Priorität des gewählten Prozesses"
 msgstr "Set the priority of the chosen processes"
 
-#: TPROCESSLISTFRM.DISPLAYPROCESSES.CAPTION
+#: tprocesslistfrm.displayprocesses.caption
 msgid "Prozessliste aktualisieren"
 msgstr "Refresh processes"
 
-#: TPROCESSLISTFRM.DISPLAYPROCESSES.HINT
+#: tprocesslistfrm.displayprocesses.hint
 msgid "Sucht alle Prozesse"
 msgstr "search every processes"
 
-#: TPROCESSLISTFRM.KILLPROCESSBTN.CAPTION
+#: tprocesslistfrm.killprocessbtn.caption
 msgid "Prozess beenden"
 msgstr "exit process"
 
-#: TPROCESSLISTFRM.KILLPROCESSBTN.HINT
+#: tprocesslistfrm.killprocessbtn.hint
 msgid "Beendet den gewählten Prozess"
 msgstr "exit the chosen process"
 
-#: TPROCESSLISTFRM.LABEL1.CAPTION
+#: tprocesslistfrm.label1.caption
 msgid "Startzeit:"
 msgstr "start time:"
 
-#: TPROCESSLISTFRM.LABEL10.CAPTION
+#: tprocesslistfrm.label10.caption
 msgid "Priorität:"
 msgstr "priority:"
 
-#: TPROCESSLISTFRM.LABEL11.CAPTION
+#: tprocesslistfrm.label11.caption
 msgid "ProcessID:"
 msgstr "ProcessID:"
 
-#: TPROCESSLISTFRM.LABEL2.CAPTION
+#: tprocesslistfrm.label2.caption
 msgid "Kernelzeit:"
 msgstr "kernel time:"
 
-#: TPROCESSLISTFRM.LABEL3.CAPTION
+#: tprocesslistfrm.label3.caption
 msgid "Userzeit:"
 msgstr "user time:"
 
-#: TPROCESSLISTFRM.LABEL4.CAPTION
+#: tprocesslistfrm.label4.caption
 msgid "RAM:"
 msgstr ""
 
-#: TPROCESSLISTFRM.LABEL5.CAPTION
+#: tprocesslistfrm.label5.caption
 msgid "RAM (max):"
 msgstr ""
 
-#: TPROCESSLISTFRM.LABEL6.CAPTION
+#: tprocesslistfrm.label6.caption
 msgid "Adresse der ersten Seite:"
 msgstr "adress of the first page:"
 
-#: TPROCESSLISTFRM.LISTWINDOWS.CAPTION
+#: tprocesslistfrm.listwindows.caption
 msgctxt "TPROCESSLISTFRM.LISTWINDOWS.CAPTION"
 msgid "Fenster auflisten"
 msgstr "list windows"
 
-#: TPROCESSLISTFRM.MEMSCROLLEDADDRESS.TEXT
+#: tprocesslistfrm.memscrolledaddress.text
 msgctxt "TPROCESSLISTFRM.MEMSCROLLEDADDRESS.TEXT"
 msgid "0"
 msgstr ""
 
-#: TPROCESSLISTFRM.MENUITEM1.CAPTION
+#: tprocesslistfrm.menuitem1.caption
 msgid "Prozeß beenden"
 msgstr "exit process"
 
-#: TPROCESSLISTFRM.MENUITEM2.CAPTION
+#: tprocesslistfrm.menuitem2.caption
 msgctxt "TPROCESSLISTFRM.MENUITEM2.CAPTION"
 msgid "Fenster auflisten"
 msgstr "list windows"
 
-#: TPROCESSLISTFRM.MENUITEM3.CAPTION
+#: tprocesslistfrm.menuitem3.caption
 msgid "aktualisieren"
 msgstr "refresh"
 
-#: TPROCESSLISTFRM.PROCESSIDEDIT.HINT
+#: tprocesslistfrm.processidedit.hint
 msgid "ProcessID des gewählten Prozesses"
 msgstr "ProcessID of the chosen process"
 
-#: TSEARCHTOOLFRM.CAPTION
+#: tsearchtoolfrm.caption
 msgctxt "TSEARCHTOOLFRM.CAPTION"
 msgid "Suchwerkzeug"
 msgstr "search tool"
 
-#: TSEARCHTOOLFRM.HIDEAPIVWHENSEARCHING.CAPTION
+#: tsearchtoolfrm.hideapivwhensearching.caption
 msgid "APIV ausblenden"
 msgstr "hide APIM"
 
-#: TSEARCHTOOLFRM.LABEL1.CAPTION
+#: tsearchtoolfrm.label1.caption
 msgctxt "TSEARCHTOOLFRM.LABEL1.CAPTION"
 msgid "Titel:"
 msgstr "text:"
 
-#: TSEARCHTOOLFRM.LABEL26.CAPTION
+#: tsearchtoolfrm.label26.caption
 msgid "\"Maus\"-Handle:"
 msgstr "\"mouse\"-handle:"
 
-#: TSEARCHTOOLFRM.LABEL27.CAPTION
+#: tsearchtoolfrm.label27.caption
 msgctxt "TSEARCHTOOLFRM.LABEL27.CAPTION"
 msgid "Klasse:"
 msgstr "class:"
 
-#: TSEARCHTOOLFRM.LABEL28.CAPTION
+#: tsearchtoolfrm.label28.caption
 msgctxt "TSEARCHTOOLFRM.LABEL28.CAPTION"
 msgid "Programm:"
 msgstr "program:"
 
-#: TSEARCHTOOLFRM.LINKSOBEN.CAPTION
+#: tsearchtoolfrm.linksoben.caption
 msgctxt "TSEARCHTOOLFRM.LINKSOBEN.CAPTION"
 msgid "linksoben"
 msgstr ""
 
-#: TSEARCHTOOLFRM.MOUSEREFRESHALLLIVE.CAPTION
+#: tsearchtoolfrm.mouserefreshalllive.caption
 msgid "Alles live aktualisieren"
 msgstr "update all live"
 
-#: TSEARCHTOOLFRM.RECHTSUNTEN.CAPTION
+#: tsearchtoolfrm.rechtsunten.caption
 msgctxt "TSEARCHTOOLFRM.RECHTSUNTEN.CAPTION"
 msgid "linksoben"
 msgstr ""
 
-#: TSYSTEMOPTIONSFRM.CALLAPI.CAPTION
+#: tsystemoptionsfrm.callapi.caption
 msgid "call"
 msgstr ""
 
-#: TSYSTEMOPTIONSFRM.CALLAPIPARAMETER.TEXT
+#: tsystemoptionsfrm.callapiparameter.text
 msgid "(0,@'Hallo',@'Welt',0)"
 msgstr ""
 
-#: TSYSTEMOPTIONSFRM.CALLAPIPROC.TEXT
+#: tsystemoptionsfrm.callapiproc.text
 msgid "MessageBox"
 msgstr ""
 
-#: TSYSTEMOPTIONSFRM.CAPTION
+#: tsystemoptionsfrm.caption
 msgid "Systemoptionen"
 msgstr "system informations"
 
-#: TSYSTEMOPTIONSFRM.LABEL14.CAPTION
+#: tsystemoptionsfrm.label14.caption
 msgid "Funktion:"
 msgstr "function:"
 
-#: TSYSTEMOPTIONSFRM.LABEL16.CAPTION
+#: tsystemoptionsfrm.label16.caption
 msgid "Parameter:"
 msgstr "parameter:"
 
-#: TSYSTEMOPTIONSFRM.LABEL3.CAPTION
+#: tsystemoptionsfrm.label3.caption
 msgid "Systemeigenschaften:"
 msgstr "system informations"
 
-#: TSYSTEMOPTIONSFRM.LABEL4.CAPTION
+#: tsystemoptionsfrm.label4.caption
 msgid "API-Ausführung:"
 msgstr "run dll"
 
-#: TSYSTEMOPTIONSFRM.LABEL5.CAPTION
+#: tsystemoptionsfrm.label5.caption
 msgid "Ergebnis:"
 msgstr "result"
 
-#: TSYSTEMOPTIONSFRM.LABEL6.CAPTION
+#: tsystemoptionsfrm.label6.caption
 msgid "dll:"
 msgstr ""
 
-#: TWELCOMEFRM.BUTTON1.CAPTION
+#: twelcomefrm.button1.caption
 msgctxt "TWELCOMEFRM.BUTTON1.CAPTION"
 msgid "Suchwerkzeug"
 msgstr "search tool"
 
-#: TWELCOMEFRM.BUTTON2.CAPTION
+#: twelcomefrm.button2.caption
 msgctxt "TWELCOMEFRM.BUTTON2.CAPTION"
 msgid "Fensterliste"
 msgstr "list of windows"
 
-#: TWELCOMEFRM.BUTTON3.CAPTION
+#: twelcomefrm.button3.caption
 msgctxt "TWELCOMEFRM.BUTTON3.CAPTION"
 msgid "Prozessliste"
 msgstr "list of processes"
 
-#: TWELCOMEFRM.BUTTON4.CAPTION
+#: twelcomefrm.button4.caption
 msgctxt "TWELCOMEFRM.BUTTON4.CAPTION"
 msgid "Systeminformationen"
 msgstr "system information"
 
-#: TWELCOMEFRM.BUTTON5.CAPTION
+#: twelcomefrm.button5.caption
 msgctxt "TWELCOMEFRM.BUTTON5.CAPTION"
 msgid "Einstellungen"
 msgstr "settings"
 
-#: TWELCOMEFRM.CAPTION
+#: twelcomefrm.caption
 msgid "Startseite"
 msgstr "start page"
 
-#: TWELCOMEFRM.LABEL1.CAPTION
+#: twelcomefrm.label1.caption
 msgctxt "TWELCOMEFRM.LABEL1.CAPTION"
 msgid "API Manager 3.0.0"
 msgstr ""
 
-#: TWINDOWCONSTFORM.CAPTION
+#: twindowconstform.caption
 msgid "windowConstForm"
 msgstr "windowConstForm"
 
-#: TWINDOWLISTFRM.CAPTION
+#: twindowlistfrm.caption
 msgctxt "TWINDOWLISTFRM.CAPTION"
 msgid "Fensterliste"
 msgstr "list of windows"
 
-#: TWINDOWLISTFRM.LABEL12.CAPTION
+#: twindowlistfrm.label12.caption
 msgid "Thread:"
 msgstr ""
 
-#: TWINDOWLISTFRM.LABEL30.CAPTION
+#: twindowlistfrm.label30.caption
 msgid "Filter:"
 msgstr "filter:"
 
-#: TWINDOWLISTFRM.LABEL31.CAPTION
+#: twindowlistfrm.label31.caption
 msgctxt "TWINDOWLISTFRM.LABEL31.CAPTION"
 msgid "Parent:"
 msgstr "parent:"
 
-#: TWINDOWLISTFRM.LABEL32.CAPTION
+#: twindowlistfrm.label32.caption
 msgctxt "TWINDOWLISTFRM.LABEL32.CAPTION"
 msgid "Programm:"
 msgstr "program:"
 
-#: TWINDOWLISTFRM.MENUITEM1.CAPTION
+#: twindowlistfrm.menuitem1.caption
 msgid "Nur Kindfenster"
 msgstr "only children"
 
-#: TWINDOWLISTFRM.MENUITEM2.CAPTION
+#: twindowlistfrm.menuitem2.caption
 msgid "Nur dieses Programm"
 msgstr "only this program"
 
-#: TWINDOWLISTFRM.WINDOWLISTFILTERPARENTUP.CAPTION
+#: twindowlistfrm.windowlistfilterparentup.caption
 msgid "5"
 msgstr ""
 
-#: TWINDOWLISTFRM.WINDOWLISTFILTERPARENT_EDT.TEXT
+#: twindowlistfrm.windowlistfilterparent_edt.text
 msgctxt "TWINDOWLISTFRM.WINDOWLISTFILTERPARENT_EDT.TEXT"
 msgid "0"
 msgstr ""
 
-#: TWINDOWLISTFRM.WINDOWSLISTFILTERDIRECTCHILDS.CAPTION
+#: twindowlistfrm.windowslistfilterdirectchilds.caption
 msgid "nur direkte Kinder"
 msgstr "only direct children"
 
-#: TWINDOWPROPERTYSHEETFRM.ALPHATRANS_CB.CAPTION
+#: twindowpropertysheetfrm.alphatrans_cb.caption
 msgid "Transparent:"
 msgstr "transparent:"
 
-#: TWINDOWPROPERTYSHEETFRM.BLINKWINDOW.CAPTION
+#: twindowpropertysheetfrm.blinkwindow.caption
 msgid "blink"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.BUTTON1.CAPTION
+#: twindowpropertysheetfrm.button1.caption
 msgid "children"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.BUTTON2.CAPTION
+#: twindowpropertysheetfrm.button2.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.BUTTON2.CAPTION"
 msgid "injected"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.BUTTON5.CAPTION
+#: twindowpropertysheetfrm.button5.caption
 msgid "erweitert"
 msgstr "extended"
 
-#: TWINDOWPROPERTYSHEETFRM.CAPTION
+#: twindowpropertysheetfrm.caption
 msgid "Eigenschaften"
 msgstr "properties"
 
-#: TWINDOWPROPERTYSHEETFRM.COLORKEY_CB.CAPTION
+#: twindowpropertysheetfrm.colorkey_cb.caption
 msgid "ColorKey:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.ENABLEDCB.CAPTION
+#: twindowpropertysheetfrm.enabledcb.caption
 msgid "enabled"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.ENABLEDCB.HINT
+#: twindowpropertysheetfrm.enabledcb.hint
 msgid "Zeigt an und stell ein, ob das gewählte Fenster enable ist"
 msgstr "determines if the selected window is enabled"
 
-#: TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.CAPTION
+#: twindowpropertysheetfrm.labclassname.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.CAPTION"
 msgid "Klasse:"
 msgstr "class:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABCLASSNAME.HINT
+#: twindowpropertysheetfrm.labclassname.hint
 msgid "Zeigt den Classnamen des aktuellen Fensters an"
 msgstr "shows the class name of the current window"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL1.CAPTION
+#: twindowpropertysheetfrm.label1.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL1.CAPTION"
 msgid "Window styles:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL13.CAPTION
+#: twindowpropertysheetfrm.label13.caption
 msgid "ProcessID: "
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL15.CAPTION
+#: twindowpropertysheetfrm.label15.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL15.CAPTION"
 msgid "Parent:"
 msgstr "parent:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL2.CAPTION
+#: twindowpropertysheetfrm.label2.caption
 msgid "Status:"
 msgstr "state:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL22.CAPTION
+#: twindowpropertysheetfrm.label22.caption
 msgid "Typ:"
 msgstr "type:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL23.CAPTION
+#: twindowpropertysheetfrm.label23.caption
 msgid "Gewähltes Handle:"
 msgstr "Selected handle:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL24.CAPTION
+#: twindowpropertysheetfrm.label24.caption
 msgid "Position:"
 msgstr "position:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL25.CAPTION
+#: twindowpropertysheetfrm.label25.caption
 msgid "Win-Properties:"
 msgstr "windows properties:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL3.CAPTION
+#: twindowpropertysheetfrm.label3.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL3.CAPTION"
 msgid "Extended Window styles:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL33.CAPTION
+#: twindowpropertysheetfrm.label33.caption
 msgid "Userdata:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL34.CAPTION
+#: twindowpropertysheetfrm.label34.caption
 msgid "WNDPROC:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL35.CAPTION
+#: twindowpropertysheetfrm.label35.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL35.CAPTION"
 msgid "Styles:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL36.CAPTION
+#: twindowpropertysheetfrm.label36.caption
 msgid "Owner:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL37.CAPTION
+#: twindowpropertysheetfrm.label37.caption
 msgid "Größe:"
 msgstr "Size:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL38.CAPTION
+#: twindowpropertysheetfrm.label38.caption
 msgid "-"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL8.CAPTION
+#: twindowpropertysheetfrm.label8.caption
 msgctxt "TWINDOWPROPERTYSHEETFRM.LABEL8.CAPTION"
 msgid "Titel:"
 msgstr "text:"
 
-#: TWINDOWPROPERTYSHEETFRM.LABEL9.CAPTION
+#: twindowpropertysheetfrm.label9.caption
 msgid "ThreadID: "
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABLPARAM.CAPTION
+#: twindowpropertysheetfrm.lablparam.caption
 msgid "LParam:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.LABWPARAM.CAPTION
+#: twindowpropertysheetfrm.labwparam.caption
 msgid "WParam:"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.MESSAGEINJECT.CAPTION
+#: twindowpropertysheetfrm.messageinject.caption
 msgid "send injected"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.MESSAGESEND_BTN.CAPTION
+#: twindowpropertysheetfrm.messageresult.caption
+msgid "Result:"
+msgstr ""
+
+#: twindowpropertysheetfrm.messagesend_btn.caption
 msgid "Nachricht senden:"
 msgstr "send message"
 
-#: TWINDOWPROPERTYSHEETFRM.MESSAGESEND_BTN.HINT
+#: twindowpropertysheetfrm.messagesend_btn.hint
 msgid "Schick dem gewählten Fenster eine Nachricht"
 msgstr "sends a message to the selected window"
 
-#: TWINDOWPROPERTYSHEETFRM.OWNERWND_EDT.TEXT
+#: twindowpropertysheetfrm.ownerwnd_edt.text
 msgctxt "TWINDOWPROPERTYSHEETFRM.OWNERWND_EDT.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWPROPERTYSHEETFRM.POSLTEDT.HINT
+#: twindowpropertysheetfrm.posltedt.hint
 msgctxt "TWINDOWPROPERTYSHEETFRM.POSLTEDT.HINT"
 msgid "Zeigt die Position des Fensters an"
 msgstr "shows the position of the window"
 
-#: TWINDOWPROPERTYSHEETFRM.POSLTEDT.TEXT
+#: twindowpropertysheetfrm.posltedt.text
 msgctxt "TWINDOWPROPERTYSHEETFRM.POSLTEDT.TEXT"
 msgid "(0,0)"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.POSRBEDT.HINT
+#: twindowpropertysheetfrm.posrbedt.hint
 msgctxt "TWINDOWPROPERTYSHEETFRM.POSRBEDT.HINT"
 msgid "Zeigt die Position des Fensters an"
 msgstr "shows the position of the window"
 
-#: TWINDOWPROPERTYSHEETFRM.POSRBEDT.TEXT
+#: twindowpropertysheetfrm.posrbedt.text
 msgctxt "TWINDOWPROPERTYSHEETFRM.POSRBEDT.TEXT"
 msgid "(0,0)"
 msgstr "shows the position of the window"
 
-#: TWINDOWPROPERTYSHEETFRM.SHOWSTATECMB.HINT
+#: twindowpropertysheetfrm.showstatecmb.hint
 msgid "Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll."
 msgstr "Controls if the window is minimized, maximized or normal"
 
-#: TWINDOWPROPERTYSHEETFRM.SIZEEDT.TEXT
+#: twindowpropertysheetfrm.sizeedt.text
 msgid "0x0"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.STAYONTOPCB.CAPTION
+#: twindowpropertysheetfrm.stayontopcb.caption
 msgid "immer im Vordergrund"
 msgstr "stay on top"
 
-#: TWINDOWPROPERTYSHEETFRM.UNICODECB.CAPTION
+#: twindowpropertysheetfrm.unicodecb.caption
 msgid "unicode"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.UNICODECB.HINT
+#: twindowpropertysheetfrm.unicodecb.hint
 msgid "Zeigt an , ob das gewählte Fenster ein unicode Fenster ist"
 msgstr "Shows if the selected window is a unicode window"
 
-#: TWINDOWPROPERTYSHEETFRM.VISIBLECB.CAPTION
+#: twindowpropertysheetfrm.visiblecb.caption
 msgid "visible"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.VISIBLECB.HINT
+#: twindowpropertysheetfrm.visiblecb.hint
 msgid "Zeigt an und stell ein, ob das gewählte Fenster sichtbar ist"
 msgstr "Shows if the selected window is visible"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWADDPROPERTY.CAPTION
+#: twindowpropertysheetfrm.windowaddproperty.caption
 msgid "Hinzufügen"
 msgstr "add"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWPROCESSIDEDT.TEXT
+#: twindowpropertysheetfrm.windowprocessidedt.text
 msgctxt "TWINDOWPROPERTYSHEETFRM.WINDOWPROCESSIDEDT.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPCHANGE.CAPTION
+#: twindowpropertysheetfrm.windowpropchange.caption
 msgid "Ändern"
 msgstr "change"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPERTYLIST.COLUMNS.CAPTION
+#: twindowpropertysheetfrm.windowpropertylist.columns[0].caption
+msgid "Name"
+msgstr ""
+
+#: twindowpropertysheetfrm.windowpropertylist.columns[1].caption
+msgctxt "twindowpropertysheetfrm.windowpropertylist.columns[1].caption"
 msgid "Value"
 msgstr ""
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWPROPREMOVEITEM.CAPTION
+#: twindowpropertysheetfrm.windowpropremoveitem.caption
 msgid "Löschen"
 msgstr "remove"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWTEXTEDT.HINT
+#: twindowpropertysheetfrm.windowtextedt.hint
 msgid "Zeigt und ändern den Text des Fensters."
 msgstr "Shows and changes the window text"
 
-#: TWINDOWPROPERTYSHEETFRM.WINDOWTHREADIDEDT.TEXT
+#: twindowpropertysheetfrm.windowthreadidedt.text
 msgctxt "TWINDOWPROPERTYSHEETFRM.WINDOWTHREADIDEDT.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWSTYLEFORM.BUTTON1.CAPTION
+#: twindowstyleform.button1.caption
 msgid "OK"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.BUTTON2.CAPTION
+#: twindowstyleform.button2.caption
 msgid "refresh"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.CAPTION
+#: twindowstyleform.caption
 msgctxt "TWINDOWSTYLEFORM.CAPTION"
 msgid "Styles:"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.CHECKBOX1.CAPTION
+#: twindowstyleform.checkbox1.caption
 msgctxt "TWINDOWSTYLEFORM.CHECKBOX1.CAPTION"
 msgid "inject"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.CLASSSTYLES.HINT
+#: twindowstyleform.classstyles.hint
 msgid "Zeigt die Classstyles an. Aktive Classstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
 msgstr "Shows and changes the class style"
 
-#: TWINDOWSTYLEFORM.EDIT1.TEXT
+#: twindowstyleform.edit1.text
 msgctxt "TWINDOWSTYLEFORM.EDIT1.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWSTYLEFORM.EDIT2.TEXT
+#: twindowstyleform.edit2.text
 msgctxt "TWINDOWSTYLEFORM.EDIT2.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWSTYLEFORM.EDIT3.TEXT
+#: twindowstyleform.edit3.text
 msgctxt "TWINDOWSTYLEFORM.EDIT3.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWSTYLEFORM.EDIT4.TEXT
+#: twindowstyleform.edit4.text
 msgctxt "TWINDOWSTYLEFORM.EDIT4.TEXT"
 msgid "0"
 msgstr "0"
 
-#: TWINDOWSTYLEFORM.EXTRACLASS.CAPTION
+#: twindowstyleform.extraclass.caption
 msgid "extraclass"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.EXTRAWINDOWSTYLE.HINT
+#: twindowstyleform.extrawindowstyle.hint
 msgctxt "TWINDOWSTYLEFORM.EXTRAWINDOWSTYLE.HINT"
 msgid "Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
 msgstr "Shows and changes the window styles"
 
-#: TWINDOWSTYLEFORM.LABEL1.CAPTION
+#: twindowstyleform.label1.caption
 msgctxt "TWINDOWSTYLEFORM.LABEL1.CAPTION"
 msgid "Window styles:"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.LABEL2.CAPTION
+#: twindowstyleform.label2.caption
 msgctxt "TWINDOWSTYLEFORM.LABEL2.CAPTION"
 msgid "Window styles:"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.LABEL3.CAPTION
+#: twindowstyleform.label3.caption
 msgctxt "TWINDOWSTYLEFORM.LABEL3.CAPTION"
 msgid "Extended Window styles:"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.LABEL4.CAPTION
+#: twindowstyleform.label4.caption
 msgid "Class styles"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.PANEL1.CAPTION
+#: twindowstyleform.panel1.caption
 msgid "Panel1"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.PANEL4.CAPTION
+#: twindowstyleform.panel4.caption
 msgid "Panel4"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.PANEL5.CAPTION
+#: twindowstyleform.panel5.caption
 msgid "Panel5"
 msgstr ""
 
-#: TWINDOWSTYLEFORM.WINDOWEXSTYLES.HINT
+#: twindowstyleform.windowexstyles.hint
 msgid "Zeigt die Windowexstyles an. Aktive Windowexstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
 msgstr "Shows and changes the extended window styles"
 
-#: TWINDOWSTYLEFORM.WINDOWSTYLES.HINT
+#: twindowstyleform.windowstyles.hint
 msgctxt "TWINDOWSTYLEFORM.WINDOWSTYLES.HINT"
 msgid "Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  "
 msgstr "Shows and changes the window styles"
+
+#: winconstwindow.tr_autogen_keine_windowskonstanten_gefunden__13_10__berpr_fen_sie_den_pfad__
+msgid ""
+"Keine Windowskonstanten gefunden\n"
+"#220berpr#252fen Sie den Pfad: \n"
+msgstr ""
 
 #: winconstwindow.tr_autogen_suche_in_der_freepascal_windows_unit
 msgid "Suche in der FreePascal Windows Unit"
@@ -910,6 +929,10 @@ msgstr "Serial"
 
 #: windowcontrolfuncs.tr_autogen_software
 msgid "Software"
+msgstr ""
+
+#: windowcontrolfuncs.tr_autogen_speicherseitengr____e
+msgid "Speicherseitengröße"
 msgstr ""
 
 #: windowcontrolfuncs.tr_autogen_string_nicht_geschlossen

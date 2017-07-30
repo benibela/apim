@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, TreeListView,StdCtrls,LDockCtrl,windowcontrolfuncs, Menus;
+  ExtCtrls, TreeListView,StdCtrls,windowcontrolfuncs, Menus;
 
 type
 
@@ -69,7 +69,6 @@ type
     procedure showHandle(sender:tobject; wnd: THandle;func:longint);
   public
     { public declarations }
-    Docker: TLazControlDocker;
     callback:TCallbackComponent;
   end;
 
@@ -88,7 +87,6 @@ procedure TWindowListFrm.FormCreate(Sender: TObject);
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
-  Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
   //=========WindowListFrm===========
@@ -196,6 +194,11 @@ procedure TWindowListFrm.windowListFilterParent_edtKeyUp(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
   if key=VK_RETURN then displayWindows;
+end;
+
+function strcopy2(s: string; start, last: longint): string;
+begin
+  result:=copy(s,start,last-start+1);
 end;
 
 procedure TWindowListFrm.windowListFilterProgram_edtDblClick(Sender: TObject);

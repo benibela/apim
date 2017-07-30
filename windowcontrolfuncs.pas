@@ -77,9 +77,9 @@ private
   friends: array[1..10] of TCallbackComponent;
 public
   id:longint;
-  constructor create(AOwner: TComponent);
   onShowForm: TCallbackShowForm;
   onShowHandle: TCallbackShowHandle;
+  constructor create(AOwner: TComponent);
   procedure showHandle(handle:THANDLE; where: longint; func:longint=0);
   function existsLinkTo(dest: longint):boolean;
   procedure Notification(AComponent: Tcomponent; Operation: TOperation);override;

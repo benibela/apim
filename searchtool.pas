@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls,windowcontrolfuncs,LDockCtrl,applicationConfig;
+  StdCtrls, ExtCtrls,windowcontrolfuncs,applicationConfig;
 
 type
 
@@ -69,13 +69,13 @@ type
     procedure PaintBox1Paint(Sender: TObject);
   private
     { private declarations }
-    procedure drawMiniScreen;
     currentMouseWindow: thandle;
     callback:TCallbackComponent;
     miniscreendbl: graphics.TBitmap;
+    procedure drawMiniScreen;
   public
     { public declarations }
-    Docker: TLazControlDocker;
+    //Docker: TLazControlDocker;
   end;
 
 var
@@ -163,7 +163,7 @@ end;
 
 procedure TsearchToolFrm.FormCreate(Sender: TObject);
 begin
-  Docker:=TLazControlDocker.Create(Self);
+  //Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);

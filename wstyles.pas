@@ -22,7 +22,7 @@ interface
 {$mode objfpc}{$h+}
 uses
   LResources, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType,windowcontrolfuncs,LDockCtrl;
+  StdCtrls, CheckLst, ExtCtrls{,richedit},LCLType,windowcontrolfuncs;
 const
   WS_EX_COMPOSITED = $02000000;
   WS_EX_NOACTIVATE = $08000000;
@@ -277,7 +277,6 @@ type
     procedure showHandle(sender:tobject; wnd: THandle;func:longint);
   public
     { Public-Deklarationen}
-    Docker: TLazControlDocker;
     callback: TCallbackComponent;
     han:THandle;
   end;
@@ -297,7 +296,6 @@ procedure Twindowstyleform.FormCreate(Sender: TObject);
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
-  Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
 end;

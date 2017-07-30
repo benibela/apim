@@ -60,7 +60,7 @@ function MakeWndColorKeyOff(Wnd: HWND): Boolean;
 
 function GetCPUSpeed: Double;
 implementation
-uses sysutils;
+uses sysutils, LazUTF8;
 function LoadFuncFromDLL(dll,func:pchar):pointer;
 var
   hUser32: HMODULE;
@@ -259,14 +259,14 @@ function GetWindowTextS(handle:HWND):utf8string;
 var text:array[0..255] of char;
 begin
   GetWindowText(handle,text,255);
-  result:=SysToUtf8(text);
+  result:=WinCPToUTF8(text);
 end;
 
 function GetWindowClassNameS(handle:HWND):utf8string;
 var text:array[0..255] of char;
 begin
   GetClassName(handle,text,255);
-  result:=AnsiToUtf8(text);
+  result:=WinCPToUTF8(text);
 end;
 
 function GetShowWindow(handle:hwnd):integer;
@@ -297,7 +297,7 @@ while Integer(ContinueLoop) <> 0 do
 begin
 	if aProcessEntry32.th32ProcessID = PID then
 	begin
-		result:=SysToUTF8(aProcessEntry32.szExeFile);
+		result:=WinCPToUTF8(aProcessEntry32.szExeFile);
 		break;
 	end;
 	ContinueLoop := Process32Next(aSnapShotHandle, aProcessEntry32);
@@ -479,6 +479,11 @@ begin
     result:=SetLayeredWindowAttributes(wnd,0,GetWindowAlpha(wnd),LWA_ALPHA);}
     result:=SetLayeredWindowAttributes(Wnd, 0, 0, LWA_COLORKEY);
 end;                    *)
+
+
+{$ifdef cpu64}
+{$error GetCPUSpeed only compiles on 32-bit}
+{$endif}
 
 function GetCPUSpeed: Double;
 const

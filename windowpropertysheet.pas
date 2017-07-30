@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, ComCtrls, Menus,windowcontrolfuncs,StdCtrls,Spin,CheckLst,LDockCtrl,windowList,
+  ExtCtrls, ComCtrls, Menus,windowcontrolfuncs,StdCtrls,Spin,CheckLst,windowList,
   processList,applicationConfig;
 
 type
@@ -143,7 +143,6 @@ type
     procedure changeProperty(prop:TObject);
   public
     { public declarations }
-    Docker: TLazControlDocker;
     callback: TCallbackComponent;
   end;
 
@@ -307,7 +306,6 @@ procedure TWindowPropertySheetFrm.FormCreate(Sender: TObject);
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
-  Docker:=TLazControlDocker.Create(Self);
   callback:=TCallbackComponent.create(self);
   callback.onShowHandle:=@showHandle;
 end;

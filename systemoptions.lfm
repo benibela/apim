@@ -10,66 +10,65 @@ object systemOptionsFrm: TsystemOptionsFrm
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  ParentFont = False
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   object Label3: TLabel
     Left = 7
-    Height = 14
+    Height = 15
     Top = 10
-    Width = 108
+    Width = 145
     Caption = 'Systemeigenschaften:'
     ParentColor = False
   end
   object Label4: TLabel
     Left = 12
-    Height = 14
+    Height = 15
     Top = 287
-    Width = 82
+    Width = 104
     Caption = 'API-Ausführung:'
     ParentColor = False
   end
   object Label5: TLabel
     Left = 100
-    Height = 14
+    Height = 15
     Top = 407
-    Width = 46
+    Width = 60
     Caption = 'Ergebnis:'
     ParentColor = False
   end
   object Label6: TLabel
     Left = 19
-    Height = 14
+    Height = 15
     Top = 310
-    Width = 15
+    Width = 20
     Caption = 'dll:'
     ParentColor = False
   end
   object Label14: TLabel
     Left = 19
-    Height = 14
+    Height = 15
     Top = 341
-    Width = 46
+    Width = 59
     Caption = 'Funktion:'
     ParentColor = False
   end
   object Label16: TLabel
     Left = 19
-    Height = 14
+    Height = 15
     Top = 374
-    Width = 55
+    Width = 71
     Caption = 'Parameter:'
     ParentColor = False
   end
   object callAPIResult_lbl: TLabel
     Left = 151
-    Height = 14
+    Height = 1
     Top = 407
     Width = 1
     ParentColor = False
   end
   object callAPIDLL: TEdit
     Left = 79
-    Height = 23
+    Height = 25
     Top = 306
     Width = 219
     OnChange = callAPIDLLChange
@@ -77,7 +76,7 @@ object systemOptionsFrm: TsystemOptionsFrm
   end
   object callAPIParameter: TEdit
     Left = 79
-    Height = 23
+    Height = 25
     Top = 370
     Width = 458
     Anchors = [akTop, akLeft, akRight]
@@ -103,17 +102,17 @@ object systemOptionsFrm: TsystemOptionsFrm
   end
   object callAPIProc: TComboBox
     Left = 79
-    Height = 21
+    Height = 25
     Top = 337
     Width = 219
-    ItemHeight = 13
+    ItemHeight = 0
     TabOrder = 4
     Text = 'MessageBox'
   end
   object Timer1: TTimer
     Interval = 500
     OnTimer = Timer1Timer
-    left = 329
-    top = 310
+    Left = 329
+    Top = 310
   end
 end

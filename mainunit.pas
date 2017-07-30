@@ -34,7 +34,7 @@ interface
 {$mode objfpc}{$h+}
 uses
   LResources, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs,
-  menus,sysutils, StdCtrls,LDockCtrl, LDockTree, ExtCtrls,windowcontrolfuncs,
+  menus,sysutils, StdCtrls, LDockTree, ExtCtrls,windowcontrolfuncs,
   ButtonPanel;
 
 type
@@ -88,7 +88,7 @@ type
   public
     { Public-Deklarationen}
     //ControlDocker1: TLazControlDocker;
-    DockingManager: TLazDockingManager;
+    DockingManager: TDockManager;
 
   end;
 
@@ -110,9 +110,9 @@ var tempPanel: tpanel;
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
-  DockingManager:=TLazDockingManager.Create(Self);
-  DockingManager.Manager.TitleHeight:=0; //disable title, because we have our own buttons
-  DockingManager.Manager.TitleWidth:=0;
+  DockingManager:=CreateDockManager;
+  //DockingManager.TitleHeight:=0; //disable title, because we have our own buttons
+  //DockingManager.TitleWidth:=0;
 
   tempPanel:=TPanel.create(self);
   tempPanel.parent:=self;
@@ -121,8 +121,8 @@ begin
   infoForm.onNewWindow:=@insertToNewPageClick;
 
   //Make page control with two pages
-  DockingManager.Manager.InsertControl(infoForm,alClient,tempPanel);
-  DockingManager.Manager.RemoveControl(tempPanel); //make on page
+  DockingManager.InsertControl(infoForm,alClient,tempPanel);
+  DockingManager.RemoveControl(tempPanel); //make on page
 
   for i:=0 to ControlCount-1 do
     if controls[i] is TLazDockPages then  begin
@@ -151,7 +151,7 @@ begin
   handleToClose:=tbutton(sender).parent.Handle;
   if (tbutton(sender).parent.parent<>nil)
      and not (tbutton(sender).parent.parent is TLazDockForm) then //#todo -2: check if this is needed in lazarus > 0.9.28
-    DockingManager.Manager.RemoveControl(tcontrol(sender).parent); //docked
+    DockingManager.RemoveControl(tcontrol(sender).parent); //docked
   PostMessage(tbutton(sender).parent.Handle,wm_close,0,0); //tbutton(sender).parent.free; //undocked
 
  // Application.ProcessMessages;
@@ -238,7 +238,8 @@ begin
   end else begin
     pos:=subForm.parent.ClientToScreen(subform.BoundsRect.TopLeft);
     size:=point(subForm.Width,subForm.Height);
-    DockingManager.Manager.UndockControl(tbutton(sender).parent,true);
+    //DockingManager.UndockControl(tbutton(sender).parent,true); //?? todo
+    DockingManager.RemoveControl(tbutton(sender).parent);
   //  tbutton(sender).Enabled:=false;
     subForm.BorderStyle:=bsSizeToolWin;
     subForm.Left:=Pos.x;
@@ -327,16 +328,16 @@ procedure TmainForm.addExistingSubForm(newform: Tform; insertTo: Tform;
   createpage: boolean);
 begin
   if insertTo <>nil then
-      DockingManager.Manager.InsertControl(newform,alBottom,insertTo)
+      DockingManager.InsertControl(newform,alBottom,insertTo)
   else begin
     createpage:=createpage or (pages.PageIndex=0);
     if not createpage then
       createpage:=2*maxSubFormPerPage-1<=pages.ActivePageComponent.ControlCount;//splitter+form
     if createpage then begin
-      DockingManager.Manager.InsertControl(newform,alClient,pages.ActivePageComponent.controls[0]);
+      DockingManager.InsertControl(newform,alClient,pages.ActivePageComponent.controls[0]);
       pages.PageIndex:=pages.PageIndex+1;
     end else
-      DockingManager.Manager.InsertControl(newform,alBottom,pages.ActivePageComponent.controls[pages.ActivePageComponent.ControlCount-1]); //last control because the new one is shown after this (due to albottom)
+      DockingManager.InsertControl(newform,alBottom,pages.ActivePageComponent.controls[pages.ActivePageComponent.ControlCount-1]); //last control because the new one is shown after this (due to albottom)
   end;
 end;
 

@@ -6,8 +6,6 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
   HorzScrollBar.Page = 586
   VertScrollBar.Page = 555
   VertScrollBar.Range = 532
-  VertScrollBar.Visible = True
-  AutoScroll = False
   BorderStyle = bsSizeToolWin
   Caption = 'Eigenschaften'
   ClientHeight = 556
@@ -20,12 +18,12 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
   OnKeyUp = FormKeyUp
   OnMouseDown = FormMouseDown
   OnMouseUp = FormMouseUp
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   object messageresult: TLabel
     Left = 58
-    Height = 14
+    Height = 15
     Top = 544
-    Width = 35
+    Width = 44
     Caption = 'Result:'
     ParentColor = False
   end
@@ -42,66 +40,66 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     OnClick = windowPropertyPanelClick
     object Label8: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 62
-      Width = 25
+      Width = 33
       Caption = 'Titel:'
       ParentColor = False
     end
     object Label9: TLabel
       Left = 445
-      Height = 14
+      Height = 15
       Top = 12
-      Width = 53
+      Width = 67
       Caption = 'ThreadID: '
       ParentColor = False
     end
     object Label13: TLabel
       Left = 308
-      Height = 14
+      Height = 15
       Top = 12
-      Width = 56
+      Width = 72
       Caption = 'ProcessID: '
       ParentColor = False
     end
     object labclassname: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Hint = 'Zeigt den Classnamen des aktuellen Fensters an'
       Top = 88
-      Width = 35
+      Width = 47
       Caption = 'Klasse:'
       ParentColor = False
     end
     object Label15: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 37
-      Width = 37
+      Width = 45
       Caption = 'Parent:'
       ParentColor = False
     end
     object Label23: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 12
-      Width = 91
+      Width = 123
       Caption = 'Gewähltes Handle:'
       ParentColor = False
     end
     object Label2: TLabel
       Left = 8
-      Height = 14
+      Height = 15
       Top = 162
-      Width = 36
+      Width = 45
       Caption = 'Status:'
       ParentColor = False
     end
     object Label24: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 137
-      Width = 42
+      Width = 56
       Caption = 'Position:'
       ParentColor = False
     end
@@ -110,48 +108,47 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Side = asrCenter
       Left = 346
       Height = 22
-      Top = 387
+      Top = 388
       Width = 65
-      Pen.Cosmetic = True
       OnMouseUp = colorKeyShapeMouseUp
     end
     object Label25: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 303
-      Width = 76
+      Width = 100
       Caption = 'Win-Properties:'
       ParentColor = False
     end
     object Label22: TLabel
       Left = 106
-      Height = 14
+      Height = 15
       Top = 422
-      Width = 23
+      Width = 26
       Caption = 'Typ:'
       ParentColor = False
     end
     object labwparam: TLabel
       Left = 58
-      Height = 14
+      Height = 15
       Top = 468
-      Width = 45
+      Width = 58
       Caption = 'WParam:'
       ParentColor = False
     end
     object lablparam: TLabel
       Left = 58
-      Height = 14
+      Height = 15
       Top = 495
-      Width = 40
+      Width = 52
       Caption = 'LParam:'
       ParentColor = False
     end
     object Label33: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 188
-      Width = 49
+      Width = 63
       Caption = 'Userdata:'
       ParentColor = False
     end
@@ -159,17 +156,17 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label33
       AnchorSideTop.Side = asrCenter
       Left = 258
-      Height = 14
+      Height = 15
       Top = 188
-      Width = 57
+      Width = 73
       Caption = 'WNDPROC:'
       ParentColor = False
     end
     object Label35: TLabel
       Left = 10
-      Height = 14
+      Height = 15
       Top = 226
-      Width = 34
+      Width = 44
       Caption = 'Styles:'
       ParentColor = False
     end
@@ -177,9 +174,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label15
       AnchorSideTop.Side = asrCenter
       Left = 453
-      Height = 14
+      Height = 15
       Top = 37
-      Width = 37
+      Width = 46
       Caption = 'Owner:'
       ParentColor = False
     end
@@ -187,9 +184,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label24
       AnchorSideTop.Side = asrCenter
       Left = 284
-      Height = 14
+      Height = 15
       Top = 137
-      Width = 34
+      Width = 43
       Caption = 'Größe:'
       ParentColor = False
     end
@@ -197,7 +194,7 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label24
       AnchorSideTop.Side = asrCenter
       Left = 176
-      Height = 14
+      Height = 15
       Top = 137
       Width = 5
       Caption = '-'
@@ -205,26 +202,26 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     end
     object Label1: TLabel
       Left = 110
-      Height = 14
+      Height = 15
       Top = 212
-      Width = 74
+      Width = 99
       Caption = 'Window styles:'
       ParentColor = False
     end
     object Label3: TLabel
       Left = 336
-      Height = 14
+      Height = 15
       Top = 211
-      Width = 123
+      Width = 164
       Caption = 'Extended Window styles:'
       ParentColor = False
     end
     object alphatrans_cb: TCheckBox
       Tag = 1
       Left = 10
-      Height = 17
+      Height = 18
       Top = 390
-      Width = 78
+      Width = 100
       Caption = 'Transparent:'
       OnChange = propertyChanged
       TabOrder = 12
@@ -234,10 +231,10 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = visibleCb
       AnchorSideTop.Side = asrCenter
       Left = 82
-      Height = 17
+      Height = 18
       Hint = 'Zeigt an und stell ein, ob das gewählte Fenster enable ist'
       Top = 110
-      Width = 56
+      Width = 72
       Caption = 'enabled'
       OnChange = propertyChanged
       TabOrder = 0
@@ -245,10 +242,10 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     object visibleCb: TCheckBox
       Tag = 1
       Left = 10
-      Height = 17
+      Height = 18
       Hint = 'Zeigt an und stell ein, ob das gewählte Fenster sichtbar ist'
       Top = 110
-      Width = 47
+      Width = 63
       Caption = 'visible'
       OnChange = propertyChanged
       TabOrder = 1
@@ -258,10 +255,10 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = visibleCb
       AnchorSideTop.Side = asrCenter
       Left = 162
-      Height = 17
+      Height = 18
       Hint = 'Zeigt an , ob das gewählte Fenster ein unicode Fenster ist'
       Top = 110
-      Width = 56
+      Width = 71
       Caption = 'unicode'
       Enabled = False
       OnChange = propertyChanged
@@ -272,11 +269,11 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label2
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 21
+      Height = 25
       Hint = 'Hier kann man auswählen, ob das gewählte Fenster minimieziert, maximiert oder normal sein soll.'
-      Top = 159
+      Top = 157
       Width = 145
-      ItemHeight = 13
+      ItemHeight = 0
       Items.Strings = (
         'normal'
         'minimiert'
@@ -301,9 +298,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label8
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 23
+      Height = 25
       Hint = 'Zeigt und ändern den Text des Fensters.'
-      Top = 58
+      Top = 57
       Width = 437
       Anchors = [akTop, akLeft, akRight]
       OnKeyUp = updatePropertyKeyUp
@@ -323,8 +320,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label23
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 23
-      Top = 8
+      Height = 25
+      Top = 7
       Width = 118
       OnKeyUp = updatePropertyKeyUp
       TabOrder = 7
@@ -334,8 +331,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = labclassname
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 23
-      Top = 84
+      Height = 25
+      Top = 83
       Width = 489
       Anchors = [akTop, akLeft, akRight]
       Color = clBtnFace
@@ -347,9 +344,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = visibleCb
       AnchorSideTop.Side = asrCenter
       Left = 234
-      Height = 17
+      Height = 18
       Top = 110
-      Width = 119
+      Width = 167
       Caption = 'immer im Vordergrund'
       OnChange = propertyChanged
       TabOrder = 9
@@ -359,9 +356,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label24
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 23
+      Height = 25
       Hint = 'Zeigt die Position des Fensters an'
-      Top = 133
+      Top = 132
       Width = 66
       OnKeyUp = updatePropertyKeyUp
       TabOrder = 10
@@ -372,12 +369,12 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label15
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 21
-      Top = 34
+      Height = 25
+      Top = 32
       Width = 336
       Font.Color = clNavy
       Font.Style = [fsUnderline]
-      ItemHeight = 13
+      ItemHeight = 0
       OnDblClick = jumptoWndDblClick
       OnKeyUp = updatePropertyKeyUp
       ParentFont = False
@@ -388,7 +385,7 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = alphatrans_cb
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 22
+      Height = 25
       Top = 387
       Width = 145
       MaxValue = 255
@@ -400,9 +397,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = alphatrans_cb
       AnchorSideTop.Side = asrCenter
       Left = 258
-      Height = 17
+      Height = 18
       Top = 390
-      Width = 63
+      Width = 81
       Caption = 'ColorKey:'
       OnChange = propertyChanged
       TabOrder = 14
@@ -421,7 +418,7 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
         end      
         item
           Caption = 'Value'
-          Width = 100
+          Width = 320
         end>
       PopupMenu = windowPropertyListPopup
       TabOrder = 15
@@ -430,10 +427,10 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     end
     object messagemes_cb: TComboBox
       Left = 106
-      Height = 21
+      Height = 25
       Top = 438
       Width = 192
-      ItemHeight = 13
+      ItemHeight = 0
       OnKeyUp = messagemes_cbKeyUp
       TabOrder = 16
     end
@@ -441,8 +438,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = labwparam
       AnchorSideTop.Side = asrCenter
       Left = 106
-      Height = 23
-      Top = 464
+      Height = 25
+      Top = 463
       Width = 487
       Anchors = [akTop, akLeft, akRight]
       TabOrder = 17
@@ -451,8 +448,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = lablparam
       AnchorSideTop.Side = asrCenter
       Left = 106
-      Height = 23
-      Top = 491
+      Height = 25
+      Top = 490
       Width = 487
       Anchors = [akTop, akLeft, akRight]
       TabOrder = 18
@@ -462,8 +459,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label33
       AnchorSideTop.Side = asrCenter
       Left = 104
-      Height = 23
-      Top = 184
+      Height = 25
+      Top = 183
       Width = 146
       OnKeyUp = updatePropertyKeyUp
       TabOrder = 19
@@ -473,8 +470,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label34
       AnchorSideTop.Side = asrCenter
       Left = 322
-      Height = 23
-      Top = 184
+      Height = 25
+      Top = 183
       Width = 145
       Color = clBtnFace
       ReadOnly = True
@@ -486,8 +483,10 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Height = 64
       Top = 231
       Width = 218
+      ItemHeight = 0
       OnItemClick = windowStylesItemClick
       TabOrder = 21
+      TopIndex = -1
     end
     object windowExStyles: TCheckListBox
       Tag = 1
@@ -496,16 +495,18 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       Top = 230
       Width = 259
       Anchors = [akTop, akLeft, akRight]
+      ItemHeight = 0
       OnItemClick = windowStylesItemClick
       TabOrder = 22
+      TopIndex = -1
     end
     object ownerWnd_edt: TEdit
       Tag = 1
       AnchorSideTop.Control = Label36
       AnchorSideTop.Side = asrCenter
       Left = 500
-      Height = 23
-      Top = 33
+      Height = 25
+      Top = 32
       Width = 93
       Anchors = [akTop, akLeft, akRight]
       Color = clBtnFace
@@ -521,8 +522,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label24
       AnchorSideTop.Side = asrCenter
       Left = 325
-      Height = 23
-      Top = 133
+      Height = 25
+      Top = 132
       Width = 145
       OnKeyUp = updatePropertyKeyUp
       TabOrder = 24
@@ -532,9 +533,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label24
       AnchorSideTop.Side = asrCenter
       Left = 181
-      Height = 23
+      Height = 25
       Hint = 'Zeigt die Position des Fensters an'
-      Top = 133
+      Top = 132
       Width = 66
       OnKeyUp = updatePropertyKeyUp
       TabOrder = 25
@@ -554,8 +555,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label13
       AnchorSideTop.Side = asrCenter
       Left = 364
-      Height = 23
-      Top = 8
+      Height = 25
+      Top = 7
       Width = 76
       Color = clBtnFace
       Font.Color = clNavy
@@ -570,8 +571,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideTop.Control = Label9
       AnchorSideTop.Side = asrCenter
       Left = 500
-      Height = 23
-      Top = 8
+      Height = 25
+      Top = 7
       Width = 93
       Anchors = [akTop, akLeft, akRight]
       Color = clBtnFace
@@ -603,9 +604,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     end
     object messageInject: TCheckBox
       Left = 58
-      Height = 17
+      Height = 18
       Top = 517
-      Width = 81
+      Width = 107
       Caption = 'send injected'
       TabOrder = 31
     end
@@ -614,9 +615,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label1
       AnchorSideTop.Side = asrCenter
-      Left = 186
-      Height = 21
-      Top = 209
+      Left = 211
+      Height = 25
+      Top = 207
       Width = 82
       BorderSpacing.Around = 2
       OnKeyUp = updatePropertyKeyUp
@@ -627,9 +628,9 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label3
       AnchorSideTop.Side = asrCenter
-      Left = 463
-      Height = 21
-      Top = 208
+      Left = 504
+      Height = 25
+      Top = 206
       Width = 76
       BorderSpacing.Around = 4
       OnKeyUp = updatePropertyKeyUp
@@ -637,8 +638,8 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     end
   end
   object windowPropertyListPopup: TPopupMenu
-    left = 224
-    top = 324
+    Left = 224
+    Top = 324
     object windowAddProperty: TMenuItem
       Caption = 'Hinzufügen'
       OnClick = windowAddPropertyClick
@@ -653,6 +654,7 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
     end
   end
   object ColorDialog1: TColorDialog
+    Color = clBlack
     CustomColors.Strings = (
       'ColorA=000000'
       'ColorB=000080'
@@ -675,12 +677,12 @@ object WindowPropertySheetFrm: TWindowPropertySheetFrm
       'ColorS=F0FBFF'
       'ColorT=A4A0A0'
     )
-    left = 376
-    top = 388
+    Left = 376
+    Top = 388
   end
   object autorefreshtimer: TTimer
     OnTimer = autorefreshtimerTimer
-    left = 253
-    top = 324
+    Left = 253
+    Top = 324
   end
 end

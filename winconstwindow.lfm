@@ -12,20 +12,25 @@ object windowConstForm: TwindowConstForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ParentFont = False
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   object ListBox1: TListBox
-    Height = 147
-    Top = 23
+    Left = 0
+    Height = 145
+    Top = 25
     Width = 419
     Align = alClient
+    ItemHeight = 0
     OnDblClick = ListBox1DblClick
     OnKeyUp = Edit1KeyUp
+    ScrollWidth = 415
     TabOrder = 1
     TabStop = False
+    TopIndex = -1
   end
   object Edit1: TEdit
-    Height = 23
+    Left = 0
+    Height = 25
+    Top = 0
     Width = 419
     Align = alTop
     OnChange = Edit1Change

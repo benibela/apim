@@ -10,11 +10,11 @@ object windowstyleform: Twindowstyleform
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
-  ParentFont = False
   ShowHint = True
-  LCLVersion = '0.9.27'
+  LCLVersion = '1.8.0.2'
   object Splitter1: TSplitter
     Cursor = crVSplit
+    Left = 0
     Height = 5
     Top = 239
     Width = 740
@@ -24,6 +24,7 @@ object windowstyleform: Twindowstyleform
   end
   object Splitter2: TSplitter
     Cursor = crVSplit
+    Left = 0
     Height = 4
     Top = 395
     Width = 740
@@ -32,6 +33,7 @@ object windowstyleform: Twindowstyleform
     ResizeAnchor = akBottom
   end
   object Panel2: TPanel
+    Left = 0
     Height = 147
     Top = 399
     Width = 740
@@ -49,7 +51,7 @@ object windowstyleform: Twindowstyleform
       Items.Strings = (
         'Keine Window aktiv'
       )
-      ItemHeight = 13
+      ItemHeight = 19
       OnClickCheck = classstylesClickCheck
       OnItemClick = windowstylesItemClick
       TabOrder = 0
@@ -76,10 +78,10 @@ object windowstyleform: Twindowstyleform
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = labelcs
         AnchorSideTop.Side = asrCenter
-        Left = 335
-        Height = 14
-        Top = 5
-        Width = 68
+        Left = 332
+        Height = 13
+        Top = 6
+        Width = 74
         Caption = 'Class styles'
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
@@ -92,7 +94,7 @@ object windowstyleform: Twindowstyleform
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Label4
         AnchorSideTop.Side = asrCenter
-        Left = 410
+        Left = 413
         Height = 23
         Top = 1
         Width = 80
@@ -105,6 +107,7 @@ object windowstyleform: Twindowstyleform
     end
   end
   object Panel3: TPanel
+    Left = 0
     Height = 33
     Top = 546
     Width = 740
@@ -117,9 +120,9 @@ object windowstyleform: Twindowstyleform
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = Panel3
       AnchorSideTop.Side = asrCenter
-      Left = 324
+      Left = 322
       Height = 25
-      Top = 4
+      Top = 2
       Width = 92
       Caption = 'OK'
       OnClick = Button1Click
@@ -136,14 +139,15 @@ object windowstyleform: Twindowstyleform
     end
     object CheckBox1: TCheckBox
       Left = 96
-      Height = 19
+      Height = 18
       Top = 6
-      Width = 51
+      Width = 56
       Caption = 'inject'
       TabOrder = 2
     end
   end
   object Panel5: TPanel
+    Left = 0
     Height = 151
     Top = 244
     Width = 740
@@ -154,6 +158,7 @@ object windowstyleform: Twindowstyleform
     ClientWidth = 740
     TabOrder = 2
     object windowexstyles: TCheckListBox
+      Left = 0
       Height = 126
       Hint = 'Zeigt die Windowexstyles an. Aktive Windowexstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
       Top = 25
@@ -162,7 +167,7 @@ object windowstyleform: Twindowstyleform
       Items.Strings = (
         'Keine Window aktiv'
       )
-      ItemHeight = 13
+      ItemHeight = 19
       OnItemClick = windowstylesItemClick
       TabOrder = 0
       Data = {
@@ -170,7 +175,9 @@ object windowstyleform: Twindowstyleform
       }
     end
     object labelwsex: TPanel
+      Left = 0
       Height = 25
+      Top = 0
       Width = 740
       Align = alTop
       BevelOuter = bvNone
@@ -184,10 +191,10 @@ object windowstyleform: Twindowstyleform
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = labelwsex
         AnchorSideTop.Side = asrCenter
-        Left = 300
-        Height = 14
+        Left = 279
+        Height = 15
         Top = 5
-        Width = 141
+        Width = 183
         Caption = 'Extended Window styles:'
         Font.Style = [fsBold]
         ParentColor = False
@@ -198,9 +205,9 @@ object windowstyleform: Twindowstyleform
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Label3
         AnchorSideTop.Side = asrCenter
-        Left = 448
-        Height = 23
-        Top = 1
+        Left = 469
+        Height = 25
+        Top = 0
         Width = 80
         BorderSpacing.Left = 7
         OnKeyDown = Edit2KeyDown
@@ -211,7 +218,9 @@ object windowstyleform: Twindowstyleform
     end
   end
   object Panel4: TPanel
+    Left = 0
     Height = 239
+    Top = 0
     Width = 740
     Align = alTop
     BevelOuter = bvNone
@@ -225,6 +234,7 @@ object windowstyleform: Twindowstyleform
     TabOrder = 3
     object Splitter3: TSplitter
       Cursor = crVSplit
+      Left = 0
       Height = 3
       Top = 122
       Width = 740
@@ -233,7 +243,9 @@ object windowstyleform: Twindowstyleform
       ResizeAnchor = akBottom
     end
     object Panel1: TPanel
+      Left = 0
       Height = 122
+      Top = 0
       Width = 740
       Align = alClient
       BevelOuter = bvNone
@@ -242,6 +254,7 @@ object windowstyleform: Twindowstyleform
       ClientWidth = 740
       TabOrder = 0
       object windowstyles: TCheckListBox
+        Left = 0
         Height = 97
         Hint = 'Zeigt die Windowstyles an. Aktive Windowstyles sind mit einem Häkchen versehen. Man kann sie auch verändern.  '
         Top = 25
@@ -252,7 +265,7 @@ object windowstyleform: Twindowstyleform
         Items.Strings = (
           'Keine Window aktiv'
         )
-        ItemHeight = 13
+        ItemHeight = 19
         OnClickCheck = windowstylesClickCheck
         OnItemClick = windowstylesItemClick
         ParentFont = False
@@ -262,7 +275,9 @@ object windowstyleform: Twindowstyleform
         }
       end
       object labelws: TPanel
+        Left = 0
         Height = 25
+        Top = 0
         Width = 740
         Align = alTop
         BevelOuter = bvNone
@@ -276,10 +291,10 @@ object windowstyleform: Twindowstyleform
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Control = labelws
           AnchorSideTop.Side = asrCenter
-          Left = 328
-          Height = 14
+          Left = 315
+          Height = 15
           Top = 5
-          Width = 85
+          Width = 110
           Caption = 'Window styles:'
           Font.Style = [fsBold]
           ParentColor = False
@@ -290,9 +305,9 @@ object windowstyleform: Twindowstyleform
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Label1
           AnchorSideTop.Side = asrCenter
-          Left = 420
-          Height = 23
-          Top = 1
+          Left = 432
+          Height = 25
+          Top = 0
           Width = 80
           BorderSpacing.Left = 7
           OnKeyDown = Edit2KeyDown
@@ -303,6 +318,7 @@ object windowstyleform: Twindowstyleform
       end
     end
     object extraclass: TPanel
+      Left = 0
       Height = 114
       Top = 125
       Width = 740
@@ -323,7 +339,7 @@ object windowstyleform: Twindowstyleform
         Items.Strings = (
           'Keine Window aktiv'
         )
-        ItemHeight = 13
+        ItemHeight = 19
         OnClickCheck = windowstylesClickCheck
         OnItemClick = windowstylesItemClick
         ParentFont = False
@@ -349,10 +365,10 @@ object windowstyleform: Twindowstyleform
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Control = labeles
           AnchorSideTop.Side = asrCenter
-          Left = 327
-          Height = 14
+          Left = 314
+          Height = 15
           Top = 5
-          Width = 85
+          Width = 110
           Caption = 'Window styles:'
           Font.Style = [fsBold]
           ParentColor = False
@@ -363,9 +379,9 @@ object windowstyleform: Twindowstyleform
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Label2
           AnchorSideTop.Side = asrCenter
-          Left = 419
-          Height = 23
-          Top = 1
+          Left = 431
+          Height = 25
+          Top = 0
           Width = 80
           BorderSpacing.Left = 7
           OnKeyDown = Edit2KeyDown
