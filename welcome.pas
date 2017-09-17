@@ -52,7 +52,7 @@ var
 
 implementation
 
-uses ptranslateutils;
+uses ptranslateutils,applicationConfig;
 {$I welcome.atr}
 { TWelcomeFrm }
 
@@ -66,6 +66,7 @@ procedure TWelcomeFrm.FormCreate(Sender: TObject);
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
+  label1.Caption := 'API Manager '+ currentVersionStr;
 end;
 
 initialization

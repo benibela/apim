@@ -154,10 +154,6 @@ msgstr ""
 msgid "Beenden"
 msgstr ""
 
-#: tmainform.menuitem18.caption
-msgid "Aktuelle Seite schließen"
-msgstr ""
-
 #: tmainform.menuitem2.caption
 msgctxt "TMAINFORM.MENUITEM2.CAPTION"
 msgid "Suchwerkzeug"

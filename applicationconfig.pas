@@ -61,6 +61,8 @@ procedure niceSetVisible(vis: boolean; needMouseEvents: boolean);
   procedure readConfig;
   function initAll:boolean;
   procedure finitAll;
+
+const currentVersionStr = '3.0.1';
 implementation
 uses  windowfuncs,mainunit,apimshared,ptranslateutils;
 

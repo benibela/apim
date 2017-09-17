@@ -1,10 +1,10 @@
 object mainForm: TmainForm
-  Left = 153
+  Left = 150
   Height = 744
-  Top = 19
+  Top = 20
   Width = 824
   BorderIcons = [biSystemMenu, biHelp]
-  Caption = 'API Manager 3.0.0'
+  Caption = 'API Manager'
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   KeyPreview = True
