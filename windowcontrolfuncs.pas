@@ -1233,8 +1233,22 @@ begin
 end;
 
 procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint; func:longint=0);
+var
+  friendlyForm: TForm;
 begin
   if (where<low(friends)) or (where>high(friends)) then raise exception.Create('Invalid form id');
+
+  if (friends[where] <> nil) and (friends[where].Owner is TForm) then begin
+    //workaround to remove hidden windows, because anchor docking only hides them when the user clicks on "close"
+    friendlyForm := friends[where].Owner as TForm;
+    if not friendlyForm.Visible
+       or ( (DockMaster.GetAnchorSite(friendlyForm) <> nil) and (not DockMaster.GetAnchorSite(friendlyForm).Visible)) then
+       begin
+      friendlyForm.release;
+      friends[where] := nil;
+    end;
+  end;
+
   if friends[where]=nil then begin
     if not assigned(onShowForm) then raise exception.create('Donn''t know how to create form');
     onShowForm(self.owner,where,friends[where]);
