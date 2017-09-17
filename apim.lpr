@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms
+  Forms, anchordockpkg
   { you can add units after this },applicationConfig , mainunit, windowPropertySheet,
   winconstwindow, searchTool, systemOptions, processList, options, wstyles,
   windowList, proc9, welcome, windowcontrolfuncs, petools, apimshared;

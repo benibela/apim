@@ -52,7 +52,6 @@ type
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
     MenuItem17: TMenuItem;
-    MenuItem18: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -61,24 +60,16 @@ type
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
     MenuItem9: TMenuItem;
-    procedure destroyDockedForm(Sender: TObject);
-    procedure dockitemclick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure insertToNewPageClick(Sender: TObject);
     procedure insertIntoPageClick(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
-    procedure closeCurrentTabClose(Sender: TObject);
-    procedure MenuItem7Click(Sender: TObject);
-    procedure pagesCloseTabClicked(Sender: TObject);
     procedure subFormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure subFormResize(Sender: TObject);
-    procedure undockDockedForm(Sender: TObject);
   private
     { Private-Deklarationen}
-    pages: TLazDockPages;
-
     function addSubForm(id:longint; insertTo:Tform; createpage:boolean):tform;
     procedure addSubForm(newform:Tform; insertTo:Tform; createpage:boolean); //(insertTo <>nil) and createpage => not defined
     procedure addExistingSubForm(newform:Tform; insertTo:Tform; createpage:boolean); //(insertTo <>nil) and createpage => not defined
@@ -87,8 +78,6 @@ type
 
   public
     { Public-Deklarationen}
-    //ControlDocker1: TLazControlDocker;
-    DockingManager: TDockManager;
 
   end;
 
@@ -97,71 +86,48 @@ var
 
 implementation
 
-uses applicationConfig, searchTool,windowList,processList,systemOptions,bbutils, options,windowPropertySheet,welcome,ptranslateutils,apimshared,wstyles;
+uses applicationConfig, searchTool,windowList,processList,systemOptions,bbutils, options,windowPropertySheet,welcome,ptranslateutils,apimshared,wstyles,AnchorDocking,AnchorDockStorage;
 
 {$I mainunit.atr}
 
 { TmainForm }
 
 procedure TmainForm.FormCreate(Sender: TObject);
-var tempPanel: tpanel;
-    infoForm: TWelcomeFrm;
+var
     i:longint;
+    boundLeft, boundTop, boundWidth, boundHeight: Integer;
 begin
   initUnitTranslation(CurrentUnitName,tr);
   tr.translate(self);
-  DockingManager:=CreateDockManager;
-  //DockingManager.TitleHeight:=0; //disable title, because we have our own buttons
-  //DockingManager.TitleWidth:=0;
+  Caption := 'API Manager ' + currentVersionStr;
+  DockMaster.MakeDockSite(Self,[akBottom],admrpNone,false);;
 
-  tempPanel:=TPanel.create(self);
-  tempPanel.parent:=self;
-  infoForm:=twelcomefrm.Create(self);
-  infoForm.Visible:=true;
-  infoForm.onNewWindow:=@insertToNewPageClick;
+  boundLeft := globalConfig.GetValue('mainForm/left',left);
+  boundTop := globalConfig.GetValue('mainForm/top',top);
+  boundWidth := globalConfig.GetValue('mainForm/width',width);
+  boundHeight := globalConfig.GetValue('mainForm/height',height);
+  if boundWidth > screen.Width then boundWidth := screen.Width;
+  if boundHeight > screen.Height then boundHeight := screen.Height;
+  if boundLeft + boundWidth > screen.Width then boundLeft := (screen.Width - boundWidth) div 2;
+  if boundTop + boundHeight > screen.Height then boundTop := (screen.Height - boundHeight) div 2;
 
-  //Make page control with two pages
-  DockingManager.InsertControl(infoForm,alClient,tempPanel);
-  DockingManager.RemoveControl(tempPanel); //make on page
-
-  for i:=0 to ControlCount-1 do
-    if controls[i] is TLazDockPages then  begin
-      pages:=TLazDockPages(controls[i]);
-      break;
-    end;
-
-  if pages=nil then raise Exception.Create(tr['Docking-System konnte nicht initalisiert werden']);
-  pages.Align:=alClient;
-  //pages.Options:=[nboShowCloseButtons];
-  //pages.OnCloseTabClicked:=@pagesCloseTabClicked;
-
-  SetBounds(globalConfig.GetValue('mainForm/left',left),
-            globalConfig.GetValue('mainForm/top',top),
-            globalConfig.GetValue('mainForm/width',width),
-            globalConfig.GetValue('mainForm/height',height));
+  SetBounds(boundLeft, boundTop, boundWidth, boundHeight);
 
   SetPropA(messageWindow,propertyMainWindow,handle);
 end;
 
-procedure TmainForm.destroyDockedForm(Sender: TObject);
-var handleToClose:hwnd;
+procedure TmainForm.FormShow(Sender: TObject);
+var
+  infoForm: TWelcomeFrm;
 begin
-  if not (sender is tbutton) then exit;
-  if not (tbutton(sender).parent is tform) then exit;
-  handleToClose:=tbutton(sender).parent.Handle;
-  if (tbutton(sender).parent.parent<>nil)
-     and not (tbutton(sender).parent.parent is TLazDockForm) then //#todo -2: check if this is needed in lazarus > 0.9.28
-    DockingManager.RemoveControl(tcontrol(sender).parent); //docked
-  PostMessage(tbutton(sender).parent.Handle,wm_close,0,0); //tbutton(sender).parent.free; //undocked
+  infoForm:=twelcomefrm.Create(self);
+  infoForm.onNewWindow:=@insertToNewPageClick;
 
- // Application.ProcessMessages;
-  Refresh;
-end;
+  DockMaster.MakeDockable(infoForm,true,false,false);
+  DockMaster.GetAnchorSite(infoForm).Header.HeaderPosition := adlhpTop;
+  DockMaster.ManualDock(DockMaster.GetAnchorSite(infoForm), self, alClient, nil);
 
-procedure TmainForm.dockitemclick(Sender: TObject);
-begin
-  if not (sender is tmenuitem) then exit;
-  addExistingSubForm(tmenuitem(sender).Owner.Owner as tform,nil,tbutton(sender).tag=2);
+  OnShow := nil;
 end;
 
 procedure TmainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -170,11 +136,6 @@ begin
   globalConfig.SetValue('mainForm/top',top);
   globalConfig.SetValue('mainForm/width',width);
   globalConfig.SetValue('mainForm/height',height);
-end;
-
-procedure TmainForm.FormDestroy(Sender: TObject);
-begin
-  DockingManager.Free();
 end;
 
 procedure TmainForm.insertToNewPageClick(Sender: TObject);
@@ -192,20 +153,6 @@ begin
   close;
 end;
 
-procedure TmainForm.closeCurrentTabClose(Sender: TObject);
-begin
-  //TODO:close current page
-end;
-
-procedure TmainForm.MenuItem7Click(Sender: TObject);
-begin
-
-end;
-
-procedure TmainForm.pagesCloseTabClicked(Sender: TObject);
-begin
-
-end;
 
 procedure TmainForm.subFormClose(Sender: TObject; var CloseAction: TCloseAction
   );
@@ -219,33 +166,6 @@ begin
   tform(sender).VertScrollBar.visible:=tform(sender).ClientHeight<tform(sender).VertScrollBar.range;
 end;
 
-procedure TmainForm.undockDockedForm(Sender: TObject);
-var i:longint;
-    pos: tpoint;
-    size: tpoint;
-    subForm:Tform;
-    pmenu: TPopupMenu;
-begin
-  if not (sender is tbutton) then exit;
-  if not (tbutton(sender).parent is tform) then exit;
-  subform:=Tform(tbutton(sender).parent);
-  if subForm.parent=nil then begin //not docked
-    pmenu:=subForm.FindComponent('dockpopupmenu') as TPopupMenu;
-    pos:=tbutton(sender).ClientToScreen(point(0,tbutton(sender).height+2));
-    pmenu.PopUp(pos.x,pos.y);
-    //TODO -1: insert direct from shared form to mainform (all subforms there?), move to drag/drop?
-
-  end else begin
-    pos:=subForm.parent.ClientToScreen(subform.BoundsRect.TopLeft);
-    size:=point(subForm.Width,subForm.Height);
-    //DockingManager.UndockControl(tbutton(sender).parent,true); //?? todo
-    DockingManager.RemoveControl(tbutton(sender).parent);
-  //  tbutton(sender).Enabled:=false;
-    subForm.BorderStyle:=bsSizeToolWin;
-    subForm.Left:=Pos.x;
-    subForm.top:=Pos.y;
-  end;
-end;
 
 //needed for user input
 function TmainForm.addSubForm(id: longint; insertTo:Tform; createpage: boolean):tform;
@@ -260,93 +180,47 @@ begin
     WINDOWSTYLELISTFRM_ID: result:=Twindowstyleform.Create(self)
     else raise exception.create('invalid form id');
   end;
-  addSubForm(result,insertTo,createpage);
   if result.FindComponent('callbackcomponent')=nil then
     TCallbackComponent.Create(result);
   TCallbackComponent(result.FindComponent('callbackcomponent')).onShowForm:=@showHandle;
   TCallbackComponent(result.FindComponent('callbackcomponent')).id:=id;
+  addSubForm(result,insertTo,createpage);
 end;
 
 procedure TmainForm.addSubForm(newform: Tform; insertTo:Tform; createpage: boolean);
-var temp:tcontrol;
-    aSubForm: tform;
-    i:longint;
-    tempPanel:tpanel;
-    dockButton: tbutton;
-    pmenu: TPopupMenu;
-    item: TMenuItem;
 begin
+
   addExistingSubForm(newform,insertTo,createpage);
 
-  newForm.AddHandlerClose(@subFormClose);
-  newForm.AutoScroll:=false;
+  newform.OnClose := @subFormClose;
   newForm.VertScrollBar.Visible:=true;
-  newForm.visible:=true;
-
-  Application.ProcessMessages;
-
-  dockButton:=TButton.Create(newform);
-  dockButton.Caption:='2';
-  dockButton.font.Name:='Marlett';
-  dockButton.parent:=newForm;
-  dockButton.SetBounds(newform.clientwidth-50,5,20,20);
-  dockbutton.Anchors:=[aktop,akRight];
-  dockbutton.AnchorSide[akright].Side:=asrBottom;
-  dockbutton.OnClick:=@undockDockedForm;
-
-  dockButton:=TButton.Create(newform);
-  dockButton.Caption:='r';
-  dockButton.font.Name:='Marlett';
-  dockButton.parent:=newForm;
-  dockButton.SetBounds(newform.clientwidth-25,5,20,20);
-  dockbutton.Anchors:=[aktop,akRight];
-  dockbutton.AnchorSide[akright].Side:=asrBottom;
-  dockbutton.onclick:=@destroyDockedForm;
-
-  pmenu:=TPopupMenu.Create(newform);
-  pmenu.Parent:=newform;
-  pmenu.name:='dockpopupmenu';
-  item:=TMenuItem.Create(pmenu);
-  item.Caption:=tr['ins Hauptfenster einfügen'];
-  item.OnClick:=@dockitemclick;
-  item.tag:=1;
-  pmenu.Items.Add(item);
-  item:=TMenuItem.Create(pmenu);
-  item.Caption:=tr['ins Hauptfenster in neuer Seite einfügen'];
-  item.OnClick:=@dockitemclick;
-  item.tag:=2;
-  pmenu.Items.Add(item);
-
-
-  newForm.OnResize:=@subFormResize;
-  subFormResize(newform);//update vert scrollbar
-  newform.horzScrollBar.Visible:=false;
-
 end;
 
-procedure TmainForm.addExistingSubForm(newform: Tform; insertTo: Tform;
-  createpage: boolean);
+procedure TmainForm.addExistingSubForm(newform: Tform; insertTo: Tform; createpage: boolean);
+var
+  site: TAnchorDockHostSite;
 begin
-  if insertTo <>nil then
-      DockingManager.InsertControl(newform,alBottom,insertTo)
+  DockMaster.MakeDockable(newform,false);
+  DockMaster.GetAnchorSite(newform).Header.HeaderPosition := adlhpTop;
+  if insertTo <> nil then
+    DockMaster.ManualDock(DockMaster.GetAnchorSite(newform), DockMaster.GetAnchorSite(insertTo), alBottom, insertTo)
   else begin
-    createpage:=createpage or (pages.PageIndex=0);
-    if not createpage then
-      createpage:=2*maxSubFormPerPage-1<=pages.ActivePageComponent.ControlCount;//splitter+form
-    if createpage then begin
-      DockingManager.InsertControl(newform,alClient,pages.ActivePageComponent.controls[0]);
-      pages.PageIndex:=pages.PageIndex+1;
-    end else
-      DockingManager.InsertControl(newform,alBottom,pages.ActivePageComponent.controls[pages.ActivePageComponent.ControlCount-1]); //last control because the new one is shown after this (due to albottom)
+    if not createpage then begin
+      createpage := true;
+      site := (DockManager as TAnchorDockManager).GetChildSite;
+      if site.Pages <> nil then begin
+        DockMaster.ManualDock(DockMaster.GetAnchorSite(newform), site.Pages.GetActiveSite, alBottom, nil);
+        createpage := false;
+      end;
+    end;
+    if createpage then
+      DockMaster.ManualDock(DockMaster.GetAnchorSite(newform), self, alClient, nil)
   end;
+  DockMaster.MakeDockable(newform,true,true);
+  Invalidate;
 end;
 
-                        {
-procedure TmainForm.showNewSibling(sender: tform; newform: tform);
-begin
-  addSubForm(newform,sender,false);
-end;
-                         }
+
 procedure TmainForm.showHandle(sender: tobject; newFormID: longint;
   var callback: TCallbackComponent);
 begin

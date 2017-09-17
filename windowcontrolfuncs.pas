@@ -95,7 +95,7 @@ procedure SendMessageInjected(wnd:Thandle; msg: longint;wparam,lparam:dword);
 
 implementation
 
-uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig,bbutils,ptranslateutils,winconstwindow,apimshared;
+uses ExtCtrls,StdCtrls,registry,windowfuncs,passwort,applicationConfig,bbutils,ptranslateutils,winconstwindow,apimshared,AnchorDocking,AnchorDockStorage;
 
 {$I windowcontrolfuncs.atr}
 
@@ -1227,6 +1227,9 @@ begin
   inherited create(AOwner);
   Name:='callbackcomponent';
   initUnitTranslation(CurrentUnitName,tr);
+
+  DockMaster.MakeDockable(AOwner as tform,false,false);
+  DockMaster.GetAnchorSite(AOwner as tform).Header.HeaderPosition := adlhpTop;
 end;
 
 procedure TCallbackComponent.showHandle(handle: THANDLE; where: longint; func:longint=0);

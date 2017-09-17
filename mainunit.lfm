@@ -1,8 +1,8 @@
 object mainForm: TmainForm
   Left = 153
-  Height = 701
+  Height = 744
   Top = 19
-  Width = 621
+  Width = 824
   BorderIcons = [biSystemMenu, biHelp]
   Caption = 'API Manager 3.0.0'
   Font.Height = -11
@@ -11,20 +11,15 @@ object mainForm: TmainForm
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
+  OnShow = FormShow
   ShowHint = True
-  LCLVersion = '1.8.0.2'
+  LCLVersion = '1.8.0.4'
   Visible = True
   object MainMenu1: TMainMenu
-    Left = 224
-    Top = 200
+    left = 224
+    top = 200
     object MenuItem16: TMenuItem
       Caption = 'Allgemein'
-      object MenuItem18: TMenuItem
-        Caption = 'Aktuelle Seite schließen'
-        Visible = False
-        OnClick = closeCurrentTabClose
-      end
       object MenuItem17: TMenuItem
         Caption = 'Beenden'
         OnClick = MenuItem17Click
